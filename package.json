@@ -1,0 +1,25 @@
+{
+  "name": "fabrium",
+  "private": true,
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browser": {
+    "jquery": "./vendor/components/jquery/dist/jquery.js",
+    "angular": "./vendor/components/angular/angular.js" 
+  },
+  "browserify-shim": {
+    "angular": {
+      "exports": "angular",
+      "depends": ["jquery:jQuery"]
+    }
+  },
+  "devDependencies": {
+    "browserify": "~> 4.1",
+    "browserify-shim": "^3.5.0",
+    "deamdify": "^0.1.1",
+    "gulp": "^3.8.0",
+    "underscore": "^1.6.0",
+    "vinyl-source-stream": "^0.1.1"
+  }
+}
