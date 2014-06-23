@@ -1,11 +1,8 @@
 class Fabric < ActiveRecord::Base
   include Fabrics::Prices
-
+  include Fabrics::Properties
 
   # belongs_to :mill
-
-  # has_many :fiber_percentages, depenent: :destroy
-  # has_many :fibers, through: :fiber_percentages
 
   # gsm: weight in GSM, decimal precision 2
   #   glm: f(gsm, width) -> gsm * width / 100
@@ -14,5 +11,4 @@ class Fabric < ActiveRecord::Base
 
   # width: whole number (unit for display?)
   # country: string (country code)
-
 end

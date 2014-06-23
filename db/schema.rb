@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140619153057) do
+ActiveRecord::Schema.define(version: 20140623150951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,5 +24,26 @@ ActiveRecord::Schema.define(version: 20140619153057) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "properties", force: true do |t|
+    t.integer  "kind",       default: 0
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "properties", ["kind"], name: "index_properties_on_kind", using: :btree
+  add_index "properties", ["name"], name: "index_properties_on_name", using: :btree
+
+  create_table "property_assignments", force: true do |t|
+    t.integer  "property_id"
+    t.integer  "fabric_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "property_assignments", ["fabric_id"], name: "index_property_assignments_on_fabric_id", using: :btree
+  add_index "property_assignments", ["property_id"], name: "index_property_assignments_on_property_id", using: :btree
 
 end
