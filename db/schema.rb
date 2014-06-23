@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20140623173017) do
     t.decimal  "gsm",        precision: 8, scale: 2, default: 0.0
     t.decimal  "glm",        precision: 8, scale: 2, default: 0.0
     t.decimal  "osy",        precision: 8, scale: 2, default: 0.0
+    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

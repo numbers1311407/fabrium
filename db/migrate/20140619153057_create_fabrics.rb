@@ -14,6 +14,7 @@ class CreateFabrics < ActiveRecord::Migration
       t.decimal :gsm, precision: 8, scale: 2, default: 0
       t.decimal :glm, precision: 8, scale: 2, default: 0
       t.decimal :osy, precision: 8, scale: 2, default: 0
+      t.string :country
       t.timestamps
     end
 
