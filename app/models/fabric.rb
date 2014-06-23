@@ -2,7 +2,7 @@ class Fabric < ActiveRecord::Base
   include Fabrics::Prices
   include Fabrics::Properties
 
-  # belongs_to :mill
+  belongs_to :mill
 
   # gsm: weight in GSM, decimal precision 2
   #   glm: f(gsm, width) -> gsm * width / 100
