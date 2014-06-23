@@ -11,6 +11,7 @@ class CreateFabrics < ActiveRecord::Migration
       t.numrange :price_eu
       t.numrange :price_us
       t.decimal :weight, precision: 8, scale: 2
+      t.integer :width
       t.timestamps
     end
 
