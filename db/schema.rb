@@ -17,13 +17,10 @@ ActiveRecord::Schema.define(version: 20140619153057) do
   enable_extension "plpgsql"
 
   create_table "fabrics", force: true do |t|
-    t.integer  "fabrium_id"
     t.numrange "price_eu"
     t.numrange "price_us"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "fabrics", ["fabrium_id"], name: "index_fabrics_on_fabrium_id", unique: true, using: :btree
 
 end

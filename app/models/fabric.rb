@@ -1,5 +1,4 @@
 class Fabric < ActiveRecord::Base
-  include Fabrics::FabriumId
   include Fabrics::Prices
 
 
