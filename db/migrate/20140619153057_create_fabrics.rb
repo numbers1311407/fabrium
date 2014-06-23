@@ -10,6 +10,7 @@ class CreateFabrics < ActiveRecord::Migration
     create_table :fabrics do |t|
       t.numrange :price_eu
       t.numrange :price_us
+      t.decimal :weight, precision: 8, scale: 2
       t.timestamps
     end
 

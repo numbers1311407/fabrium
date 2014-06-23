@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20140619153057) do
   create_table "fabrics", force: true do |t|
     t.numrange "price_eu"
     t.numrange "price_us"
+    t.decimal  "weight",     precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
