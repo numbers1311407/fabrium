@@ -17,13 +17,19 @@ ActiveRecord::Schema.define(version: 20140623173017) do
   enable_extension "plpgsql"
 
   create_table "fabrics", force: true do |t|
+    t.string   "item_number",                                    default: ""
     t.numrange "price_eu"
     t.numrange "price_us"
-    t.integer  "width",                              default: 0
-    t.decimal  "gsm",        precision: 8, scale: 2, default: 0.0
-    t.decimal  "glm",        precision: 8, scale: 2, default: 0.0
-    t.decimal  "osy",        precision: 8, scale: 2, default: 0.0
-    t.string   "country"
+    t.integer  "width",                                          default: 0
+    t.decimal  "gsm",                    precision: 8, scale: 2, default: 0.0
+    t.decimal  "glm",                    precision: 8, scale: 2, default: 0.0
+    t.decimal  "osy",                    precision: 8, scale: 2, default: 0.0
+    t.string   "country",                                        default: ""
+    t.integer  "sample_minimum_quality",                         default: 0
+    t.integer  "bulk_minimum_quality",                           default: 0
+    t.integer  "sample_lead_time",                               default: 0
+    t.integer  "bulk_lead_time",                                 default: 0
+    t.boolean  "in_stock",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

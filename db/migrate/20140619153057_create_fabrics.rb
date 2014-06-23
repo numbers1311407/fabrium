@@ -8,13 +8,19 @@ class CreateFabrics < ActiveRecord::Migration
 
   def change
     create_table :fabrics do |t|
+      t.string :item_number, default: ""
       t.numrange :price_eu
       t.numrange :price_us
       t.integer :width, default: 0
       t.decimal :gsm, precision: 8, scale: 2, default: 0
       t.decimal :glm, precision: 8, scale: 2, default: 0
       t.decimal :osy, precision: 8, scale: 2, default: 0
-      t.string :country
+      t.string :country, default: ""
+      t.integer :sample_minimum_quality, default: 0
+      t.integer :bulk_minimum_quality, default: 0
+      t.integer :sample_lead_time, default: 0
+      t.integer :bulk_lead_time, default: 0
+      t.boolean :in_stock, default: false
       t.timestamps
     end
 
