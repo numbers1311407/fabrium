@@ -13,6 +13,16 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
-gem 'puma'
-gem 'slim'
 gem 'quiet_assets', group: :development
+
+gem 'puma'
+gem 'authority'
+gem 'slim'
+gem 'carrierwave'
+gem 'fog'
+gem 'devise'
+gem 'devise_invitable'
+gem 'inherited_resources'
+gem 'has_scope'
+gem 'simple_form'
+gem 'simple_form_angular'
