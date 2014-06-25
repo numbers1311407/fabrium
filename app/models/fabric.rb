@@ -5,11 +5,9 @@ class Fabric < ActiveRecord::Base
 
   belongs_to :mill
 
-  # gsm: weight in GSM, decimal precision 2
-  #   glm: f(gsm, width) -> gsm * width / 100
-  #   ozy: f(gsm) -> gsm * 0.0297
-  #   (write calculations mixin, ozy_to_gsm, gsm_to_glm, etc)
+  has_many :fabric_variants
 
-  # width: whole number (unit for display?)
-  # country: string (country code)
+  def self.calculate_color_deltas(lab)
+    joins("INNER JOIN #{FabricVariant.color_delta_subselect(lab).to_sql} ON fabric_variants.fabric_id = fabrics.id")
+  end
 end
