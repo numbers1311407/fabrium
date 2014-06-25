@@ -1,5 +1,3 @@
-require("./bootstrap");
-
 var $ = require("jquery");
 console.log($);
 

@@ -8,7 +8,7 @@ var libs = [
 ];
 
 
-gulp.task("vendor", function () {
+gulp.task("bundle:vendor", function () {
   var b = browserify();
 
   libs.forEach(function (lib) {
@@ -17,13 +17,13 @@ gulp.task("vendor", function () {
 
   return b.bundle()
     .pipe(source("vendor.js"))
-    .pipe(gulp.dest('app/assets/javascripts/'));
+    .pipe(gulp.dest('app/assets/javascripts/bundled'));
 });
 
 
-gulp.task("bundle", function () {
+gulp.task("bundle:application", function () {
   var b = browserify({
-    entries: ['./app/assets/javascripts/bundle/index.js'], 
+    entries: ['./app/assets/javascripts/index.js'], 
     extensions: ['.js']
   });
 
@@ -32,14 +32,19 @@ gulp.task("bundle", function () {
   });
 
   return b.bundle()
-    .pipe(source("bundle.js"))
-    .pipe(gulp.dest('./app/assets/javascripts/'));
+    .pipe(source("application.js"))
+    .pipe(gulp.dest('./app/assets/javascripts/bundled'));
 });
 
 
-gulp.task("browserify", ["vendor", "bundle"]);
-
+gulp.task("bundle", ["bundle:vendor", "bundle:application"]);
+gulp.task("default", ["bundle"]);
 
 gulp.task('watch', function() {
-  gulp.watch('./app/assets/javascripts/bundle/**', ['bundle']);
+  gulp.watch([
+    './app/assets/javascripts/**/*.js', 
+    '!./app/assets/javascripts/bundled/*'
+  ], [
+    'bundle:application'
+  ]);
 });
