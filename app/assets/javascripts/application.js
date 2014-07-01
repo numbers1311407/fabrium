@@ -1,1 +1,1 @@
-//= require bundled/application
+//= require ./ng

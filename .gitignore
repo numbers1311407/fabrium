@@ -22,5 +22,3 @@
 *.swp
 
 /vendor/components
-
-/node_modules

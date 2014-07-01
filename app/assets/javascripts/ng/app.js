@@ -1,9 +1,12 @@
-var minicolors = require("./modules/minicolors");
+//= require ./modules
 
-// exports
-var app = module.exports = angular.module('fabrium', [
-  'ngRoute', 
-  'ngResource',
-  'ui.bootstrap',
-  'minicolors'
-]);
+;(function (root) {
+
+  root.app = angular.module('fabrium', [
+    'ngRoute', 
+    'ngResource',
+    'ui.bootstrap',
+    'minicolors'
+  ]);
+
+})(window);
