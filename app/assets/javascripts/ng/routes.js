@@ -1,5 +1,4 @@
 var app = require("./app");
-require("./controllers");
 
 app.config(['$routeProvider', '$locationProvider', 
   function ($routeProvider, $locationProvider) {
@@ -8,6 +7,7 @@ app.config(['$routeProvider', '$locationProvider',
     $routeProvider.
       when("/", {
         templateUrl: 'index.html',
-        controller: 'FabricIndexCtrl'
+        controller: 'FabricVariantIndexCtrl',
+        reloadOnSearch: false
       });
   }]);

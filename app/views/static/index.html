@@ -1,23 +1,39 @@
 <div ng-view></div>
 
 <script type="text/ng-template" id="index.html">
-  <form class="well form-search">
+
+  <form class="well form-search" ng-submit="updateForm()">
     <label>Search Fabrics:</label>
-    <input type="text" ng-model="query.keywords" class="input-medium search-query" placeholder="Keywords...">
-    <input minicolors ng-model="query.color" class="input-medium">
-    <button type="submit" class="btn" ng-click="search()">Search</button>
+    <input type="text" ng-model="search.keywords" class="input-medium search-query" placeholder="Keywords...">
+    <input minicolors ng-model="search.color" class="input-medium">
+    <button type="submit" class="btn">Search</button>
   </form>
 
-  <ul ng-repeat="fabric in fabrics">
-    <li><a ng-click="show(fabric.id)">{{ fabric.id }}</a></li>
+  <pagination 
+    ng-show="pages > 1"
+    items-per-page="perPage" 
+    max-size="10" 
+    total-items="totalItems" 
+    ng-model="search.page"
+    ng-change="updateLocation()"
+  ></pagination>
+
+  <div ng-if="result.loading">
+    Loading...
+  </div>
+
+  <ul class="fabric-variant-resultlist" ng-repeat="item in result.items">
+    <li class="fabric-variant-result" style="background-color: #{{ item.color }};">
+      <a ng-click="show(item.id)">{{ item.id }}</a>
+    </li>
   </ul>
 </script>
 
 <script type="text/ng-template" id="show.html">
   <div class="modal-header">
-    <h3 class="modal-title">Fabric: {{ fabric.id }}</h3>
+    <h3 class="modal-title">Fabric: {{ fabric_variant.id }}</h3>
   </div>
   <div class="modal-body">
-    {{ fabric }}
+    <p>color: #{{ fabric_variant.color }}</p>
   </div>
 </script>

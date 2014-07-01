@@ -16,8 +16,8 @@ module FabricVariants::Color
     self.cie_l, self.cie_a, self.cie_b = arr
   end
 
-  def color=(hex)
-    hex.downcase! if hex.present?
+  def color=(hex="")
+    hex = hex.downcase.sub(/^#/, '')
     self.lab = HexToLabConverter.new(hex).to_lab
     write_attribute(:color, hex)
   end
@@ -28,7 +28,7 @@ module FabricVariants::Color
 
   module ClassMethods
     def near_color(hex, max_delta=nil)
-      scoped = with_color_deltas(color).order("fabric_variants.delta ASC")
+      scoped = with_color_deltas(hex).order("fabric_variants.delta ASC")
       scoped = scoped.where(["fabric_variants.delta < ?", max_delta]) if max_delta.present?
       scoped
     end
@@ -44,16 +44,17 @@ module FabricVariants::Color
       delta = sanitize_sql_array([
         "(|/((cie_l-(?))^2+(cie_a-(?))^2+(cie_b-(?))^2)) delta", *lab
       ])
-      select("*, #{delta}").as("fabric_variants")
+      unscoped.select("*, #{delta}").as("fabric_variants")
     end
   end
 
   private
 
   class HexToLabConverter < String
-    def initialize(hex)
+    def initialize(hex="")
+      hex = hex.downcase.sub(/^#/, '')
       @valid = ReHexColor === hex
-      super
+      super(hex)
     end
 
     def valid?

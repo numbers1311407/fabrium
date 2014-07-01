@@ -1,8 +1,17 @@
 require 'test_helper'
 
 class FabricVariantTest < ActiveSupport::TestCase
+  test '"#" #color prefix is stripped' do
+    f = FabricVariant.new(color: '#ff0000')
+    assert_equal 'ff0000', f.color
+  end
 
-  test "lab should equal color.lab" do
+  test "#color is downcased" do
+    f = FabricVariant.new(color: '#FF0000')
+    assert_equal 'ff0000', f.color
+  end
+
+  test "#color.to_lab should equal #lab" do
     f = FabricVariant.new
     assert_decimal_arrays_equal f.lab, f.color.to_lab
 
@@ -13,12 +22,12 @@ class FabricVariantTest < ActiveSupport::TestCase
     assert_decimal_arrays_equal f.lab, f.color.to_lab
   end
 
-  test "lab for nil color should be [0, 0, 0]" do
+  test "#color.to_lab for nil color should be [0, 0, 0]" do
     f = FabricVariant.new
     assert_decimal_arrays_equal [0, 0, 0], f.color.to_lab
   end
 
-  test "xyz for nil color should be [0, 0, 0]" do
+  test "#color.to_xyz for nil color should be [0, 0, 0]" do
     f = FabricVariant.new
     assert_decimal_arrays_equal [0, 0, 0], f.color.to_xyz
   end
