@@ -4,10 +4,11 @@ class CreateFabricVariants < ActiveRecord::Migration
       t.references :fabric
       t.integer :fabrium_id
       t.integer :mill_id
-      t.decimal :lab, array: true, default: [0,0,0]
+      t.string :color
+      t.decimal :cie_l, :cie_a, :cie_b, default: 0
       t.timestamps
     end
 
-    add_index :fabric_variants, :lab, using: 'gin'
+    add_index :fabric_variants, [:cie_l, :cie_a, :cie_b], name: 'by_cie_lab'
   end
 end

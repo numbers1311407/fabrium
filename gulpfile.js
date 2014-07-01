@@ -1,10 +1,15 @@
 var gulp = require('gulp')
+  , gutil = require('gulp-util')
   , browserify = require('browserify')
   , source = require('vinyl-source-stream')
+  , plumber = require('gulp-plumber')
 
 var libs = [
   'jquery', 
-  'angular'
+  'angular',
+  'angular-route',
+  'angular-resource',
+  'angular-bootstrap'
 ];
 
 
@@ -33,12 +38,9 @@ gulp.task("bundle:application", function () {
 
   return b.bundle()
     .pipe(source("application.js"))
-    .pipe(gulp.dest('./app/assets/javascripts/bundled'));
+    .pipe(gulp.dest('./app/assets/javascripts/bundled'))
 });
 
-
-gulp.task("bundle", ["bundle:vendor", "bundle:application"]);
-gulp.task("default", ["bundle"]);
 
 gulp.task('watch', function() {
   gulp.watch([
@@ -48,3 +50,7 @@ gulp.task('watch', function() {
     'bundle:application'
   ]);
 });
+
+
+gulp.task("bundle", ["bundle:vendor", "bundle:application"]);
+gulp.task("default", ["watch"]);

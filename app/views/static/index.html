@@ -1,0 +1,23 @@
+<div ng-view></div>
+
+<script type="text/ng-template" id="index.html">
+  <form class="well form-search">
+    <label>Search Fabrics:</label>
+    <input type="text" ng-model="query.keywords" class="input-medium search-query" placeholder="Keywords...">
+    <input minicolors ng-model="query.color" class="input-medium">
+    <button type="submit" class="btn" ng-click="search()">Search</button>
+  </form>
+
+  <ul ng-repeat="fabric in fabrics">
+    <li><a ng-click="show(fabric.id)">{{ fabric.id }}</a></li>
+  </ul>
+</script>
+
+<script type="text/ng-template" id="show.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Fabric: {{ fabric.id }}</h3>
+  </div>
+  <div class="modal-body">
+    {{ fabric }}
+  </div>
+</script>

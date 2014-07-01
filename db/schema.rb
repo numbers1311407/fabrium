@@ -20,12 +20,15 @@ ActiveRecord::Schema.define(version: 20140623195026) do
     t.integer  "fabric_id"
     t.integer  "fabrium_id"
     t.integer  "mill_id"
-    t.decimal  "lab",        default: [#<BigDecimal:51810c8,'0.0',9(18)>, #<BigDecimal:5181078,'0.0',9(18)>, #<BigDecimal:5181028,'0.0',9(18)>], array: true
+    t.string   "color"
+    t.decimal  "cie_l",      default: 0.0
+    t.decimal  "cie_a",      default: 0.0
+    t.decimal  "cie_b",      default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "fabric_variants", ["lab"], name: "index_fabric_variants_on_lab", using: :gin
+  add_index "fabric_variants", ["cie_l", "cie_a", "cie_b"], name: "by_cie_lab", using: :btree
 
   create_table "fabrics", force: true do |t|
     t.string   "item_number",                                    default: ""

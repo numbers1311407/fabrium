@@ -15,6 +15,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'quiet_assets', group: :development
 
+gem 'bootstrap-sass'
 gem 'puma'
 gem 'authority'
 gem 'slim'

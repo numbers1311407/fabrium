@@ -21,7 +21,7 @@ module Fabrics::Prices
 
   def read_converted_price attr
     val = read_attribute(attr)
-    val.first == val.last ? val.first : val
+    val.presence && val.first == val.last ? val.first : val
   end
 
   def write_converted_price attr, val
