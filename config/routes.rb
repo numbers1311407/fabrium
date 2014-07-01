@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'static#index'
+  root 'ng#index'
   resources :fabrics
   resources :fabric_variants
 end
