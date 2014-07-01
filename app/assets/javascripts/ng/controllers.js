@@ -38,8 +38,16 @@
       };
 
       $scope.updateLocation = function () {
+        // If we're on page 1, remove the page from the search and let it
+        // default as it's redundant.
         if (1 === $scope.search.page) {
           delete $scope.search.page;
+        }
+        // Strip the # off the color before applying it to the location.
+        // The minicolors has no setting to format this, but oddly it doesn't
+        // seem to care if it's there (it probably strips it off itself).
+        if ($scope.search.color) {
+          $scope.search.color = $scope.search.color.replace(/^#/, "");
         }
         $location.search($scope.search);
       };
