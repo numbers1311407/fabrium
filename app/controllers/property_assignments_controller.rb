@@ -1,0 +1,2 @@
+class PropertyAssignmentsController < ResourceController
+end

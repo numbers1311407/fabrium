@@ -1,4 +1,4 @@
-json.array!(@fabrics) do |fabric|
-  json.extract! fabric, :id
-  json.url fabric_url(fabric, format: :json)
+json.array!(collection) do |record|
+  json.extract! record, :id
+  json.url resource_url(record, format: :json)
 end

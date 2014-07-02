@@ -11,9 +11,14 @@ module Fabrics::Properties
     #      It might be better if these were association extensions.
     def define_property_assignment_associations
       Property.kinds.each do |key, enum|
+        assoc = Property::KindAssociationMap[key.to_sym]
+        next unless assoc
+
+        key = key.pluralize if :has_many == assoc
+
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
-          has_many :#{key}_assignments,
-            -> { joins(:property).where(properties: {kind: #{enum}}) },
+          #{assoc} :#{key},
+            -> { includes(:property).where(properties: {kind: #{enum}}) },
             class_name: 'PropertyAssignment'
         RUBY
       end

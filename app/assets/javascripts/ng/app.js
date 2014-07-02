@@ -6,7 +6,8 @@
     'ngRoute', 
     'ngResource',
     'ui.bootstrap',
-    'minicolors'
+    'minicolors-ng',
+    'selectize-ng'
   ]);
 
 })(window);

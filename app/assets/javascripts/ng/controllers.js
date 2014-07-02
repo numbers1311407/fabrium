@@ -7,8 +7,33 @@
   ]);
 
   app.controller('FabricVariantIndexCtrl', 
-    ['$scope', '$location', '$modal', 'FabricVariant', 
-    function ($scope, $location, $modal, FabricVariant) {
+    ['$scope', '$location', '$modal', 'FabricVariant', 'properties',
+    function ($scope, $location, $modal, FabricVariant, properties) {
+
+      $scope.selectize = {
+        category: {
+          sortField: 'text'
+        },
+
+        fiber_content: {
+          sortField: 'text'
+        },
+
+        keywords: {
+          valueField: 'id',
+          labelField: 'name',
+					searchField: 'name',
+          plugins: ['remove_button', 'close_button'],
+          load: function (query, callback) {
+						if (!query.length) return callback();
+            properties.fetch('keywords', {name: query})
+              .then(function (result) {
+                callback(result.items);
+              });
+          }
+        }
+      };
+
 
       // Sync the scope search with the location search and submit the form.
       //
@@ -54,10 +79,6 @@
 
       $scope.$on('$routeUpdate', $scope.submit);
 
-      if (!angular.element.isEmptyObject($location.search())) {
-        $scope.submit();
-      }
-
       $scope.show = function (id) {
         var modalInstance = $modal.open({
           templateUrl: "show.html",
@@ -69,6 +90,10 @@
           }
         })
       };
+
+      if (!angular.element.isEmptyObject($location.search())) {
+        $scope.submit();
+      }
     }
   ]);
 })(window);

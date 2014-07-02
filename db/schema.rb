@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140623195026) do
   add_index "fabric_variants", ["cie_l", "cie_a", "cie_b"], name: "by_cie_lab", using: :btree
 
   create_table "fabrics", force: true do |t|
+    t.integer  "mill_id"
     t.string   "item_number",                                    default: ""
     t.numrange "price_eu"
     t.numrange "price_us"

@@ -1,2 +1,15 @@
 module ApplicationHelper
+
+  def user_signed_in?
+    false
+  end
+
+  def select_options_for_categories
+    options_for_select(Property.categories.order(name: :asc).pluck(:name, :id))
+  end
+
+  def select_options_for_fiber_content
+    options_for_select(Property.fibers.order(name: :asc).pluck(:name, :id))
+  end
+
 end

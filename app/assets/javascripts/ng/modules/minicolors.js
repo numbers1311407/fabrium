@@ -1,6 +1,6 @@
 ;(function (root) {
 
-  var module = angular.module('minicolors', []);
+  var module = angular.module('minicolors-ng', []);
 
   module.directive('minicolors', [function () {
     return {
@@ -17,6 +17,9 @@
         scope.$watch(getSettings, function (settings) {
           element.minicolors("settings", settings);
         }, true);
+
+        // turn off HTML5 spell checking
+        element.attr("spellcheck", false);
 
         element.minicolors(getSettings());
       }

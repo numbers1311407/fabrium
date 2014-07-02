@@ -1,8 +1,16 @@
 // Sass imports
 @import "bootstrap-fabrium";
 @import "angular";
+@import "selectize";
+@import "minicolors";
 
+// main
+#root {
+  // account for fixed navbar
+  padding-top: $navbar-height;
+}
 
+// fabric search
 ul.fabric-variant-resultlist {
   margin: 0;
   padding: 0;
@@ -20,8 +28,43 @@ li.fabric-variant-result {
   font-size: 20px;
 }
 
-// CSS imports
-@import "jquery-minicolors/jquery.minicolors.css";
-.minicolors-theme-default .minicolors-input {
-  height: auto;
+.form-group-weights {
+  @include clearfix;
+
+  label {
+    display: block;
+    clear: both;
+  }
+  input {
+    width: 70px;
+  }
+  span {
+    display: block;
+  }
+  span, select, input {
+    float: left;
+  }
+  span, select {
+    height: 34px;
+    line-height: 34px;
+    margin: 0 8px;
+  }
+}
+
+.form-group-color {
+  @include clearfix;
+
+  label {
+    display: block;
+    clear: both;
+  }
+
+  .minicolors-swatch {
+    top: 8px;
+    left: 8px;
+  }
+  .minicolors-input {
+    padding-left: 30px;
+    cursor: pointer;
+  }
 }
