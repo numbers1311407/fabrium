@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'ng#index'
+  devise_for :users
 
   resources :fabrics
   resources :fabric_variants
@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   scope format: true, constraints: { format: 'json' } do
     get "keywords", to: "properties#keywords"
   end
+
+  root 'ng#index'
 end

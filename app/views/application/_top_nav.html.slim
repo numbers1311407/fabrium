@@ -1,0 +1,25 @@
+#navbar-main
+  .navbar-header
+    button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+      span.sr-only Toggle Navigation
+      i.fa.fa-gear.fa-2x
+    = link_to t(:site_title), root_path, class: "navbar-brand"
+  #topnav.collapse.navbar-collapse
+    ul.nav.navbar-nav
+      li= link_to "Home", "/"
+    - if user_signed_in?
+      ul.nav.navbar-nav.navbar-right
+        li.text
+          span Welcome #{current_user.email}!
+        li.dropdown
+          a.dropdown-toggle data-toggle="dropdown"
+            i.fa.fa-gear.fa-lg
+          ul.dropdown-menu
+            li
+              = link_to "Edit Profile", "#"
+            li
+              = link_to "Logout", destroy_user_session_path, method: :delete
+    - else
+      ul.nav.navbar-nav.navbar-right
+        li
+          = link_to "Login", new_user_session_path

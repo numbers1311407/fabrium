@@ -1,0 +1,5 @@
+- messages = flash.select {|k, v| v.is_a? String }
+script(id="flash_messages")
+  | app.alerts = [];
+  - messages.each do |type, msg|
+    | app.alerts.push({ type: "#{type}", msg: "#{escape_javascript msg.html_safe}" });

@@ -7,6 +7,7 @@
     'ngResource',
     'ui.bootstrap',
     'minicolors-ng',
+    'alerts-ng',
     'selectize-ng'
   ]);
 

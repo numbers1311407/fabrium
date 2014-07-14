@@ -1,8 +1,11 @@
+//= require font-awesome
+
 // Sass imports
 @import "bootstrap-fabrium";
 @import "angular";
 @import "selectize";
 @import "minicolors";
+@import "alertify";
 
 // main
 #root {
@@ -67,4 +70,13 @@ li.fabric-variant-result {
     padding-left: 30px;
     cursor: pointer;
   }
+}
+
+
+.nav li.text span {
+  position: relative;
+  padding: 15px 20px;
+  display: block;
+  line-height: 20px;
+  color: #999;
 }
