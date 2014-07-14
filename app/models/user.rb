@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Users::BelongsToMeta
+
   devise :database_authenticatable, 
     :invitable, 
     :registerable,
