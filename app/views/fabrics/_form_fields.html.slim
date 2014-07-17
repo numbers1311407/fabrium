@@ -5,7 +5,7 @@
 
 .form-group.property_select.fibers
   = f.label :fibers
-  select#fabric_keywords(placeholder="Select a material to add it..." data-select={plugins: {multiple_properties: {}}}.to_json )
+  select#fabric_keywords(placeholder=t('placeholders.fibers') data-select={plugins: {multiple_properties: {}}}.to_json )
     option(value="")
     = options_from_collection_for_select(Property.fibers.order(name: :asc), :id, :name)
   script(type="html/template")
@@ -27,7 +27,7 @@
         = p.hidden_field :_destroy, value: 0
         = p.hidden_field :property_id
     .totals
-      span.totals-label Total Fiber %
+      span.totals-label= t('labels.total_fiber_percentage')
       span.totals-value
         input(type="text" disabled value="0")
         | %
@@ -84,7 +84,7 @@
 
 .form-group.property_select.keywords
   = f.label :keywords
-  select#fabric_keywords(placeholder="Type to search keywords..." data-select={plugins: {multiple_properties: {}, open_placeholder: {placeholder: "Type to search keywords, click a result to add it..."}, endpoint: {url: keywords_json_path}}}.to_json )
+  select#fabric_keywords(placeholder=t('placeholders.keywords') data-select={plugins: {multiple_properties: {}, open_placeholder: {placeholder: t('placeholders.keywords_open')}, endpoint: {url: keywords_json_path}}}.to_json )
     option(value="")
     = options_from_collection_for_select(Property.keywords.order(name: :asc).limit(20), :id, :name)
   script(type="html/template")

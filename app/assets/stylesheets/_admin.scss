@@ -71,7 +71,6 @@ td.actions {
 
 .fabric_weights_wrapper {
   position: relative;
-  max-width: 400px;
   padding-right: 55px;
 
   select {
@@ -87,3 +86,41 @@ td.actions {
     border-right: 0;
   }
 }
+
+.form-inputs {
+  @include make-row(10px);
+
+  max-width: 500px;
+
+  > .form-group {
+    @include make-sm-column(12, 10px);
+
+    &.fabric_sample_lead_time, 
+    &.fabric_bulk_lead_time,
+    &.fabric_sample_minimum_quality,
+    &.fabric_bulk_minimum_quality
+    {
+      @include make-sm-column(6, 10px);
+    }
+  }
+}
+
+
+.pricing_type_select {
+  margin-bottom: 5px;
+}
+
+.price_range_inner {
+  @include make-row(10px);
+
+  .pricing_type {
+    @include make-sm-column(6, 10px);
+
+    .form-group { margin: 0; }
+  }
+  .price_range_sep {
+    text-align: center;
+    font-size: 16px;
+  }
+}
+

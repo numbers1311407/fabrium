@@ -108,6 +108,10 @@ li.fabric-variant-result {
   }
 }
 
+.property-assignments {
+  margin-top: 5px;
+}
+
 .property_select.fibers {
 
   .property-assignment span, span.totals-value {
@@ -149,7 +153,6 @@ li.fabric-variant-result {
     }
   }
   .property-assignments {
-    max-width: 400px;
     border-radius: 4px;
     border: 1px solid #cccccc;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -211,7 +214,6 @@ select[data-select],
 .selectize-control
 {
   width: 100%;
-  max-width: 400px;
 }
 
 .page-header {
@@ -255,7 +257,6 @@ select[data-select],
 }
 
 .form-control {
-  max-width: 400px;
 }
 
 /**
@@ -290,25 +291,6 @@ select[data-select],
 
 [data-select] {
   display: none;
-}
-
-.price_range_inner {
-  @include clearfix;
-  max-width: 400px;
-  margin: 5px 0;
-  .pricing_type {
-    float: left;
-    width: 50%;
-    padding-right: 5px;
-
-    .form-group {
-      margin: 0;
-    }
-  }
-  .price_range_sep {
-    text-align: center;
-    font-size: 16px;
-  }
 }
 
 .error-tooltip {

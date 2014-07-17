@@ -25,6 +25,13 @@ en:
       edit:
         title: 'Edit %{Resource}'
 
+  placeholders:
+    fibers: "Select a material to add it, then configure the percentage..."
+    keywords: "Type to search keywords..."
+    keywords_open: "Type to search keywords, click a result to add it..."
+  labels:
+    total_fiber_percentage: 'Total Fiber %'
+
 
   errors:
     # The default format to use in full error messages.
