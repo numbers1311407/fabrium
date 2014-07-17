@@ -1,0 +1,39 @@
+- content_for(:tbody) do
+  - collection.each do |record|
+    tr(data-id=record.id)
+      = render 'row', resource: record
+      td.actions
+        = render 'actions', resource: record
+
+- unless content_for?(:header_buttons)
+  - content_for(:header_buttons) do
+    - if current_user.can_create?(auth_resource)
+      .btn-group
+        = link_to new_resource_path, class: 'btn btn-primary', rel: 'modal' do
+          i.fa.fa-plus
+          span= st('links.new')
+
+- unless content_for?(:title)
+  - content_for(:title) { title st(:title) }
+
+.panel.panel-default
+  .panel-heading.clearfix
+    h1.panel-title
+      = yield(:title)
+    = yield(:header_buttons)
+  - if content_for?(:heading)
+    .panel-heading.panel-notice
+      = yield(:heading)
+  - if collection.empty?
+    .panel-body
+      .empty
+        = @no_results_message || st('messages.no_results')
+  - else
+    .table-responsive
+      table.table.table-bordered.table-hover
+        thead
+          tr
+            = yield(:th)
+            th.actions
+        tbody
+          = yield(:tbody)

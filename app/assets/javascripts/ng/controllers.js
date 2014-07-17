@@ -12,11 +12,13 @@
 
       $scope.selectize = {
         category: {
-          sortField: 'text'
+          sortField: 'text',
+          plugins: ['clear_selection']
         },
 
         fiber_content: {
-          sortField: 'text'
+          sortField: 'text',
+          plugins: ['clear_selection']
         },
 
         keywords: {
@@ -63,6 +65,14 @@
       };
 
       $scope.updateLocation = function () {
+        if (!$scope.search.category) {
+          delete $scope.search.category;
+        }
+
+        if (!$scope.search.fiber_content) {
+          delete $scope.search.fiber_content;
+        }
+
         // If we're on page 1, remove the page from the search and let it
         // default as it's redundant.
         if (1 === $scope.search.page) {

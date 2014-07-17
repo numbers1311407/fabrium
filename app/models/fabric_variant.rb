@@ -1,5 +1,8 @@
 class FabricVariant < ActiveRecord::Base
+  include Authority::Abilities
+
   include FabricVariants::Color
+
   belongs_to :fabric
 
   class << self

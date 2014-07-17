@@ -1,2 +1,110 @@
 en:
   site_title: "Fabrium"
+
+  helpers:
+    submit: "Add %{model}"
+    submit_and_return: "Add %{model} and Create Another"
+
+  st:
+    links:
+      back: 'Back'
+      destroy: 'Delete'
+      edit: 'Edit'
+      new: 'New %{Resource}'
+      show: 'Details'
+    messages:
+      confirm_destroy: 'Are you sure?'
+      no_results: 'No %{collection} were found'
+    actions:
+      show:
+        title: '%{name}'
+      index:
+        title: '%{Collection}'
+      new:
+        title: 'New %{Resource}'
+      edit:
+        title: 'Edit %{Resource}'
+
+
+  errors:
+    # The default format to use in full error messages.
+    format: "%{attribute} %{message}"
+
+    # The values :model, :attribute and :value are always available for interpolation
+    # The value :count is available when applicable. Can be used for pluralization.
+    messages:
+      inclusion: "Must be included in the list"
+      exclusion: "is reserved"
+      invalid: "Invalid entry"
+      confirmation: "Entry doesn't match %{attribute}"
+      accepted: "Entry must be accepted"
+      empty: "Can't be empty"
+      blank: "Can't be blank"
+      present: "Cust be blank"
+      too_long:
+        one: "Too long (maximum is 1 character)"
+        other: "Too long (maximum is %{count} characters)" 
+      too_short:
+        one: "Too short (minimum is 1 character)"
+        other: "Too short (minimum is %{count} characters)"
+      wrong_length:
+        one: "Wrong length (should be 1 character)"
+        other: "Wrong length (should be %{count} characters)"
+      not_a_number: "Not a number"
+      not_an_integer: "Must be an integer"
+      greater_than: "Must be greater than %{count}"
+      greater_than_or_equal_to: "Must be greater than or equal to %{count}"
+      equal_to: "Must be equal to %{count}"
+      less_than: "Must be less than %{count}"
+      less_than_or_equal_to: "Must be less than or equal to %{count}"
+      other_than: "Must be other than %{count}"
+      odd: "Must be odd"
+      even: "Must be even"
+
+  # Attributes names common to most models
+  #attributes:
+    #created_at: "Created at"
+    #updated_at: "Updated at"
+
+  # Active Record models configuration
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          one: "Cannot delete record because a dependent %{record} exists"
+          many: "Cannot delete record because dependent %{record} exist"
+        # Append your own errors here or at the model/attributes scope.
+
+      # You can define own errors for models or model attributes.
+      # The values :model, :attribute and :value are always available for interpolation.
+      #
+      # For example,
+      #   models:
+      #     user:
+      #       blank: "This is a custom blank message for %{model}: %{attribute}"
+      #       attributes:
+      #         login:
+      #           blank: "This is a custom blank message for User login"
+      # Will define custom blank validation message for User model and
+      # custom blank validation message for login attribute of User model.
+      models:
+        fabric:
+          attributes:
+            price_eu_min:
+              less_than_or_equal_to: "Must be less than the upper range bound"
+            price_us_min:
+              less_than_or_equal_to: "Must be less than the upper range bound"
+
+    # Translate model names. Used in Model.human_name().
+    #models:
+      # For example,
+      #   user: "Dude"
+      # will translate User model name to "Dude"
+
+    # Translate model attribute names. Used in Model.human_attribute_name(attribute).
+    #attributes:
+      # For example,
+      #   user:
+      #     login: "Handle"
+      # will translate User attribute "login" as "Handle"

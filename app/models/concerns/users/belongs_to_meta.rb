@@ -6,8 +6,6 @@ module Users
       belongs_to :meta, polymorphic: true
       validates :meta, presence: true
       accepts_nested_attributes_for :meta, allow_destroy: false
-
-      delegate :name, to: :meta, prefix: true
     end
 
     # Give meta_type a little more functionality via an activesupport
@@ -35,7 +33,7 @@ module Users
 
     module ClassMethods
       def define_meta_types *types
-        delegate *types.map {|t| :"#{t}?" }, to: :meta_type
+        delegate *types.map {|t| :"#{t}?" }, to: :meta_type, prefix: 'is'
 
         types.map(&:to_s).each do |t|
           class_eval <<-RUBY, __FILE__, __LINE__ + 1

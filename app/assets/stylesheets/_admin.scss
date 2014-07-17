@@ -1,0 +1,89 @@
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+  vertical-align: middle;
+}
+
+// put a margin on the span after an icon
+i.fa + span {
+  margin-left: 5px;
+}
+
+.panel .table {
+  th.pre-actions, 
+  td.pre-actions {
+    border-right-width: 0;
+  }
+  th.actions,
+  td.actions {
+    border-left-width: 0;
+  }
+}
+
+td.file-icon {
+  text-align: center;
+  width: 46px;
+}
+
+tr.deleted-record {
+  td, .btn {
+    color: #999;
+  }
+}
+
+td.actions {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+  a {
+    // visibility: hidden;
+    @include opacity(0.35);
+    margin-right: 5px;
+
+    // hide the text of the actions links on small screens
+    span {
+      display: none;
+    }
+  }
+
+  tr:hover & a {
+    @include opacity(1);
+  }
+
+  @media (min-width: $screen-lg-min) {
+    a span {
+      display: inline;
+    }
+  }
+}
+
+.form-group.image_preview {
+  label {
+    display: block;
+  }
+  img {
+    margin-bottom: 5px;
+  }
+}
+
+.fabric_weights_wrapper {
+  position: relative;
+  max-width: 400px;
+  padding-right: 55px;
+
+  select {
+    height: 34px;
+    position: absolute;
+    right: 0;
+    width: 55px;
+    top: 0;
+    border-radius: 0 6px 6px 0;
+  }
+  input {
+    border-radius: 6px 0 0 6px;
+    border-right: 0;
+  }
+}

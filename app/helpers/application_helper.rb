@@ -1,9 +1,13 @@
 module ApplicationHelper
-  def select_options_for_categories
-    options_for_select(Property.categories.order(name: :asc).pluck(:name, :id))
-  end
 
-  def select_options_for_fiber_content
-    options_for_select(Property.fibers.order(name: :asc).pluck(:name, :id))
+  def title(page_title=nil, options={})
+    @_title ||= []
+
+    if page_title
+      (@_title << page_title).last
+    else
+      @_title.unshift t(:site_title)
+      @_title.compact.join(" - ")
+    end
   end
 end

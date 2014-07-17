@@ -1,0 +1,2 @@
+class MillsController < ResourceController
+end

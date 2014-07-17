@@ -1,10 +1,6 @@
 //= require jquery/dist/jquery
 //= require jquery-ujs/src/rails
 //= require jquery-minicolors/jquery.minicolors
-//= require angular/angular
-//= require angular-route/angular-route
-//= require angular-resource/angular-resource
-//= require angular-bootstrap/ui-bootstrap-tpls
-//= require angular-bootstrap/ui-bootstrap-tpls
+//= require underscore/underscore
 //= require selectize/dist/js/standalone/selectize.js
-//= require alertify/alertify
+//= require bootstrap

@@ -1,0 +1,4 @@
+= f.button :submit
+/ if creating new records, add a second button to commit and return to the new form
+- if f.object.new_record?
+  = f.button :submit, t(:'helpers.submit_and_return', model: f.object.class.model_name.human), name: 'commit_and_return'

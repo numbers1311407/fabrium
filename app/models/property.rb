@@ -20,6 +20,6 @@ class Property < ActiveRecord::Base
 
   scope :name_like, ->(v) { where(arel_table[:name].matches(v)) }
 
-  has_many :property_assignments, dependent: :destroy
+  has_many :property_assignments, dependent: :destroy, inverse_of: :property
   has_many :fabrics, through: :property_assignments
 end

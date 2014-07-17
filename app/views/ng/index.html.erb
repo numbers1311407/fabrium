@@ -1,8 +1,11 @@
+<%= content_for :body_end do %>
+  <%= javascript_include_tag :client %>
+<% end %>
+
 <div>
   <div ng-view></div>
 
   <script type="text/ng-template" id="index.html">
-
     <form role="form" class="form-search" ng-submit="updateForm()">
       <fieldset>
         <legend>Search Fabrics</legend>

@@ -2,7 +2,7 @@ module Fabrics::Properties
   extend ActiveSupport::Concern
 
   included do
-    has_many :property_assignments
+    has_many :property_assignments, dependent: :delete_all, autosave: true, inverse_of: :fabric
     define_property_assignment_associations
   end
 
@@ -20,7 +20,10 @@ module Fabrics::Properties
           #{assoc} :#{key},
             -> { includes(:property).where(properties: {kind: #{enum}}) },
             class_name: 'PropertyAssignment'
+
+          accepts_nested_attributes_for :#{key}, allow_destroy: true, reject_if: :property_assignments_filter
         RUBY
+
       end
     end
 
@@ -28,5 +31,18 @@ module Fabrics::Properties
       joins(:property_assignments).where(property_assignments: { property: properties })
     end
     alias :has_property :has_properties
+  end
+
+  def property_assignments_filter(attributes)
+    prop_id = attributes["property_id"]
+    ass_id = attributes["id"]
+
+    retv = prop_id.blank? || 
+      # don't add assignments for keywords that don't exist
+      !Property.exists?(prop_id) || 
+      # don't add duplicate assignments
+      (foo = ass_id && PropertyAssignment.where(property_id: prop_id, fabric_id: id).where.not(id: ass_id).exists?)
+
+    retv
   end
 end
