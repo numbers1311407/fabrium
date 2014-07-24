@@ -9,7 +9,7 @@
   - content_for(:header_buttons) do
     - if current_user.can_create?(auth_resource)
       .btn-group
-        = link_to new_resource_path, class: 'btn btn-primary', rel: 'modal' do
+        = link_to new_resource_path, class: 'btn btn-primary' do
           i.fa.fa-plus
           span= st('links.new')
 

@@ -3,14 +3,14 @@
   app.factory('Fabric', ['$resource', 
     function ($resource) {
       return $resource('fabrics/:id.json', {}, {
-        query: {method:'GET', url: 'fabrics.json'}
+        query: {method:'GET', url: 'fabrics.json', array: true}
       });
     }]);
 
   app.factory('FabricVariant', ['$resource', 
     function ($resource) {
       return $resource('fabric_variants/:id.json', {}, {
-        query: {method:'GET', url: 'fabric_variants.json'}
+        query: {method:'GET', url: 'fabric_variants.json', isArray: true}
       });
     }]);
 
@@ -18,8 +18,8 @@
     function ($http, $q) {
 
       var types = {
-        keywords: 'keywords.json',
-        categories: 'categories.json'
+        keywords: '/props/keywords.json',
+        categories: '/props/categories.json'
       };
 
       return {

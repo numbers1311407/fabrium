@@ -2,8 +2,11 @@ en:
   site_title: "Fabrium"
 
   helpers:
-    submit: "Add %{model}"
-    submit_and_return: "Add %{model} and Create Another"
+    submit:
+      create: "Save %{model}"
+      update: "Save %{model}"
+      submit: "Save %{model}"
+    commit_and_redirect: "Save %{model} and Create Another"
 
   st:
     links:
@@ -26,11 +29,16 @@ en:
         title: 'Edit %{Resource}'
 
   placeholders:
-    fibers: "Select a material to add it, then configure the percentage..."
+    fibers: "Add a material, then configure the percentage..."
     keywords: "Type to search keywords..."
     keywords_open: "Type to search keywords, click a result to add it..."
   labels:
     total_fiber_percentage: 'Total Fiber %'
+    crop_image: 'Crop Image'
+    crop_cancel: 'Reset Changes'
+    crop_commit: 'Commit Crop'
+  messages:
+    crop_warning: "Your image must be exactly %{size}x%{size}px.  It must be cropped before it will appear in search results."
 
 
   errors:
@@ -41,13 +49,13 @@ en:
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
       inclusion: "Must be included in the list"
-      exclusion: "is reserved"
+      exclusion: "%{attribute} is reserved"
       invalid: "Invalid entry"
-      confirmation: "Entry doesn't match %{attribute}"
-      accepted: "Entry must be accepted"
-      empty: "Can't be empty"
-      blank: "Can't be blank"
-      present: "Cust be blank"
+      confirmation: "Must match %{attribute}"
+      accepted: "%{attribute} must be accepted"
+      empty: "%{attribute} can't be empty"
+      blank: "%{attribute} can't be blank"
+      present: "%{attribute} can't be blank"
       too_long:
         one: "Too long (maximum is 1 character)"
         other: "Too long (maximum is %{count} characters)" 
@@ -57,21 +65,23 @@ en:
       wrong_length:
         one: "Wrong length (should be 1 character)"
         other: "Wrong length (should be %{count} characters)"
-      not_a_number: "Not a number"
-      not_an_integer: "Must be an integer"
-      greater_than: "Must be greater than %{count}"
-      greater_than_or_equal_to: "Must be greater than or equal to %{count}"
-      equal_to: "Must be equal to %{count}"
-      less_than: "Must be less than %{count}"
-      less_than_or_equal_to: "Must be less than or equal to %{count}"
-      other_than: "Must be other than %{count}"
-      odd: "Must be odd"
-      even: "Must be even"
+      not_a_number: "%{attribute} must be a number"
+      not_an_integer: "%{attribute} must be an integer"
+      greater_than: "%{attribute} must be greater than %{count}"
+      greater_than_or_equal_to: "%{attribute} must be greater than or equal to %{count}"
+      equal_to: "%{attribute} must be equal to %{count}"
+      less_than: "%{attribute} must be less than %{count}"
+      less_than_or_equal_to: "%{attribute} must be less than or equal to %{count}"
+      other_than: "%{attribute} must be other than %{count}"
+      odd: "%{attribute} must be odd"
+      even: "%{attribute} be even"
 
   # Attributes names common to most models
-  #attributes:
-    #created_at: "Created at"
-    #updated_at: "Updated at"
+  attributes:
+    created_at: "Created"
+    updated_at: "Last Updated"
+    item_number: Item Number
+    fabrium_id: Fabrium ID
 
   # Active Record models configuration
   activerecord:
@@ -102,14 +112,27 @@ en:
               less_than_or_equal_to: "Must be less than the upper range bound"
             price_us_min:
               less_than_or_equal_to: "Must be less than the upper range bound"
+        fabric_variant:
+          attributes:
+            image_crop:
+              blank: You must crop the swatch image
+            image_name:
+              blank: You must upload a swatch image
 
     # Translate model names. Used in Model.human_name().
-    #models:
-      # For example,
-      #   user: "Dude"
-      # will translate User model name to "Dude"
+    models:
+      fabric_variant: Fabric Variant
 
     # Translate model attribute names. Used in Model.human_attribute_name(attribute).
+    attributes:
+      fabric:
+        sample_minimum_quality: Sample Min. Quality
+        bulk_minimum_quality: Bulk Min. Quality
+        sample_lead_time: Sample Lead Time
+        bulk_lead_time: Bulk Lead Time
+        dye_method: Dye Method
+        fabric_variants: Variants
+
     #attributes:
       # For example,
       #   user:

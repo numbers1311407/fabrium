@@ -30,7 +30,7 @@
 						if (!query.length) return callback();
             properties.fetch('keywords', {name: query})
               .then(function (result) {
-                callback(result.items);
+                callback(result);
               });
           }
         }
@@ -47,16 +47,16 @@
       $scope.submit = function () {
         $scope.search = $location.search();
 
-        $scope.result = FabricVariant.query($scope.search, function (result) {
-          $scope.perPage = result.perPage;
-          $scope.pages = result.pages;
-          $scope.totalItems = result.totalItems;
-          $scope.page = result.currentPage;
+        $scope.items = FabricVariant.query($scope.search, function (result) {
+          // $scope.perPage = result.perPage;
+          // $scope.pages = result.pages;
+          // $scope.totalItems = result.totalItems;
+          // $scope.page = result.currentPage;
           result.loading = false;
         });
 
         // set the new result to loading status
-        $scope.result.loading = true;
+        $scope.items.loading = true;
       };
 
       $scope.updateForm = function () {
@@ -71,6 +71,10 @@
 
         if (!$scope.search.fiber_content) {
           delete $scope.search.fiber_content;
+        }
+
+        if (!$scope.search.weight_unit) {
+          delete $scope.search.weight_unit;
         }
 
         // If we're on page 1, remove the page from the search and let it

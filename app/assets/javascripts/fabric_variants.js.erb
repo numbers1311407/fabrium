@@ -1,0 +1,128 @@
+;(function () {
+
+  var cw = <%= FabricVariant::IMAGE_SIZE %>;
+  var ch = <%= FabricVariant::IMAGE_SIZE %>;
+  var geometry = "{0}x{1}%;{2}x{3}+{4}+{5}";
+
+  // The api is exposed so the image preview iframe can control it
+  var api = window.crop = {};
+
+  function init () {
+    var jcrop_api, initial_crop, initial_image_src;
+    var $crop_field = $("#fabric_variant_image_crop");
+    var initial_crop = $crop_field.val();
+    var crop_labels = $("#crop_actions").data("labels");
+    var initial_image_src = $(".fabric_image").attr("src");
+
+    var showPreview = function (coords) {
+      var $img = $("#full_image img");
+      var w = $img.width();
+      var h = $img.height();
+      var rx = cw / coords.w;
+      var ry = ch / coords.h;
+      var ox = Math.round(rx * coords.x);
+      var oy = Math.round(ry * coords.y);
+
+      $('#preview').css({
+        width: Math.round(rx * w) + 'px',
+        height: Math.round(ry * h) + 'px',
+        marginLeft: '-' + ox + 'px',
+        marginTop: '-' + oy + 'px'
+      });
+
+      // Note that the crop is positioned at 0, 0 always, currently, but
+      // this geometry should take care of it moving if necessary
+      var crop_str = geometry.format(
+        Math.round(rx * 100), 
+        Math.round(ry * 100), 
+        cw, 
+        ch, 
+        Math.round(rx * coords.x), 
+        Math.round(ry * coords.y)
+      );
+
+      $crop_field.val(crop_str);
+    }
+
+    var destroyJcrop = function () {
+      if (jcrop_api) {
+        jcrop_api.destroy();
+        jcrop_api = null;
+      }
+    }
+
+    var isCropped = function () {
+      return $crop_field.val() != initial_crop;
+    }
+
+    var isUploaded = function () {
+      return !!$("#full_image img").attr("src");
+    }
+
+    var showCancel = function () {
+      return isCropped() || !!$("#fabric_variant_retained_image").val();
+    }
+
+    api.open = function () {
+      api.close();
+
+      setTimeout(function () {
+        $("#full_image img").Jcrop({
+          onSelect: showPreview,
+          onChange: showPreview,
+          //allowMove: false,
+          allowSelect: false,
+          setSelect: [0, 0, cw, ch],
+          aspectRatio: 1,
+          boxWidth: $(".fabric_variant_image_crop").width()
+        }, function () {
+          jcrop_api = this;
+        });
+
+        $("#crops").hide();
+        $("#crop_action").html(crop_labels.commit_crop);
+        $("#crop_cancel_action").toggle(showCancel());
+        $("#full_image").show();
+        $("#crop_actions").toggle(isUploaded());
+      }, 100);
+    }
+
+
+    api.close = function () {
+      destroyJcrop();
+
+      $("#crop_action").html(crop_labels.edit_crop);
+      $("#full_image").hide();
+
+      $("#crop_cancel_action").toggle(showCancel());
+      $("#preview").toggle(isCropped());
+      $("#cropped").toggle(!isCropped());
+      $("#crops").show();
+
+      $("#crop_actions").toggle(isUploaded());
+    }
+
+    api.cancel = function () {
+      $crop_field.val(initial_crop);
+      $("#fabric_variant_retained_image").val('');
+      $(".fabric_image").attr("src", initial_image_src);
+      api.close();
+    }
+
+    $("#crop_action").off("click.fabric_variants")
+      .on("click.fabric_variants", function (e) {
+        e.preventDefault();
+        jcrop_api ? api.close() : api.open();
+      });
+
+    $("#crop_cancel_action").off("click.fabric_variants")
+      .on("click.fabric_variants", function (e) {
+        e.preventDefault();
+        api.cancel();
+      });
+
+    $("#crop_actions").toggle(isUploaded());
+  }
+
+  app.ready(init);
+})();

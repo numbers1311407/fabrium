@@ -1,0 +1,14 @@
+- index_table_headers do
+  th= 
+  th= sort_link(@q, :fabrium_id)
+  th= sort_link(@q, :item_number)
+  th= sort_link(@q, :color)
+  th= sort_link(@q, :created_at)
+
+td.thumb= image_tag(resource.thumb.url)
+td= resource.fabrium_id
+td= resource.item_number
+td.color
+  span.swatch(style="background-color: ##{resource.color}")
+  span ##{resource.color}
+td= l(resource.created_at)

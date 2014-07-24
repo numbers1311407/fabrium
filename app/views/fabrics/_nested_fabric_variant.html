@@ -1,0 +1,29 @@
+<script type="html/template">
+  <tr class="fabric-variant" data-id="<%= obj.id %>">
+    <td class="thumb">
+      <img src="<%= obj.image.thumb %>" />
+    </td>
+    <td>
+      <%= obj.fabrium_id %>
+    </td>
+    <td>
+      <%= obj.item_number %>
+    </td>
+    <td class="color">
+      <span class="swatch" style="background-color: #<%= obj.color %>;"></span>
+      <span>#<%= obj.color %></span>
+    </td>
+    <td class="actions">
+      <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal" title="Edit">
+        <i class="fa fa-edit"></i>
+      </a>
+      <a href="javascript:void(0)" class="remove" tabindex="-1" rel="modal" title="Remove">
+        <i class="fa fa-trash-o"></i>
+      </a>
+
+      <% if (obj.n) { %>
+        <input name="fabric[fabric_variants_attributes][<%= obj.n %>][id]" value="<%= obj.id %>" type="hidden" />
+      <% } %>
+    </td>
+  </tr>
+</script>

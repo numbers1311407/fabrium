@@ -1,7 +1,13 @@
+//= require ./shims
+//= require ./app
 //= require ./selectize
 //= require ./underscore
+//= require ./minicolors
+//= require ./modal
+//= require ./popovers
+//
 //= require ./fabrics
-
+//= require ./fabric_variants
 
 $(function () {
   $(".error-tooltip").each(function () {
@@ -14,4 +20,6 @@ $(function () {
 
     $tt.remove();
   });
+
 });
+

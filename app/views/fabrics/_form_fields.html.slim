@@ -74,8 +74,6 @@
 
 = f.input :bulk_minimum_quality
 
-= f.input :in_stock
-
 = f.simple_fields_for :category do |p|
   = p.input :property_id, label: resource_label(:category), as: :select, collection: Property.categories.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: categories_json_path}}}}}
 

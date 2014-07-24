@@ -1,0 +1,8 @@
+- index_table_headers do
+  th= sort_link(@q, :id)
+  th= sort_link(@q, :item_number)
+  th= sort_link(@q, :updated_at)
+
+td= resource.id
+td= resource.item_number
+td= l(resource.updated_at)

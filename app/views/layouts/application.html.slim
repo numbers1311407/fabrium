@@ -10,16 +10,20 @@ html(ng-app="fabrium")
     = yield :head
 
   body
-    header.navbar.navbar-fixed-top.navbar-default
+    header.navbar.navbar-default
       .container
         = render 'top_nav'
     #root
       .container
-        div(alerts)
         main#main role="main"
-          = yield
+          - if content_for?(:top)
+            #top
+              = yield(:top)
+          div(alerts)
+          = content_for?(:main) ? yield(:main) : yield
     #body_end
       = javascript_include_tag 'vendor'
       = javascript_include_tag 'application'
       = yield :body_end
       = render 'flash_messages'
+      = render 'modal'

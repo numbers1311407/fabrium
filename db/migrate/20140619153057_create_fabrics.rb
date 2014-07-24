@@ -21,7 +21,7 @@ class CreateFabrics < ActiveRecord::Migration
       t.integer :bulk_minimum_quality, default: 0
       t.integer :sample_lead_time, default: 0
       t.integer :bulk_lead_time, default: 0
-      t.boolean :in_stock, default: false
+      t.integer :variant_index, default: 0
       t.timestamps
     end
 

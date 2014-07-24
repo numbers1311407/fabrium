@@ -1,4 +1,57 @@
 $(function () {
+
+  //
+  // Set up the nested fabric variants form
+  //
+  $(".form-group.fabric_variants").each(function () {
+    var selector = ".modal form.new_fabric_variant, .modal form.edit_fabric_variant";
+    var $container = $("[data-fabric-variants]", this);
+    var n = $container.children().length;
+    var tmpl = _.template($("script", this).text());
+
+    $container.on("click", ".remove", function () {
+      var $el = $(this).closest(".fabric-variant"),
+          id = $el.data("id"),
+          $destroy = $("#destroy_fabric_variant_"+id);
+
+      if ($destroy.length) {
+        $destroy.val(1);
+        $el.hide();
+      } else {
+        $el.remove();
+      }
+    });
+
+    var render = function (data) {
+      var $el = $container.find('[data-id='+data.id+']');
+
+      if ($el.length) {
+        $el.replaceWith(tmpl(data));
+        $("#destroy_fabric_variant_"+data.id).val(0);
+      } else {
+        data.n = n++;
+        $container.append(tmpl(data));
+      }
+
+      app.runReadyCallbacks();
+    }
+
+    $(document).on("ajax:success", selector, function (event, data, msg, xhr) {
+      if (204 == xhr.status) {
+        var loc = xhr.getResponseHeader('Location');
+        $.getJSON(loc, render);
+      } else {
+        render(data);
+      }
+    });
+
+  });
+
+  //
+  // On edit, the fabrics will have calculated values for GSM/GLM/OSY units,
+  // with the value for each stored in data attributes.  On select change,
+  // update the visible calculated weight value based on the units.
+  //
   $(".form-group.fabric_weight").each(function () {
     var $input = $("input", this),
       $select = $("select", this),
@@ -9,6 +62,11 @@ $(function () {
     });
   });
 
+
+  //
+  // Display and calculate the "total fiber percentage" field as fibers
+  // are added/removed/changed.
+  //
   $(".form-group.fibers").each(function () {
     var $el = $(this), 
         $tv = $el.find(".totals-value input"),
@@ -37,6 +95,11 @@ $(function () {
     $el.on("change", updateTotal);
   });
 
+
+  //
+  // Show the upper price range fields when the price range upper select
+  // is set to 1 (not zero)
+  //
   $(".form-group.price_range").each(function () {
     var $el = $(this);
     var $sel = $el.find("select");

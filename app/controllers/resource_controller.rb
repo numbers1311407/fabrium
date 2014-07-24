@@ -3,6 +3,8 @@ class ResourceController < InheritedResources::Base
 
   include Concerns::InheritedResourcesWithAuthority
   include Concerns::PermitParams
+  include Concerns::CollectionFilter
+  include Concerns::Ransack
 
   include Roar::Rails::ControllerAdditions
 
@@ -27,6 +29,10 @@ class ResourceController < InheritedResources::Base
   end
 
   protected
+
+  def determine_layout
+    request.xhr? ? false : 'admin'
+  end
 
   def after_commit_redirect_path
     collection_path
@@ -53,26 +59,6 @@ class ResourceController < InheritedResources::Base
 
   def resource_label attribute
     resource_class.human_attribute_name(attribute)
-  end
-
-  # This method can be overridden with `super` to further filter the
-  # raw collection scope (pagination, etc)
-  def apply_collection_filter_scopes(object)
-    object
-  end
-
-  def collection
-    get_collection_ivar || begin
-      c = apply_collection_filter_scopes(end_of_association_chain)
-      if defined?(ActiveRecord::DeprecatedFinders)
-        # ActiveRecord::Base#scoped and ActiveRecord::Relation#all
-        # are deprecated in Rails 4.  If it's a relation just use
-        # it, otherwise use .all to get a relation.
-        set_collection_ivar(c.is_a?(ActiveRecord::Relation) ? c : c.all)
-      else
-        set_collection_ivar(c.respond_to?(:scoped) ? c.scoped : c.all)
-      end
-    end
   end
 
   def set_pagination

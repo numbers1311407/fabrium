@@ -40,17 +40,12 @@ td.actions {
   white-space: nowrap;
   a {
     // visibility: hidden;
-    @include opacity(0.35);
     margin-right: 5px;
 
     // hide the text of the actions links on small screens
     span {
       display: none;
     }
-  }
-
-  tr:hover & a {
-    @include opacity(1);
   }
 
   @media (min-width: $screen-lg-min) {
@@ -80,6 +75,7 @@ td.actions {
     width: 55px;
     top: 0;
     border-radius: 0 6px 6px 0;
+    background-color: $panel-footer-bg;
   }
   input {
     border-radius: 6px 0 0 6px;
@@ -90,7 +86,7 @@ td.actions {
 .form-inputs {
   @include make-row(10px);
 
-  max-width: 500px;
+  @include make-sm-column(6);
 
   > .form-group {
     @include make-sm-column(12, 10px);
@@ -103,6 +99,17 @@ td.actions {
       @include make-sm-column(6, 10px);
     }
   }
+
+  .modal-body & {
+    @include make-sm-column(12);
+  }
+}
+
+
+.form-control.file {
+  border: none;
+  padding: 0;
+  box-shadow: none;
 }
 
 
@@ -124,3 +131,6 @@ td.actions {
   }
 }
 
+.form-actions > * {
+  margin: 0 5px 5px 0;
+}

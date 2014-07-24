@@ -10,4 +10,8 @@ module ApplicationHelper
       @_title.compact.join(" - ")
     end
   end
+
+  def index_table_headers &block
+    content_for(:th, &block) unless content_for?(:th)
+  end
 end

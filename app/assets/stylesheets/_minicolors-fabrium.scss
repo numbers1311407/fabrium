@@ -1,0 +1,29 @@
+@import "minicolors";
+
+.minicolors-theme-default .minicolors-swatch {
+  top: 8px;
+  left: 8px;
+}
+
+.minicolors-theme-default .minicolors-input {
+  padding-left: 30px;
+  cursor: pointer;
+}
+
+// let the width of the input wrapper determine width
+.minicolors-theme-default.minicolors {
+  width: 100%;
+}
+
+td.color {
+  padding-left: 48px !important;
+  position: relative;
+  .swatch {
+    display: block;
+    position: absolute;
+    width: 26px;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+  }
+}

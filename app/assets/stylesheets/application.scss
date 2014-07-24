@@ -4,18 +4,16 @@
 @import "bootstrap-fabrium";
 @import "angular";
 @import "selectize";
-@import "minicolors";
+@import "minicolors-fabrium";
 @import "alertify";
 @import "admin";
+@import "jcrop";
 
-// main
 #root {
-  // account for fixed navbar
-  padding-top: $navbar-height;
 }
 
 #main {
-  padding: 40px 0;
+  padding: 0 0 40px;
 }
 
 // fabric search
@@ -36,6 +34,7 @@ li.fabric-variant-result {
   font-size: 20px;
 }
 
+// WHAT IS THIS
 .form-group-weights {
   @include clearfix;
 
@@ -67,14 +66,6 @@ li.fabric-variant-result {
     clear: both;
   }
 
-  .minicolors-swatch {
-    top: 8px;
-    left: 8px;
-  }
-  .minicolors-input {
-    padding-left: 30px;
-    cursor: pointer;
-  }
 }
 
 .nav li.text span {
@@ -295,4 +286,44 @@ select[data-select],
 
 .error-tooltip {
   display: none;
+}
+
+#crop-fields {
+  @include clearfix;
+  > * {
+    float: left;
+  }
+}
+#full_image {
+  margin-top: 10px;
+}
+#crops {
+  overflow: hidden;
+}
+#full_image img, #crops {
+  border: 1px solid #eee;
+}
+#crop_actions {
+  margin: 5px 0;
+  button {
+    margin-right: 5px;
+  }
+}
+
+td.thumb {
+  width: 30px;
+  padding-right: 0 !important;
+  img {
+    width: 100%;
+    border: 1px solid #eee;
+  }
+}
+
+.fabric-variant-image-form {
+  height: 30px;
+  overflow: hidden;
+}
+
+.help-block.error {
+  color: $state-danger-text;
 }

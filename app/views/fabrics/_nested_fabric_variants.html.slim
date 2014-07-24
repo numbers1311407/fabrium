@@ -1,0 +1,62 @@
+.form-group.fabric_variants
+  .panel.panel-default
+    .panel-heading
+      = f.label :fabric_variants
+    script(type="html/template")
+      | <tr class="fabric-variant" data-id="<%= obj.id %>">
+          <td class="thumb">
+            <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal popover">
+              <img src="<%= obj.image.thumb %>" />
+            </a>
+          </td>
+          <td>
+            <%= obj.fabrium_id %>
+          </td>
+          <td>
+            <%= obj.item_number %>
+          </td>
+          <td class="color">
+            <span class="swatch" style="background-color: #<%= obj.color %>;"></span>
+            <span>#<%= obj.color %></span>
+          </td>
+          <td class="actions">
+            <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal" title="Edit">
+              <i class="fa fa-edit"></i>
+            </a>
+            <a href="javascript:void(0)" class="remove" tabindex="-1" rel="modal" title="Remove">
+              <i class="fa fa-trash-o"></i>
+            </a>
+            <% if (undefined !== obj.n) { %>
+              <input name="fabric[fabric_variants_attributes][<%= obj.n %>][id]" value="<%= obj.id %>" type="hidden" />
+            <% } %>
+          </td>
+        </tr>
+    table.table
+      thead
+        tr
+          td
+          td= resource_label(:fabrium_id)
+          td= resource_label(:item_number)
+          td= resource_label(:color)
+          td
+      tbody(data-fabric-variants)
+        = f.simple_fields_for :fabric_variants do |vf|
+          - variant = vf.object
+          tr.fabric-variant(data-id=variant.id)
+            td.thumb
+              = link_to edit_fabric_variant_path(variant), rel: "modal popover" do
+                = image_tag(variant.thumb.url)
+            td= variant.fabrium_id
+            td= variant.item_number
+            td.color
+              span.swatch(style="background-color: ##{variant.color}")
+              span ##{variant.color}
+            td.actions
+              = link_to edit_fabric_variant_path(variant), rel: 'modal' do
+                i.fa.fa-edit
+              a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove")
+                i.fa.fa-trash-o
+          = vf.hidden_field :_destroy, value: 0, id: "destroy_fabric_variant_#{variant.id}"
+
+    .panel-footer
+      = link_to "Add Variant", new_fabric_variant_path, class: "btn btn-default", rel: "modal"

@@ -21,7 +21,8 @@ class FabricsController < ResourceController
     category_attributes: [:id, :property_id, :_destroy],
     dye_method_attributes: [:id, :property_id, :_destroy],
     fibers_attributes: [:id, :property_id, :value, :_destroy],
-    keywords_attributes: [:id, :property_id, :_destroy]
+    keywords_attributes: [:id, :property_id, :_destroy],
+    fabric_variants_attributes: [:id, :_destroy]
   ]
 
   before_filter :build_nested_associations, only: [:new, :edit]
@@ -29,7 +30,7 @@ class FabricsController < ResourceController
   protected
 
   def after_commit_redirect_path
-    params[:commit_and_return] ? new_resource_path : collection_path
+    params[:commit_and_redirect] ? new_resource_path : collection_path
   end
 
   def build_nested_associations
@@ -37,8 +38,5 @@ class FabricsController < ResourceController
 
     resource.category || resource.build_category
     resource.dye_method || resource.build_dye_method
-
-    # fibers
-    # keywords
   end
 end

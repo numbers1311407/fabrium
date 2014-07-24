@@ -28,12 +28,19 @@ ActiveRecord::Schema.define(version: 20140714195641) do
 
   create_table "fabric_variants", force: true do |t|
     t.integer  "fabric_id"
-    t.integer  "fabrium_id"
+    t.string   "fabrium_id"
+    t.string   "item_number",  default: ""
     t.integer  "mill_id"
     t.string   "color"
-    t.decimal  "cie_l",      default: 0.0
-    t.decimal  "cie_a",      default: 0.0
-    t.decimal  "cie_b",      default: 0.0
+    t.decimal  "cie_l",        default: 0.0
+    t.decimal  "cie_a",        default: 0.0
+    t.decimal  "cie_b",        default: 0.0
+    t.string   "image_uid"
+    t.string   "image_name"
+    t.string   "image_crop"
+    t.string   "image_width"
+    t.string   "image_height"
+    t.boolean  "in_stock",     default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -54,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140714195641) do
     t.integer  "bulk_minimum_quality",                           default: 0
     t.integer  "sample_lead_time",                               default: 0
     t.integer  "bulk_lead_time",                                 default: 0
+    t.integer  "variant_index",                                  default: 0
     t.boolean  "in_stock",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"

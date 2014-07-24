@@ -1,0 +1,32 @@
+- thumb = f.object.thumb
+- image_url = f.object.image_stored? ? f.object.image.url : nil
+- thumb_url = thumb.present? ? f.object.thumb.url : image_url
+
+= f.input :item_number
+
+= f.input :image_crop, label: false do
+  = f.label :image
+  = f.hidden_field :image_name
+  .fabric-variant-image-form
+    iframe(width="600" height="50" frameborder="0" src=preview_fabric_variants_path)
+
+  = f.error :image_name, class: 'error'
+
+  #crop_actions(style="display: none" data-labels={ edit_crop: t('labels.crop_image'), commit_crop: t('labels.crop_commit') }.to_json)
+    a.btn.btn.btn-default#crop_action
+      = t('labels.crop_image')
+    a.btn.btn-warning#crop_cancel_action(style="display: none;")
+      = t('labels.crop_cancel')
+
+  #crops(style="width:#{FabricVariant::IMAGE_SIZE}px;height:#{FabricVariant::IMAGE_SIZE}px;")
+    = image_tag(thumb_url, id: "cropped")
+    = image_tag(image_url, id: "preview", class: 'fabric_image', style: "display: none;") 
+  #full_image(style="display: none")
+    = image_tag(image_url, id: "full_img", class: 'fabric_image')
+
+= f.hidden_field :retained_image
+= f.input :image_crop, as: :hidden
+
+= f.input :in_stock, label: false, inline_label: true
+
+= f.input :color, input_html: { class: 'minicolors' }
