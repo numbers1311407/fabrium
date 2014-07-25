@@ -32,10 +32,14 @@ li.fabric-variant-result {
   margin: 0 10px 10px 0;
   text-align: center;
   font-size: 20px;
+  overflow: hidden;
+  img {
+    width: 100%;
+    display: block;
+  }
 }
 
-// WHAT IS THIS
-.form-group-weights {
+body .form-group-weights {
   @include clearfix;
 
   label {
@@ -326,4 +330,11 @@ td.thumb {
 
 .help-block.error {
   color: $state-danger-text;
+}
+
+.form-search .form-group {
+  @include make-sm-column(6);
+}
+
+fieldset.advanced-options {
 }

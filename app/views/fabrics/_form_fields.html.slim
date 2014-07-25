@@ -9,13 +9,14 @@
     option(value="")
     = options_from_collection_for_select(Property.fibers.order(name: :asc), :id, :name)
   script(type="html/template")
-    .property-assignment(data-id="{{ id }}")
-      | {{ name }}
-      a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") ×
-      input(name="fabric[fibers_attributes][{{ n }}][property_id]" value="{{ id }}" type="hidden")
-      span
-        input(name="fabric[fibers_attributes][{{ n }}][value]" type="number" value="0" max=100 min=0 step=1)
-        | %
+    | <div class="property-assignment" data-id="<%= id %>">
+        <%= name %>
+        <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> × </a>
+        <input name="fabric[fibers_attributes][<%= n %>][property_id]" value="<%= id %>" type="hidden" />
+        <span>
+          <input name="fabric[fibers_attributes][<%= n %>][value]" type="number" value="0" max=100 min=0 step=1/>%
+        </span>
+      </div>
   .property-assignments(data-property-assignments)
     = f.simple_fields_for :fibers do |p|
       .property-assignment(data-id=p.object.property_id)
@@ -29,7 +30,7 @@
     .totals
       span.totals-label= t('labels.total_fiber_percentage')
       span.totals-value
-        input(type="text" disabled value="0")
+        input(type="text" disabled value="0") 
         | %
 
 = f.input :width
@@ -86,10 +87,11 @@
     option(value="")
     = options_from_collection_for_select(Property.keywords.order(name: :asc).limit(20), :id, :name)
   script(type="html/template")
-    .property-assignment(data-id="{{ id }}")
-      | {{ name }}
-      a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") ×
-      input(name="fabric[keywords_attributes][{{ n }}][property_id]" value="{{ id }}" type="hidden")
+    | <div class="property-assignment" data-id="<%= id %>">
+        <%= name %>
+        <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> × </a>
+        <input name="fabric[keywords_attributes][<%= n %>][property_id]" value="<%= id %>" type="hidden" />
+      </div>
   .property-assignments(data-property-assignments)
     = f.simple_fields_for :keywords do |p|
       .property-assignment(data-id=p.object.property_id)

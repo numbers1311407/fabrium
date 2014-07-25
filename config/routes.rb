@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :fabrics
-  resources :fabric_variants, except: [:index] do
+  resources :fabric_variants do
     collection do
       get 'preview', as: :preview
       post 'preview'

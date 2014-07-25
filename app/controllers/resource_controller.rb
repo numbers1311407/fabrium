@@ -13,7 +13,7 @@ class ResourceController < InheritedResources::Base
   respond_to :json
 
   has_scope :page, default: 1
-  has_scope :per, default: 50
+  has_scope :per, default: 5
   has_scope :padding
 
   def create
@@ -62,23 +62,18 @@ class ResourceController < InheritedResources::Base
   end
 
   def set_pagination
-    return unless collection.total_pages > 1
-    last_page = collection.current_page == collection.total_pages
-    first_page = collection.current_page == 1
+    page = collection.current_page
+    pages = collection.total_pages
+    per_page = collection.limit_value
+    total_count = collection.total_count
 
-    links = {}
-    links[:first] = 1 if !first_page
-    links[:prev] = collection.current_page unless first_page
-    links[:next] = collection.current_page unless last_page
-    links[:last] = collection.total_pages unless last_page
-
-    pagination_links = []
-    links.each do |link, page|
-      query = params.merge(page: page)
-      query.delete(:page) if (1 == query[:page]) 
-      pagination_links << "<#{collection_url(query)}>; rel=\"#{link}\""
-    end
-
-    headers['Link'] = pagination_links.join(",")
+    headers['X-Pagination'] = {
+      page: page,
+      pages: pages,
+      per_page: per_page,
+      total_count: total_count,
+      from: (page - 1) * per_page + 1,
+      to: [page * per_page, total_count].min
+    }.to_json
   end
 end

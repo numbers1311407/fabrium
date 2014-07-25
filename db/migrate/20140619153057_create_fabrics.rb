@@ -9,6 +9,8 @@ class CreateFabrics < ActiveRecord::Migration
   def change
     create_table :fabrics do |t|
       t.references :mill
+      t.references :dye_method
+      t.references :category
       t.string :item_number, default: ""
       t.numrange :price_eu
       t.numrange :price_us

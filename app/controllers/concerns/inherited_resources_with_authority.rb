@@ -39,5 +39,17 @@ module Concerns
         authorize_action_for(auth_resource)
       end
 
+      # Memoize the association chain as otherwise calling it here will
+      # cause scopes to be applied twice.  Typically in InheritedResources
+      # end_of_association_chain is only called once, in the memoization
+      # of collection or resource (meaning memoizing the object is unnecessary,
+      # but doing so shouldn't cause issue)
+      #
+      # WARN end_of_association_chain is memoized, could this cause an issue?
+      #
+      def end_of_association_chain
+        @end_of_association_chain ||= super
+      end
+
   end
 end

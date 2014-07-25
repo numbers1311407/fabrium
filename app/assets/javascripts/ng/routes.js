@@ -15,6 +15,7 @@
       // sure if this is the correct way, but it can be done by hooking
       // into redirect and setting window.location
       $locationProvider.html5Mode(true);
+
       $routeProvider.otherwise({
         redirectTo: function (params, path) {
           window.location = path;

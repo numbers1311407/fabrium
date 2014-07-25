@@ -2,18 +2,18 @@ module Fabrics::Weight
   extend ActiveSupport::Concern
 
   OSY_CONSTANT = 0.0297
-  UNITS = %w(gsm glm osy)
+  WEIGHT_UNITS = %w(gsm glm osy)
 
   included do
     before_save :convert_weights
   end
 
   def weight_units
-    @weight_units || UNITS[0]
+    @weight_units || self.class.default_weight_units
   end
 
   def weight_units=(v)
-    @weight_units = v.to_s if UNITS.member?(v.to_s)
+    @weight_units = v.to_s if WEIGHT_UNITS.member?(v.to_s)
   end
 
   def weight
@@ -22,6 +22,18 @@ module Fabrics::Weight
 
   def weight=(v)
     @weight = v
+  end
+
+  module ClassMethods
+    def default_weight_units
+      WEIGHT_UNITS[0]
+    end
+
+    def parse_units(v)
+      return default_weight_units unless v.present?
+      found = WEIGHT_UNITS.detect {|unit| unit == v.downcase }
+      found || default_weight_units
+    end
   end
 
   protected

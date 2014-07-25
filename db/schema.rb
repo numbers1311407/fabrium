@@ -26,6 +26,22 @@ ActiveRecord::Schema.define(version: 20140714195641) do
     t.datetime "updated_at"
   end
 
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
+
+  create_table "dye_methods", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "dye_methods", ["name"], name: "index_dye_methods_on_name", using: :btree
+
   create_table "fabric_variants", force: true do |t|
     t.integer  "fabric_id"
     t.string   "fabrium_id"
@@ -49,6 +65,8 @@ ActiveRecord::Schema.define(version: 20140714195641) do
 
   create_table "fabrics", force: true do |t|
     t.integer  "mill_id"
+    t.integer  "dye_method_id"
+    t.integer  "category_id"
     t.string   "item_number",                                    default: ""
     t.numrange "price_eu"
     t.numrange "price_us"
@@ -62,10 +80,26 @@ ActiveRecord::Schema.define(version: 20140714195641) do
     t.integer  "sample_lead_time",                               default: 0
     t.integer  "bulk_lead_time",                                 default: 0
     t.integer  "variant_index",                                  default: 0
-    t.boolean  "in_stock",                                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "fiber_assignments", force: true do |t|
+    t.integer "fiber_id"
+    t.integer "fabric_id"
+    t.string  "value"
+  end
+
+  add_index "fiber_assignments", ["fabric_id"], name: "index_fiber_assignments_on_fabric_id", using: :btree
+  add_index "fiber_assignments", ["fiber_id"], name: "index_fiber_assignments_on_fiber_id", using: :btree
+
+  create_table "fibers", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fibers", ["name"], name: "index_fibers_on_name", using: :btree
 
   create_table "mills", force: true do |t|
     t.string   "name"
@@ -73,26 +107,21 @@ ActiveRecord::Schema.define(version: 20140714195641) do
     t.datetime "updated_at"
   end
 
-  create_table "properties", force: true do |t|
-    t.integer  "kind",       default: 0
+  create_table "tag_assignments", force: true do |t|
+    t.integer "tag_id"
+    t.integer "fabric_id"
+  end
+
+  add_index "tag_assignments", ["fabric_id"], name: "index_tag_assignments_on_fabric_id", using: :btree
+  add_index "tag_assignments", ["tag_id"], name: "index_tag_assignments_on_tag_id", using: :btree
+
+  create_table "tags", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "properties", ["kind"], name: "index_properties_on_kind", using: :btree
-  add_index "properties", ["name"], name: "index_properties_on_name", using: :btree
-
-  create_table "property_assignments", force: true do |t|
-    t.integer  "property_id"
-    t.integer  "fabric_id"
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "property_assignments", ["fabric_id"], name: "index_property_assignments_on_fabric_id", using: :btree
-  add_index "property_assignments", ["property_id"], name: "index_property_assignments_on_property_id", using: :btree
+  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
 
   create_table "users", force: true do |t|
     t.integer  "meta_id"
