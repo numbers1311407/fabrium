@@ -5,3 +5,4 @@
 //= require selectize/dist/js/standalone/selectize.js
 //= require bootstrap
 //= require jcrop/js/jquery.Jcrop
+//= require jquery-ui-sortable/jquery-ui-sortable

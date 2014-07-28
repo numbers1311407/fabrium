@@ -29,11 +29,10 @@ en:
         title: 'Edit %{Resource}'
 
   placeholders:
-    fibers: "Add a material, then configure the percentage..."
-    keywords: "Type to search keywords..."
-    keywords_open: "Type to search keywords, click a result to add it..."
+    materials: "Add a material, then configure the percentage..."
+    tags: "Type to search keyword tags..."
   labels:
-    total_fiber_percentage: 'Total Fiber %'
+    total_material_percentage: 'Total Fiber %'
     crop_image: 'Crop Image'
     crop_cancel: 'Reset Changes'
     crop_commit: 'Commit Crop'
@@ -118,6 +117,10 @@ en:
               blank: You must crop the swatch image
             image_name:
               blank: You must upload a swatch image
+        tag:
+          attributes:
+            name:
+              invalid: "%{attribute} must be made up of only numbers, letters and dashes"
 
     # Translate model names. Used in Model.human_name().
     models:

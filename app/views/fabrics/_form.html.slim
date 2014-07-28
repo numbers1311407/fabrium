@@ -1,5 +1,5 @@
 - args = respond_to?(:parent) ? [parent, resource] : resource
-= simple_form_for args do |f|
+= simple_form_for args, html: {id: "fabrics_form"} do |f|
   .form-inputs-row.row
     .form-inputs
       = render 'form_fields', form: f, f: f

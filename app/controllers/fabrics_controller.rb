@@ -18,11 +18,11 @@ class FabricsController < ResourceController
     :weight,
     :weight_units, 
     :width,
-    category_attributes: [:id, :property_id, :_destroy],
-    dye_method_attributes: [:id, :property_id, :_destroy],
-    fibers_attributes: [:id, :property_id, :value, :_destroy],
-    keywords_attributes: [:id, :property_id, :_destroy],
-    fabric_variants_attributes: [:id, :_destroy]
+    :category_id,
+    :dye_method_id,
+    tag_ids: [],
+    fabric_variants_attributes: [:id, :_destroy, :position],
+    materials_attributes: [:id, :material_id, :value, :_destroy],
   ]
 
   before_filter :build_nested_associations, only: [:new, :edit]

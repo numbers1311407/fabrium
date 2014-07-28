@@ -1,5 +1,45 @@
 ;(function (root) {
 
+  app.directive('advancedOptions', [function() {
+    return {
+      restrict : 'C', 
+      link : function(scope, element, attrs) {
+        // Set up the "advanced fields".  Currently all fields with an ngModel
+        // attriubte,  this may have to become more sophisticated if the form 
+        // inputs require it
+        scope.advanced_fields = _.map(element.find("[ng-model]"), function (el) {
+          return $(el).attr("ng-model").replace("search.", "");
+        });
+
+        // Set the initial value for the `advanced` var depending on if
+        // the initial query includes an advanced param
+        scope.advanced = !!_.detect(scope.advanced_fields, function (field) {
+          return !!scope.search[field];
+        });
+
+        // when toggling the advanced fields off, loop over the advanced
+        // params to see if any were included in the query, and if found,
+        // update the search.
+        scope.$watch("advanced", function (value) {
+          if (!value) {
+            var deleted = 0;
+
+            angular.forEach(scope.advanced_fields, function (field) {
+              if (scope.search[field]) {
+                delete scope.search[field];
+                deleted++;
+              }
+            });
+
+            if (deleted) {
+              scope.updateSearch();
+            }
+          }
+        });
+      }
+    };
+  }])
+
   app.controller('FabricVariantShowCtrl',
     ['$scope', '$modalInstance', 'fabric_variant', function ($scope, $modalInstance, fabric_variant) {
       $scope.fabric_variant = fabric_variant;
@@ -7,8 +47,11 @@
   ]);
 
   app.controller('FabricVariantIndexCtrl', 
-    ['$scope', '$location', '$modal', 'FabricVariant', 'properties',
-    function ($scope, $location, $modal, FabricVariant, properties) {
+    ['$scope', '$location', '$timeout', '$modal', 'FabricVariant', 'Tag',
+    function ($scope, $location, $timeout, $modal, FabricVariant, Tag) {
+
+      // this will be populated after the form is parsed (see advancedOptions directive)
+      $scope.advanced_fields = [];
 
       $scope.parseSearch = function (search) {
         search || (search = $scope.search);
@@ -76,7 +119,7 @@
 
 
       $scope.updateSearch = function (page) {
-        $scope.search.page = page;
+        if (page) { $scope.search.page = page; }
 
         if ($scope.shouldForceSubmit()) {
           $scope.submit();
@@ -102,25 +145,25 @@
           plugins: ['clear_selection']
         },
 
-        fiber: {
+        material: {
           sortField: 'text',
           plugins: ['clear_selection']
         },
 
-        keywords: {
+        tags: {
           valueField: 'name',
           labelField: 'name',
 					searchField: 'name',
-          options: $scope.search.keywords
-            ? _.map($scope.search.keywords.split(","), function(word){ return { name: word }; })
+          options: $scope.search.tags
+            ? _.map($scope.search.tags.split(","), function(word){ return { name: word }; })
             : [],
           plugins: ['remove_button', 'close_button'],
           load: function (query, callback) {
 						if (!query.length) return callback();
-            properties.fetch('keywords', {name: query})
-              .then(function (result) {
-                callback(result);
-              });
+
+            Tag.query({name: query}, function (result) {
+              callback(result);
+            });
           }
         }
       };
@@ -137,7 +180,7 @@
         })
       };
 
-      $scope.submit();
+      $timeout($scope.submit);
     }
   ]);
 })(window);

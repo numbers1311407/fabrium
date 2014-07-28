@@ -10,7 +10,7 @@ class CreateProperties < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :fibers do |t|
+    create_table :materials do |t|
       t.string :name
       t.timestamps
     end
@@ -22,7 +22,7 @@ class CreateProperties < ActiveRecord::Migration
 
     add_index :tags, :name
     add_index :categories, :name
-    add_index :fibers, :name
+    add_index :materials, :name
     add_index :dye_methods, :name
   end
 end

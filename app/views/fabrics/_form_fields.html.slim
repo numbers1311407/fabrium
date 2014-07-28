@@ -1,34 +1,34 @@
 - if current_user.is_admin?
-  = f.association :mill, collection: Mill.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: mills_path(:json)}}} }}
+  = f.association :mill, collection: Mill.all.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: mills_path(:json)}}} }}
 
 = f.input :item_number
 
-.form-group.property_select.fibers
-  = f.label :fibers
-  select#fabric_keywords(placeholder=t('placeholders.fibers') data-select={plugins: {multiple_properties: {}}}.to_json )
+.form-group.property_select.materials
+  = f.label :materials
+  select#fabric_tags(placeholder=t("placeholders.materials") data-select={plugins: {multiple_properties: {}}}.to_json )
     option(value="")
-    = options_from_collection_for_select(Property.fibers.order(name: :asc), :id, :name)
+    = options_from_collection_for_select(Material.order(name: :asc), :id, :name)
   script(type="html/template")
     | <div class="property-assignment" data-id="<%= id %>">
         <%= name %>
         <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> × </a>
-        <input name="fabric[fibers_attributes][<%= n %>][property_id]" value="<%= id %>" type="hidden" />
+        <input name="fabric[materials_attributes][<%= n %>][material_id]" value="<%= id %>" type="hidden" />
         <span>
-          <input name="fabric[fibers_attributes][<%= n %>][value]" type="number" value="0" max=100 min=0 step=1/>%
+          <input name="fabric[materials_attributes][<%= n %>][value]" type="number" value="0" max=100 min=0 step=1/>%
         </span>
       </div>
   .property-assignments(data-property-assignments)
-    = f.simple_fields_for :fibers do |p|
-      .property-assignment(data-id=p.object.property_id)
+    = f.simple_fields_for :materials do |p|
+      .property-assignment(data-id=p.object.material_id)
         = p.object.name
         a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") ×
         span
           = p.number_field :value, {max: 100, min: 0, step: 1}
           | %
         = p.hidden_field :_destroy, value: 0
-        = p.hidden_field :property_id
+        = p.hidden_field :material_id
     .totals
-      span.totals-label= t('labels.total_fiber_percentage')
+      span.totals-label= t('labels.total_material_percentage')
       span.totals-value
         input(type="text" disabled value="0") 
         | %
@@ -75,27 +75,8 @@
 
 = f.input :bulk_minimum_quality
 
-= f.simple_fields_for :category do |p|
-  = p.input :property_id, label: resource_label(:category), as: :select, collection: Property.categories.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: categories_json_path}}}}}
+= f.association :category, as: :select, collection: Category.all.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: categories_path(:json)}}}}}
 
-= f.simple_fields_for :dye_method do |p|
-  = p.input :property_id, label: resource_label(:dye_method), as: :select, collection: Property.dye_methods.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: dye_methods_json_path}}}}}
+= f.association :dye_method, as: :select, collection: DyeMethod.all.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: dye_methods_path(:json)}}}}}
 
-.form-group.property_select.keywords
-  = f.label :keywords
-  select#fabric_keywords(placeholder=t('placeholders.keywords') data-select={plugins: {multiple_properties: {}, open_placeholder: {placeholder: t('placeholders.keywords_open')}, endpoint: {url: keywords_json_path}}}.to_json )
-    option(value="")
-    = options_from_collection_for_select(Property.keywords.order(name: :asc).limit(20), :id, :name)
-  script(type="html/template")
-    | <div class="property-assignment" data-id="<%= id %>">
-        <%= name %>
-        <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> × </a>
-        <input name="fabric[keywords_attributes][<%= n %>][property_id]" value="<%= id %>" type="hidden" />
-      </div>
-  .property-assignments(data-property-assignments)
-    = f.simple_fields_for :keywords do |p|
-      .property-assignment(data-id=p.object.property_id)
-        = p.object.name
-        = p.hidden_field :_destroy, value: 0
-        = p.hidden_field :property_id
-        a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") ×
+= f.association :tags, input_html: {placeholder: t('placeholders.tags'), data: {select: {plugins: {endpoint: {url: tags_path(:json) }}}}}

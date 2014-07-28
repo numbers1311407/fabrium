@@ -6,6 +6,7 @@ module FabricVariantRepresenter
   property :item_number
   property :color
   property :in_stock
+  property :tags
 
   nested :image do
     property :image_path, as: :full

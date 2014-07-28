@@ -1,5 +1,8 @@
 - messages = flash.select {|k, v| v.is_a? String }
-script(id="flash_messages")
-  | ;window.app||(app={}); app.alerts = [];
+#alerts
   - messages.each do |type, msg|
-    | app.alerts.push({ type: "#{type}", msg: "#{escape_javascript msg.html_safe}" });
+    div(class=alert_class(type))
+      button.close(type="button" data-dismiss="alert")
+        span(aria-hidden="true") &times;
+        span.sr-only Close
+      = msg

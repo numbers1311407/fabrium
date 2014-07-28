@@ -16,15 +16,19 @@
   width: 100%;
 }
 
+td.color, td.thumb {
+  position: relative;
+}
+
 td.color {
   padding-left: 48px !important;
-  position: relative;
-  .swatch {
-    display: block;
-    position: absolute;
-    width: 26px;
-    top: 10px;
-    bottom: 10px;
-    left: 10px;
-  }
+}
+
+.swatch {
+  display: block;
+  position: absolute;
+  width: 26px;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
 }

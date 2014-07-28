@@ -9,6 +9,11 @@
 @import "admin";
 @import "jcrop";
 
+html {
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-vertical;
+}
+
 #root {
 }
 
@@ -16,26 +21,42 @@
   padding: 0 0 40px;
 }
 
+$result-padding: 10px;
+
 // fabric search
 ul.fabric-variant-resultlist {
-  margin: 0;
+  // margin: 0;
+  // padding: 0;
+  @include make-row($result-padding);
   padding: 0;
   list-style: none none;
 }
 
 li.fabric-variant-result {
-  display: block;
-  float: left;
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
-  margin: 0 10px 10px 0;
+
+  @include make-xs-column(4, $result-padding);
+  @include make-sm-column(3, $result-padding);
+  padding-bottom: $result-padding;
+
+  // display: block;
+  // float: left;
+  // line-height: 100px;
+  // margin: 0 10px 10px 0;
   text-align: center;
   font-size: 20px;
   overflow: hidden;
   img {
-    width: 100%;
     display: block;
+    width: 100%;
+  }
+
+  .fabric-variant-image {
+    min-height: 100px;
+  }
+
+  .fabric-variant-result-inner {
+    margin: 5px;
+    cursor: pointer;
   }
 }
 
@@ -107,7 +128,7 @@ body .form-group-weights {
   margin-top: 5px;
 }
 
-.property_select.fibers {
+.property_select.materials {
 
   .property-assignment span, span.totals-value {
     float: right;
@@ -316,7 +337,7 @@ select[data-select],
 
 td.thumb {
   width: 30px;
-  padding-right: 0 !important;
+  padding: 2px 0 2px 5px !important;
   img {
     width: 100%;
     border: 1px solid #eee;
@@ -337,4 +358,18 @@ td.thumb {
 }
 
 fieldset.advanced-options {
+}
+
+tfoot.paginator {
+  .pagination {
+    margin: 0;
+  }
+  td li a {
+    border: 0;
+    border-radius: 4px;
+  }
+}
+
+li.disabled {
+  // display: none;
 }

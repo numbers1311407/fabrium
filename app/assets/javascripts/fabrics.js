@@ -1,5 +1,36 @@
 $(function () {
 
+  $("form#fabrics_form").submit(function (e) {
+    $('tr.fabric-variant input[name$="[position]"]', this).each(function (i) {
+      $(this).val(i);
+    });
+  });
+
+
+  // statically size the fabric variants sortable table
+  // elements so that when a sortable row is cloned, the
+  // table and row don't resize when it is removed from
+  // it's context.
+  $("table.fabric-variants").each(function () {
+    var $table = $(this);
+
+    var resize = function () {
+      $table.find("td, th").each(function () {
+        $(this).width($(this).width());
+      });
+    }
+
+    resize();
+
+    $(window).on("resize.fabric_variants_table", resize);
+  });
+
+  $("[data-fabric-variants]").sortable({
+    placeholder: 'placeholder-row',
+    axis: 'y',
+    handle: 'td.fabrium_id'
+  });
+
   //
   // Set up the nested fabric variants form
   //
@@ -64,10 +95,10 @@ $(function () {
 
 
   //
-  // Display and calculate the "total fiber percentage" field as fibers
+  // Display and calculate the "total fiber percentage" field as materials
   // are added/removed/changed.
   //
-  $(".form-group.fibers").each(function () {
+  $(".form-group.materials").each(function () {
     var $el = $(this), 
         $tv = $el.find(".totals-value input"),
         $ass = $el.find(".property-assignments");

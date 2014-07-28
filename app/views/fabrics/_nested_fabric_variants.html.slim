@@ -28,10 +28,11 @@
             </a>
             <% if (undefined !== obj.n) { %>
               <input name="fabric[fabric_variants_attributes][<%= obj.n %>][id]" value="<%= obj.id %>" type="hidden" />
+              <input name="fabric[fabric_variants_attributes][<%= obj.n %>][position]" type="hidden" />
             <% } %>
           </td>
         </tr>
-    table.table
+    table.table.fabric-variants
       thead
         tr
           td
@@ -45,9 +46,12 @@
           tr.fabric-variant(data-id=variant.id)
             td.thumb
               = link_to edit_fabric_variant_path(variant), rel: "modal popover" do
-                = image_tag(variant.thumb.url)
-            td= variant.fabrium_id
-            td= variant.item_number
+                - if variant.thumb
+                  = image_tag(variant.thumb.url)
+                - else
+                  span.swatch(style="background-color: ##{variant.color}")
+            td.fabrium_id= variant.fabrium_id
+            td.item_number= variant.item_number
             td.color
               span.swatch(style="background-color: ##{variant.color}")
               span ##{variant.color}
@@ -56,6 +60,7 @@
                 i.fa.fa-edit
               a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove")
                 i.fa.fa-trash-o
+              = vf.hidden_field :position
           = vf.hidden_field :_destroy, value: 0, id: "destroy_fabric_variant_#{variant.id}"
 
     .panel-footer

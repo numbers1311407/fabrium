@@ -6,6 +6,12 @@ module Fabrics::Weight
 
   included do
     before_save :convert_weights
+
+    scope :weight, ->(v, units=nil) {
+      conditions = {}
+      conditions[parse_units(units)] = v
+      where(conditions)
+    }
   end
 
   def weight_units

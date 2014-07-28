@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140714195641) do
 
   create_table "fabric_variants", force: true do |t|
     t.integer  "fabric_id"
+    t.integer  "position"
     t.string   "fabrium_id"
     t.string   "item_number",  default: ""
     t.integer  "mill_id"
@@ -80,26 +81,37 @@ ActiveRecord::Schema.define(version: 20140714195641) do
     t.integer  "sample_lead_time",                               default: 0
     t.integer  "bulk_lead_time",                                 default: 0
     t.integer  "variant_index",                                  default: 0
+    t.text     "tags",                                           default: [],  array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "fiber_assignments", force: true do |t|
-    t.integer "fiber_id"
+  add_index "fabrics", ["category_id"], name: "index_fabrics_on_category_id", using: :btree
+  add_index "fabrics", ["dye_method_id"], name: "index_fabrics_on_dye_method_id", using: :btree
+  add_index "fabrics", ["glm"], name: "index_fabrics_on_glm", using: :btree
+  add_index "fabrics", ["gsm"], name: "index_fabrics_on_gsm", using: :btree
+  add_index "fabrics", ["mill_id"], name: "index_fabrics_on_mill_id", using: :btree
+  add_index "fabrics", ["osy"], name: "index_fabrics_on_osy", using: :btree
+  add_index "fabrics", ["price_eu"], name: "index_fabrics_on_price_eu", using: :gist
+  add_index "fabrics", ["price_us"], name: "index_fabrics_on_price_us", using: :gist
+  add_index "fabrics", ["tags"], name: "index_fabrics_on_tags", using: :gin
+
+  create_table "material_assignments", force: true do |t|
+    t.integer "material_id"
     t.integer "fabric_id"
     t.string  "value"
   end
 
-  add_index "fiber_assignments", ["fabric_id"], name: "index_fiber_assignments_on_fabric_id", using: :btree
-  add_index "fiber_assignments", ["fiber_id"], name: "index_fiber_assignments_on_fiber_id", using: :btree
+  add_index "material_assignments", ["fabric_id"], name: "index_material_assignments_on_fabric_id", using: :btree
+  add_index "material_assignments", ["material_id"], name: "index_material_assignments_on_material_id", using: :btree
 
-  create_table "fibers", force: true do |t|
+  create_table "materials", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "fibers", ["name"], name: "index_fibers_on_name", using: :btree
+  add_index "materials", ["name"], name: "index_materials_on_name", using: :btree
 
   create_table "mills", force: true do |t|
     t.string   "name"

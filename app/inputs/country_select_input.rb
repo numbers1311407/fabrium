@@ -249,6 +249,6 @@ class CountrySelectInput < SimpleForm::Inputs::Base
   ]
 
   def input(options)
-    @builder.select(attribute_name, OPTIONS, {}, data: { select: {}})
+    @builder.select(attribute_name, OPTIONS, {prompt: true}, data: { select: {}})
   end
 end

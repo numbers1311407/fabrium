@@ -1,9 +1,9 @@
 module AngularHelper
   def select_options_for_categories
-    options_for_select(Property.categories.order(name: :asc).pluck(:name, :id))
+    options_for_select(Category.all.order(name: :asc).pluck(:name, :id))
   end
 
-  def select_options_for_fiber
-    options_for_select(Property.fibers.order(name: :asc).pluck(:name, :id))
+  def select_options_for_material
+    options_for_select(Material.all.order(name: :asc).pluck(:name, :id))
   end
 end

@@ -19,11 +19,10 @@ html(ng-app="fabrium")
           - if content_for?(:top)
             #top
               = yield(:top)
-          div(alerts)
+          = render 'flash_messages'
           = content_for?(:main) ? yield(:main) : yield
     #body_end
       = javascript_include_tag 'vendor'
       = javascript_include_tag 'application'
       = yield :body_end
-      = render 'flash_messages'
       = render 'modal'

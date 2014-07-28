@@ -24,8 +24,19 @@ class CreateFabrics < ActiveRecord::Migration
       t.integer :sample_lead_time, default: 0
       t.integer :bulk_lead_time, default: 0
       t.integer :variant_index, default: 0
+      t.text :tags, array: true, default: []
       t.timestamps
     end
+
+    add_index :fabrics, :mill_id
+    add_index :fabrics, :dye_method_id
+    add_index :fabrics, :category_id
+    add_index :fabrics, :price_eu, using: 'gist'
+    add_index :fabrics, :price_us, using: 'gist'
+    add_index :fabrics, :gsm
+    add_index :fabrics, :glm
+    add_index :fabrics, :osy
+    add_index :fabrics, :tags, using: 'gin'
 
     reversible do |dir|
       dir.up { execute "ALTER SEQUENCE #{default_sequence_name(:fabrics)} RESTART #{SEQ_START}" }

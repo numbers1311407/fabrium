@@ -37,3 +37,8 @@
             th.actions
         tbody
           = yield(:tbody)
+        tfoot.paginator
+          tr
+            td(colspan=42)
+              = paginate collection
+          

@@ -46,9 +46,12 @@ module Arel
 
       def visit_Arel_Nodes_Contains o, a
         a = o.left if ::Arel::Attributes::Attribute === o.left
-        sql_type = a.relation.engine.columns_hash[a.name.to_s].sql_type
-        o.right = o.right.to_f if sql_type == 'numrange'
-        "#{visit o.left, a} #{o.operator} #{visit o.right, a}"
+        column = a.relation.engine.columns_hash[a.name.to_s]
+        o.right = o.right.to_f if column.sql_type == 'numrange'
+
+        fmt = column.array ? "%s %s ARRAY[%s]" : "%s %s %s"
+        out = fmt % [visit(o.left, a), o.operator, visit(o.right, a)]
+        out
       end
     end
   end

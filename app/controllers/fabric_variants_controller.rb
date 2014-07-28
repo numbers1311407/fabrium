@@ -1,5 +1,14 @@
 class FabricVariantsController < ResourceController
-  prepend_before_filter :combine_property_queries
+
+  # During the create process, fabric variants are created without
+  # a parent fabric.  They are cleaned up at a later time, but it's
+  # important that they are never shown publicly as orphans
+  add_collection_filter_scope :collection_filter_orphans
+
+  # In a normal search, only the *first* variant of each fabric should
+  # be returned, *unless* the search is by color, in which case all
+  # matching variants for each fabric are shown.
+  add_collection_filter_scope :collection_filter_primary_variant
 
   ##
   # Scopes
@@ -11,7 +20,7 @@ class FabricVariantsController < ResourceController
   has_scope :near_color, as: :color do |controller, scope, value|
     # The 2nd param for `near_color` is the acceptable delta.  It
     # will likely be necessary to tweak this for sane search results.
-    scope.near_color(value, 25)
+    scope.near_color(value, 50)
   end
 
   has_scope :weight_range_or_min, as: :weight_min do |controller, scope, value|
@@ -23,7 +32,10 @@ class FabricVariantsController < ResourceController
     scope.weight -Float::INFINITY..(value.to_f), controller.params[:weight_units]
   end
 
-  has_scope :properties, type: :hash
+  has_scope :category
+  has_scope :dye_method
+  has_scope :tags
+  has_scope :material
 
   permit_params [
     :image, 
@@ -64,10 +76,11 @@ class FabricVariantsController < ResourceController
     resource.fabric ? edit_fabric_path(resource.fabric) : fabrics_path
   end
 
-  def combine_property_queries
-    params[:properties] = params.slice(:keywords, :fiber, :category)
-    params.except!(:keywords, :fiber, :category)
+  def collection_filter_orphans(object)
+    object.orphans(false)
+  end
 
-    Rails.logger.error(params)
+  def collection_filter_primary_variant(object)
+    params[:color] ? object : object.primary
   end
 end

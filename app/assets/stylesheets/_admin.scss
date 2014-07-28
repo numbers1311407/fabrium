@@ -134,3 +134,18 @@ td.actions {
 .form-actions > * {
   margin: 0 5px 5px 0;
 }
+
+.placeholder-row {
+  background-color: $panel-footer-bg;
+}
+.ui-sortable-helper {
+  td {
+    border: none !important;
+  }
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+td.fabrium_id {
+  cursor: ns-resize;
+}
