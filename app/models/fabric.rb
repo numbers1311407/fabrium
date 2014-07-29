@@ -9,8 +9,7 @@ class Fabric < ActiveRecord::Base
   include Fabrics::Variants
   include Fabrics::Category
   include Fabrics::Weight
+  include Fabrics::Mill
 
   validates :width, numericality: { greater_than: 0 }
-
-  belongs_to :mill
 end

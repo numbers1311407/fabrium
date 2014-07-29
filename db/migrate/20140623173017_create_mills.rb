@@ -2,6 +2,7 @@ class CreateMills < ActiveRecord::Migration
   def change
     create_table :mills do |t|
       t.string :name
+      t.boolean :active, default: true
       t.timestamps
     end
   end

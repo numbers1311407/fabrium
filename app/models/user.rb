@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   include Users::BelongsToMeta
 
+  has_many :favorites
+
   define_meta_types :admin, :mill, :buyer
 
   devise :database_authenticatable, 

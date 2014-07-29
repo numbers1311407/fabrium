@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140714195641) do
+ActiveRecord::Schema.define(version: 20140728194426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,13 @@ ActiveRecord::Schema.define(version: 20140714195641) do
   add_index "fabrics", ["price_us"], name: "index_fabrics_on_price_us", using: :gist
   add_index "fabrics", ["tags"], name: "index_fabrics_on_tags", using: :gin
 
+  create_table "favorites", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "fabric_variant_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "material_assignments", force: true do |t|
     t.integer "material_id"
     t.integer "fabric_id"
@@ -115,6 +122,7 @@ ActiveRecord::Schema.define(version: 20140714195641) do
 
   create_table "mills", force: true do |t|
     t.string   "name"
+    t.boolean  "active",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

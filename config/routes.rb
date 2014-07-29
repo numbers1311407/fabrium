@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :materials
   resources :categories
   resources :dye_methods
+  resources :favorites
 
   root 'ng#index'
 end

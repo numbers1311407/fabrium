@@ -1,25 +1,11 @@
 module FabricVariants
 
-  #
-  # TODO the SQL that handles the color nearness query is very kludgy and 
-  # fragile.  For example it has broken several times when combining with
-  # other non-trivial scopes, like tags, which creates a group by.  The
-  # "fix" was to group by the calculated color delta as well, which may
-  # be ok... but it does not seem safe at all.  No telling what other
-  # queries will break it.
-  #
-  # The query has morphed once from selecting FROM a subtable that generates
-  # the delta for rows to JOINing to that same subtable on ID. Both suffered
-  # from the postgreSQL complaint about needing the delta in the group
-  # clause or having it aggregated.  I know there is a better fix for this
-  # problem, I just don't know what it is.
-
   module Color
     extend ActiveSupport::Concern
 
     ReHexColor = /[a-f0-9]{6}/
 
-    SQL_JOIN_ALIAS = "fabric_variants_with_color_delta"
+    SQL_JOIN_ALIAS = "fabric_variant_color_deltas"
 
     included do
       validates_presence_of :color
@@ -48,19 +34,35 @@ module FabricVariants
       def near_color(hex, max_delta=nil)
         scoped = with_color_deltas(hex).reorder("#{SQL_JOIN_ALIAS}.delta ASC")
         scoped = scoped.where(["#{SQL_JOIN_ALIAS}.delta < ?", max_delta]) if max_delta.present?
-
-        # Tecnically this only needs to happen when combined with other
-        # queries that GROUP.  It's probably completely broken (breaks
-        # the other query) but it's hard to tell
-        scoped = scoped.group(arel_table[:id], "#{SQL_JOIN_ALIAS}.delta")
-
         scoped
       end
 
       def with_color_deltas(hex)
-        table_alias = color_delta_subselect(hex)
-        # older version actually did a subselect of the whole table
+        # Older version actually did a subselect of the whole table, honestly
+        # not sure which one is faster as I don't know enough about pg.
+        # Essentially the older select looked like
+        #
+        #     SELECT * from (         
+        #       SELECT *, delta from fabric_variants
+        #     ) fabric_variants ...
+        #
+        # And the newer version looks like
+        #
+        #     SELECT * from fabric_variants
+        #     JOINS (
+        #       SELECT id, delta from fabric_variants
+        #     ) deltas 
+        #     ON deltas.id = fabric_variants.id ...
+        #
+        # The join version *feels* better but that is 100% unsubstantiated.
+        # It seems like it'd be faster to somehow limit the subquery by
+        # the conditions on the main query, but if that can be done I couldn't
+        # figure out how to do it.
+        #
+        # # old invocation
         # from(color_delta_subselect(hex))
+        #
+        table_alias = color_delta_subselect(hex)
         joins("JOIN #{table_alias.to_sql} ON #{SQL_JOIN_ALIAS}.id = fabric_variants.id")
       end
 

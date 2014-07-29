@@ -10,6 +10,9 @@ class FabricVariantsController < ResourceController
   # matching variants for each fabric are shown.
   add_collection_filter_scope :collection_filter_primary_variant
 
+  # always includes
+  add_collection_filter_scope :collection_filter_includes
+
   ##
   # Scopes
   #
@@ -36,6 +39,77 @@ class FabricVariantsController < ResourceController
   has_scope :dye_method
   has_scope :tags
   has_scope :material
+
+  has_scope :in_stock
+  has_scope :favorites, type: :boolean do |controller, scope, value|
+    scope.favorites(current_user)
+  end
+
+  has_scope :mills, default: 'user' do |controller, scope, value|
+    is_default = 'user' == value
+    user = controller.current_user
+
+    case user.meta_type.human
+    when 'mill'
+      # ignore `value`, mill always sees their own fabrics
+      scope.mills(user.meta.id)
+    when 'admin'
+      # ignore 'user' default value & only scope to mills if param 
+      # is passed
+      is_default ? scope : scope.mills(value)
+    when 'buyer'
+      # buyers only see fabrics from active mills
+      # TODO this should simply be in the collection filter
+      scope = scope.active_mills
+
+      # if 'user' default value is passed, and the user has preferred
+      # mills, restrict to those preferred mills
+      if is_default
+        preferred = user.meta.preferred_mills
+        preferred.present? ? scope.mills(preferred) : scope
+      # otherwise scope to the value
+      else
+        scope.mills(value)
+      end
+    else
+      # there are no other user types, but...
+      scope
+    end
+  end
+
+  has_scope :not_mills, default: 'user' do |controller, scope, value|
+    is_default = 'user' == value
+    user = controller.current_user
+
+    case user.meta_type.human
+    when 'mill'
+      # ignore this scope for mill users, they always see their own
+      # fabrics (see `mills` scope above`
+      scope
+    when 'admin'
+      # ignore the default scope for admins
+      is_default ? scope : scope.not_mills(value)
+    else
+      # for buyers, if the default value of user is passed, scope
+      # the search by the buyer's ignored mills list if it exists,
+      if is_default
+        blocked = user.meta.blocked_mills
+        blocked.present? ? scope.not_mills(blocked) : scope
+      # otherwise scope to the value
+      else
+        scope.not_mills(value)
+      end
+    end
+  end
+
+  has_scope :fabrium_number
+  has_scope :item_number
+  has_scope :country
+  has_scope :price
+  has_scope :sample_lead_time
+  has_scope :bulk_lead_time
+  has_scope :sample_minimum
+  has_scope :bulk_minimum
 
   permit_params [
     :image, 
@@ -82,5 +156,9 @@ class FabricVariantsController < ResourceController
 
   def collection_filter_primary_variant(object)
     params[:color] ? object : object.primary
+  end
+
+  def collection_filter_includes(object)
+    object.includes(:fabric)
   end
 end

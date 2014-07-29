@@ -7,8 +7,8 @@ module FabricVariants
     included do
       dragonfly_accessor :image
 
-      # validates_presence_of :image_name
-      # validates_presence_of :image_crop, if: :should_validate_crop?
+      validates_presence_of :image_name
+      validates_presence_of :image_crop, if: :should_validate_crop?
     end
 
     def perfect_size?

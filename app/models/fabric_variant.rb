@@ -8,6 +8,7 @@ class FabricVariant < ActiveRecord::Base
   include FabricVariants::FabriumId
 
   belongs_to :fabric
+  has_many :favorites
 
   scope :orphans, ->(bool=true) { 
     bool ? where(fabric_id: nil) : where.not(fabric_id: nil)
@@ -25,6 +26,12 @@ class FabricVariant < ActiveRecord::Base
   scope :category, ->(value) { joins(:fabric).merge(Fabric.category(value)) }
   scope :material, ->(value) { joins(:fabric).merge(Fabric.material(value)) }
   scope :dye_method, ->(value) { joins(:fabric).merge(Fabric.dye_method(value)) }
+  scope :mills, ->(value) { joins(:fabric).merge(Fabric.mills(value)) }
+  scope :not_mills, ->(value) { joins(:fabric).merge(Fabric.not_mills(value)) }
+  scope :active_mills, ->{ joins(:fabric).merge(Fabric.active_mills) }
+  scope :tags, ->(value) { joins(:fabric).merge(Fabric.tags(value)) }
+
+  scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
 
   #
   # Variants delegate most of their attributes to their parent fabric.
@@ -54,7 +61,4 @@ class FabricVariant < ActiveRecord::Base
     to: :fabric, allow_nil: true
   )
 
-  scope :tags, ->(value) { 
-    joins(:fabric).merge(Fabric.tags(value)).group(arel_table[:id]) 
-  }
 end

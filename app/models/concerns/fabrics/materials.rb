@@ -12,7 +12,6 @@ module Fabrics
         reject_if: :material_filter
 
       scope :material, ->(id) { 
-        table = Material.arel_table
         joins(:materials).where(material_assignments: {material_id: id})
       }
     end
