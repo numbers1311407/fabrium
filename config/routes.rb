@@ -17,5 +17,11 @@ Rails.application.routes.draw do
   resources :dye_methods
   resources :favorites
 
+  # Templates.
+  # These should probably be static and handle all logic client side 
+  # but... they use some form helpers and contextual chunks based on
+  # user roles.
+  get "/templates/*path", to: 'ng#template'
+
   root 'ng#index'
 end

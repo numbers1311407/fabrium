@@ -1,54 +1,39 @@
 ;(function (root) {
 
-  app.directive('advancedOptions', [function() {
-    return {
-      restrict : 'C', 
-      link : function(scope, element, attrs) {
-        // Set up the "advanced fields".  Currently all fields with an ngModel
-        // attriubte,  this may have to become more sophisticated if the form 
-        // inputs require it
-        scope.advanced_fields = _.map(element.find("[ng-model]"), function (el) {
-          return $(el).attr("ng-model").replace("search.", "");
-        });
-
-        // Set the initial value for the `advanced` var depending on if
-        // the initial query includes an advanced param
-        scope.advanced = !!_.detect(scope.advanced_fields, function (field) {
-          return !!scope.search[field];
-        });
-
-        // when toggling the advanced fields off, loop over the advanced
-        // params to see if any were included in the query, and if found,
-        // update the search.
-        scope.$watch("advanced", function (value) {
-          if (!value) {
-            var deleted = 0;
-
-            angular.forEach(scope.advanced_fields, function (field) {
-              if (scope.search[field]) {
-                delete scope.search[field];
-                deleted++;
-              }
-            });
-
-            if (deleted) {
-              scope.updateSearch();
-            }
-          }
-        });
-      }
-    };
-  }])
-
   app.controller('FabricVariantShowCtrl',
-    ['$scope', '$modalInstance', 'fabric_variant', function ($scope, $modalInstance, fabric_variant) {
+    function ($scope, $modalInstance, fabric_variant) {
       $scope.fabric_variant = fabric_variant;
     }
-  ]);
+  );
 
   app.controller('FabricVariantIndexCtrl', 
-    ['$scope', '$location', '$timeout', '$modal', 'FabricVariant', 'Tag',
-    function ($scope, $location, $timeout, $modal, FabricVariant, Tag) {
+    function ($scope, $location, $timeout, $modal, FabricVariant, Tag, Mill) {
+
+
+      $scope.mill_options = {};
+      $scope.mill_cache = {};
+      $scope.load_mill_options = function (mill_ids) {
+        var cache = function () {
+          $scope.mill_options.values = _.map($scope.mill_cache, _.identity);
+        }
+        var ids = _.reduce(mill_ids, function (ids, id) {
+          if (!$scope.mill_cache[id]) { ids.push(id); }
+          return ids;
+        }, []);
+
+        if (ids.length) {
+          Mill.query({id: ids.join(",")}, function (results) {
+            angular.forEach(results, function (result) {
+              $scope.mill_cache[result.id] = result;
+            });
+            cache();
+          });
+        } else {
+          // kludgy hack to make the mill_options change
+          $scope.mill_options.values = [];
+          $timeout(cache);
+        }
+      };
 
       // this will be populated after the form is parsed (see advancedOptions directive)
       $scope.advanced_fields = [];
@@ -64,7 +49,14 @@
 
         // parse numbers out of numeric form values.
         // TODO find a better way to do this?  A directive??
-        var numeric = ["weight_min", "weight_max"];
+        var numeric = [
+          "weight_min", 
+          "weight_max",
+          "price_min",
+          "price_max",
+          "bulk_min",
+          "sample_min"
+        ];
         _.each(numeric, function (key) {
           if ('undefined' !== typeof search[key]) {
             search[key] = Number(search[key]);
@@ -150,6 +142,35 @@
           plugins: ['clear_selection']
         },
 
+        country: {
+          sortField: 'text',
+          plugins: ['clear_selection']
+        },
+
+        weeks: {
+          plugins: ['clear_selection']
+        },
+
+        dye_method: {
+          sortField: 'text',
+          plugins: ['clear_selection']
+        },
+
+        mills: {
+          valueField: 'id',
+          labelField: 'name',
+          searchField: 'name',
+          plugins: ['remove_button', 'close_button'],
+          onInitialize: function () {
+            this.on("invalid_values", $scope.load_mill_options);
+          },
+          load: function (query, callback) {
+            if (!query.length) { return callback(); }
+            Mill.query({name: query}, callback);
+          }
+
+        },
+
         tags: {
           valueField: 'name',
           labelField: 'name',
@@ -160,17 +181,14 @@
           plugins: ['remove_button', 'close_button'],
           load: function (query, callback) {
 						if (!query.length) return callback();
-
-            Tag.query({name: query}, function (result) {
-              callback(result);
-            });
+            Tag.query({name: query}, callback);
           }
         }
       };
 
       $scope.show = function (id) {
         var modalInstance = $modal.open({
-          templateUrl: "show.html",
+          templateUrl: "/templates/fabric_variants/show",
           controller: "FabricVariantShowCtrl",
           resolve: {
             fabric_variant: function () {
@@ -182,5 +200,45 @@
 
       $timeout($scope.submit);
     }
-  ]);
+  );
+
+  app.directive('advancedOptions', [function() {
+    return {
+      restrict : 'C', 
+      link : function(scope, element, attrs) {
+        // Set up the "advanced fields".  Currently all fields with an ngModel
+        // attriubte,  this may have to become more sophisticated if the form 
+        // inputs require it
+        scope.advanced_fields = _.map(element.find("[ng-model]"), function (el) {
+          return $(el).attr("ng-model").replace("search.", "");
+        });
+
+        // Set the initial value for the `advanced` var depending on if
+        // the initial query includes an advanced param
+        scope.advanced = !!_.detect(scope.advanced_fields, function (field) {
+          return !!scope.search[field];
+        });
+
+        // when toggling the advanced fields off, loop over the advanced
+        // params to see if any were included in the query, and if found,
+        // update the search.
+        scope.$watch("advanced", function (value) {
+          if (!value) {
+            var deleted = 0;
+
+            angular.forEach(scope.advanced_fields, function (field) {
+              if (scope.search[field]) {
+                delete scope.search[field];
+                deleted++;
+              }
+            });
+
+            if (deleted) {
+              scope.updateSearch();
+            }
+          }
+        });
+      }
+    };
+  }])
 })(window);

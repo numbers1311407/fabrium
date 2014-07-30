@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140728194426) do
+ActiveRecord::Schema.define(version: 20140729233344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,17 @@ ActiveRecord::Schema.define(version: 20140728194426) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "buyer_mills", force: true do |t|
+    t.integer  "mill_id"
+    t.integer  "buyer_id"
+    t.integer  "relationship", default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "buyer_mills", ["buyer_id"], name: "index_buyer_mills_on_buyer_id", using: :btree
+  add_index "buyer_mills", ["mill_id"], name: "index_buyer_mills_on_mill_id", using: :btree
 
   create_table "buyers", force: true do |t|
     t.datetime "created_at"

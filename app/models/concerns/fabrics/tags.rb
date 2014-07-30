@@ -22,6 +22,21 @@ module Fabrics
       # Tags are always downcased.  This is necessary as case-insensitive
       # array inclusion queries are not possible.
       before_validation :downcase_tags
+
+      # Tags should probably be sorted by name, we'll see after feedback...
+      before_validation :sort_tags
+    end
+
+    def tag_ids
+      tag_records.pluck(:id)
+    end
+
+    def tag_ids=(ids)
+      self.tags = Tag.where(id: ids).pluck(:name).sort
+    end
+
+    def tag_records
+      Tag.where(name: tags)
     end
 
     module ClassMethods
@@ -52,6 +67,10 @@ module Fabrics
 
     def downcase_tags
       self.tags = self.tags.map {|t| t.downcase }
+    end
+
+    def sort_tags
+      self.tags.sort!
     end
   end
 end

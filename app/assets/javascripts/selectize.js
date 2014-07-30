@@ -113,17 +113,17 @@ $(function () {
   });
 
   Selectize.define('open_placeholder', function (options) {
-    var api = this, open_placeholder = options.placeholder;
+    var setup = this.setup, open_placeholder = options.placeholder;
 
     if (!open_placeholder) {
       throw 'selectize: open_placeholder plugin must be passed "placeholder" message';
     }
 
     this.setup = (function () {
-      var setup = api.setup;
-
       return function () {
-        setup.apply(this, arguments);
+        var api = this;
+
+        setup.apply(api, arguments);
 
         var closed_placeholder = api.$control_input.attr("placeholder");
 
@@ -144,10 +144,12 @@ $(function () {
    * Close button plugin
    */
   Selectize.define('close_button', function(options) {
+
     var api = this;
 
     options = $.extend({}, {
       right: '10px',
+      top: '6px',
       paddingRight: '30px'
     }, options);
 
@@ -167,13 +169,15 @@ $(function () {
             .css({
               position: "absolute",
               right: options.right,
+              top: options.top,
               cursor: "pointer",
-              display: "none"
+              display: "none",
+              zIndex: 1000
             })
             .on("click", function () {
               api.close(); 
             })
-            .appendTo(api.$control);
+            .insertAfter(api.$control);
 
         api.on("dropdown_open", function () {
           closeBtn.css({display: ""});

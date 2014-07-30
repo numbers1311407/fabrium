@@ -27,8 +27,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
-    acts_as_list (0.4.0)
-      activerecord (>= 3.0)
     arel (5.0.1.20140414130214)
     authority (3.0.0)
       activesupport (>= 3.0.0)
@@ -78,6 +76,7 @@ GEM
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hike (1.2.3)
+    htmlcompressor (0.1.1)
     i18n (0.6.9)
     inherited_resources (1.4.1)
       has_scope (~> 0.6.0.rc)
@@ -102,6 +101,9 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    ngannotate-rails (0.9.7)
+      execjs
+      rails (>= 3.1)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
     orm_adapter (0.5.0)
@@ -205,7 +207,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_list
   authority
   bootstrap-sass
   devise
@@ -215,10 +216,12 @@ DEPENDENCIES
   font-awesome-sass
   gretel
   has_scope
+  htmlcompressor
   inherited_resources
   jbuilder (~> 2.0)
   kaminari
   kaminari-bootstrap
+  ngannotate-rails
   pg
   puma
   quiet_assets

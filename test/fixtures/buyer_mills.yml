@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mill_id: 
+  buyer_id: 
+  relationship: 1
+
+two:
+  mill_id: 
+  buyer_id: 
+  relationship: 1

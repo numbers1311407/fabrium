@@ -26,6 +26,8 @@ module Fabrium
     # Allow separate compilation of js for head scripts and other vendor scripts
     config.assets.precompile += %w(vendor.js head.js client.js)
 
+    config.middleware.use HtmlCompressor::Rack
+
     # Do not generate controller specific js/css
     config.generators do |g|
       g.assets false

@@ -1,0 +1,8 @@
+<div class="modal-header">
+  <h3 class="modal-title">Fabric: {{ fabric_variant.id }}</h3>
+</div>
+<div class="modal-body">
+  <img ng-src="{{ fabric_variant.image.thumb }}" />
+  <p>Color: #{{ fabric_variant.color }}</p>
+  <p>Tags: {{ fabric_variant.tags.length ? fabric_variant.tags.join(", ") : "none" }}</p>
+</div>

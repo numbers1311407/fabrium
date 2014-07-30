@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
 
   rescue_from ActionController::UnknownFormat, with: :render_406
+  # rescue_from ActionView::MissingTemplate, with: :render_404
 
   layout :determine_layout
 
@@ -17,5 +18,9 @@ class ApplicationController < ActionController::Base
 
   def render_406
     render file: 'public/406.html', layout: false, status: 406
+  end
+
+  def render_404
+    render file: 'public/404.html', layout: false, status: 404
   end
 end

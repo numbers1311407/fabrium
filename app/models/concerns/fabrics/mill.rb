@@ -6,6 +6,7 @@ module Fabrics
       belongs_to :mill
 
       scope :mills, ->(value, options={}) {
+        value = value.split(',') if value.is_a?(String)
         options[:not] ? where.not(mill: value) : where(mill: value)
       }
 

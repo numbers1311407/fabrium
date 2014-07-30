@@ -13,6 +13,9 @@ class FabricVariantsController < ResourceController
   # always includes
   add_collection_filter_scope :collection_filter_includes
 
+  # filter the scope by role
+  add_collection_filter_scope :collection_filter_roles
+
   ##
   # Scopes
   #
@@ -35,81 +38,65 @@ class FabricVariantsController < ResourceController
     scope.weight -Float::INFINITY..(value.to_f), controller.params[:weight_units]
   end
 
-  has_scope :category
-  has_scope :dye_method
-  has_scope :tags
-  has_scope :material
 
   has_scope :in_stock
   has_scope :favorites, type: :boolean do |controller, scope, value|
-    scope.favorites(current_user)
+    scope.favorites(controller.current_user)
   end
 
-  has_scope :mills, default: 'user' do |controller, scope, value|
-    is_default = 'user' == value
+
+  has_scope :mills do |controller, scope, value|
+    is_default = 'default' == value
     user = controller.current_user
 
-    case user.meta_type.human
-    when 'mill'
-      # ignore `value`, mill always sees their own fabrics
-      scope.mills(user.meta.id)
-    when 'admin'
-      # ignore 'user' default value & only scope to mills if param 
-      # is passed
-      is_default ? scope : scope.mills(value)
-    when 'buyer'
-      # buyers only see fabrics from active mills
-      # TODO this should simply be in the collection filter
-      scope = scope.active_mills
-
-      # if 'user' default value is passed, and the user has preferred
-      # mills, restrict to those preferred mills
-      if is_default
-        preferred = user.meta.preferred_mills
-        preferred.present? ? scope.mills(preferred) : scope
-      # otherwise scope to the value
-      else
-        scope.mills(value)
-      end
-    else
-      # there are no other user types, but...
+    # mill users ignore the scope, they only see their own fabrics
+    if user.is_mill?
       scope
+
+    # buyers get the special "preferred" param which scopes off
+    # their preferred mills list
+    elsif user.is_buyer? && 'preferred' == value 
+      preferred = user.meta.preferred_mills
+      preferred.present? ? scope.mills(preferred) : scope
+
+    # otherwise scope to the value
+    else
+      scope.mills(value)
     end
   end
 
-  has_scope :not_mills, default: 'user' do |controller, scope, value|
-    is_default = 'user' == value
+  has_scope :not_mills, default: 'default' do |controller, scope, value|
+    is_default = 'default' == value
     user = controller.current_user
 
-    case user.meta_type.human
-    when 'mill'
-      # ignore this scope for mill users, they always see their own
-      # fabrics (see `mills` scope above`
+    # mill users ignore the scope, they only see their own fabrics
+    if user.is_mill?
       scope
-    when 'admin'
-      # ignore the default scope for admins
+
+    # buyer users default to skipping mills from their blocked list
+    elsif user.is_buyer? && is_default
+      blocked = user.meta.blocked_mills
+      blocked.present? ? scope.not_mills(blocked) : scope
+
+    # otherwise scope to the passed value if something other than
+    # 'default' was passed
+    else
       is_default ? scope : scope.not_mills(value)
-    else
-      # for buyers, if the default value of user is passed, scope
-      # the search by the buyer's ignored mills list if it exists,
-      if is_default
-        blocked = user.meta.blocked_mills
-        blocked.present? ? scope.not_mills(blocked) : scope
-      # otherwise scope to the value
-      else
-        scope.not_mills(value)
-      end
     end
   end
 
-  has_scope :fabrium_number
-  has_scope :item_number
+  has_scope :bulk_lead_time
+  has_scope :bulk_minimum_quality, as: :bulk_min
+  has_scope :category
   has_scope :country
+  has_scope :dye_method
+  has_scope :fabrium_id
+  has_scope :item_number
+  has_scope :material
   has_scope :price
   has_scope :sample_lead_time
-  has_scope :bulk_lead_time
-  has_scope :sample_minimum
-  has_scope :bulk_minimum
+  has_scope :sample_minimum_quality, as: :sample_min
+  has_scope :tags
 
   permit_params [
     :image, 
@@ -160,5 +147,20 @@ class FabricVariantsController < ResourceController
 
   def collection_filter_includes(object)
     object.includes(:fabric)
+  end
+
+  def collection_filter_roles(object)
+    case current_user.meta_type.human
+
+    # buyers only see fabrics from active mills
+    when 'buyer'
+      object = object.active_mills
+
+    # mills only see their own fabrics
+    when 'mill'
+      object = object.mills(current_user.meta.id)
+    end
+
+    object
   end
 end

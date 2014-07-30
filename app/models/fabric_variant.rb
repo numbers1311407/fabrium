@@ -8,7 +8,9 @@ class FabricVariant < ActiveRecord::Base
   include FabricVariants::FabriumId
 
   belongs_to :fabric
+
   has_many :favorites
+  has_many :favoriting_users, through: :favorites, source: :user
 
   scope :orphans, ->(bool=true) { 
     bool ? where(fabric_id: nil) : where.not(fabric_id: nil)
@@ -23,15 +25,24 @@ class FabricVariant < ActiveRecord::Base
   # Merged scopes
   #
   scope :weight, ->(*args) { joins(:fabric).merge(Fabric.weight(*args)) }
-  scope :category, ->(value) { joins(:fabric).merge(Fabric.category(value)) }
-  scope :material, ->(value) { joins(:fabric).merge(Fabric.material(value)) }
-  scope :dye_method, ->(value) { joins(:fabric).merge(Fabric.dye_method(value)) }
-  scope :mills, ->(value) { joins(:fabric).merge(Fabric.mills(value)) }
-  scope :not_mills, ->(value) { joins(:fabric).merge(Fabric.not_mills(value)) }
+  scope :category, ->(val) { joins(:fabric).merge(Fabric.category(val)) }
+  scope :material, ->(val) { joins(:fabric).merge(Fabric.material(val)) }
+  scope :dye_method, ->(val) { joins(:fabric).merge(Fabric.dye_method(val)) }
+  scope :mills, ->(val) { joins(:fabric).merge(Fabric.mills(val)) }
+  scope :country, ->(val) { joins(:fabric).merge(Fabric.country(val)) }
+  scope :not_mills, ->(val) { joins(:fabric).merge(Fabric.not_mills(val)) }
   scope :active_mills, ->{ joins(:fabric).merge(Fabric.active_mills) }
-  scope :tags, ->(value) { joins(:fabric).merge(Fabric.tags(value)) }
+  scope :tags, ->(val) { joins(:fabric).merge(Fabric.tags(val)) }
+  scope :bulk_lead_time, ->(val) { joins(:fabric).merge(Fabric.bulk_lead_time(val)) }
+  scope :bulk_minimum_quality, ->(val) { joins(:fabric).merge(Fabric.bulk_minimum_quality(val)) }
+  scope :sample_lead_time, ->(val) { joins(:fabric).merge(Fabric.bulk_lead_time(val)) }
+  scope :sample_minimum_quality, ->(val) { joins(:fabric).merge(Fabric.bulk_minimum_quality(val)) }
 
   scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
+  scope :in_stock, ->(val=true) { where(in_stock: val) }
+
+  scope :fabrium_id, ->(val) { where(arel_table[:fabrium_id].eq(val).or(Fabric.arel_table[:id].eq(val))) }
+  scope :item_number, ->(val) { where(arel_table[:item_number].eq(val).or(Fabric.arel_table[:item_number].eq(val))) }
 
   #
   # Variants delegate most of their attributes to their parent fabric.

@@ -77,6 +77,10 @@
               invalidValues.push(val);
             }
           });
+
+          if (invalidValues.length) {
+            selectize.trigger("invalid_values", invalidValues);
+          }
         }
 
         function restoreInvalidValues(newOptions, values) {
@@ -104,11 +108,13 @@
         }
         
         function setSelectizeOptions(newOptions) {
+          console.log(newOptions);
+
           var values = parseValues(ngModel.$viewValue);
-          selectize.addOption(newOptions);
-          selectize.refreshOptions(false);
-          if (options.mode === 'multi' && newOptions) {
-            restoreInvalidValues(newOptions, values);
+          selectize.addOption(newOptions.values || []);
+          // selectize.refreshOptions(false);
+          if (options.mode === 'multi' && newOptions.values) {
+            restoreInvalidValues(newOptions.values, values);
           }
           setSelectizeValue(values);
         }

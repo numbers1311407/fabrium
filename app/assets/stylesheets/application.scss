@@ -60,7 +60,7 @@ li.fabric-variant-result {
   }
 }
 
-body .form-group-weights {
+body .form-group-range {
   @include clearfix;
 
   label {
@@ -75,6 +75,10 @@ body .form-group-weights {
   }
   span, select, input {
     float: left;
+  }
+  select {
+    padding-left: 5px;
+    padding-right: 5px;
   }
   span, select {
     height: 34px;
@@ -353,11 +357,36 @@ td.thumb {
   color: $state-danger-text;
 }
 
-.form-search .form-group {
-  @include make-sm-column(6);
+.form-search {
+  .form-group {
+    @include make-sm-column(6);
+  }
+  .form-row-mills, .form-row-not_mills {
+    .form-group {
+      margin-bottom: 0;
+    }
+    .checkbox {
+      @include make-sm-column(6);
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    @media (min-width: $screen-sm-min) {
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .checkbox {
+        padding-top: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 
 fieldset.advanced-options {
+  > .checkbox {
+    margin-bottom: 20px;
+  }
 }
 
 tfoot.paginator {

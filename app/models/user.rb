@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include Users::BelongsToMeta
 
   has_many :favorites
+  has_many :favorite_fabric_variants, through: :favorites, source: :fabric_variant
 
   define_meta_types :admin, :mill, :buyer
 

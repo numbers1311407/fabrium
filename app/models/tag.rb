@@ -1,13 +1,14 @@
 class Tag < ActiveRecord::Base
   include Authority::Abilities
 
-  # `name` should be word chars and underscore.
-  #
-  # NOTE tag name characters can be expanded to include other characters
-  #      if necessary, but it is only critical that they cannot include
-  #      a comma, which is the separator for queries
-  #
-  validates :name, format: { with: /\A[\w-]+\z/ }
+  validates :name, 
+    uniqueness: true,
+    # `name` should be word chars and underscore.
+    #
+    # NOTE tag name characters can be expanded to include other characters
+    #      if necessary, but it is only critical that they cannot include
+    #      a comma, which is the separator for queries
+    format: { with: /\A[\w-]+\z/ }
 
   after_destroy :remove_tag_from_fabrics
   after_update :edit_tag_on_fabrics
