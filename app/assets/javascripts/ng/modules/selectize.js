@@ -102,17 +102,16 @@
           changing = true;
           setTimeout(function() {
             selectize.setValue(values);
+            selectize.refreshState();
             changing = false;
             storeInvalidValues(values, parseValues(selectize.getValue()));
           });
         }
         
         function setSelectizeOptions(newOptions) {
-          console.log(newOptions);
-
           var values = parseValues(ngModel.$viewValue);
           selectize.addOption(newOptions.values || []);
-          // selectize.refreshOptions(false);
+          selectize.refreshOptions(false);
           if (options.mode === 'multi' && newOptions.values) {
             restoreInvalidValues(newOptions.values, values);
           }
