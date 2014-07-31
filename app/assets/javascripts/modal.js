@@ -2,7 +2,7 @@
 
   // add a "ready' for modal show, so that code can be re-run when a modal
   // is opened
-  app.addReady(function (fn) {
+  utils.addReady(function (fn) {
     $(document).on("show.bs.modal", fn);
   });
 
@@ -55,7 +55,7 @@
             }
           })
           .on("ajax:success", function (e, res, status, xhr) {
-            app.parseXhrFlash(xhr);
+            utils.parseXhrFlash(xhr);
             $modal.modal("hide");
           });
       } 

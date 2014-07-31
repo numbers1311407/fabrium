@@ -7,9 +7,8 @@
   "private": true,
   "devDependencies": {
     "jquery": "~2.1.1",
-    "angular": "~1.2.17",
-    "angular-route": "~1.2.18",
-    "angular-resource": "~1.2.18",
+    "angular": "1.2.21",
+    "angular-route": "1.2.21",
     "angular-bootstrap": "~0.11.0",
     "angular-minicolors": "~0.0.3",
     "selectize": "~0.10.1",
@@ -18,5 +17,8 @@
     "underscore": "~1.6.0",
     "jcrop": "~0.9.12",
     "restangular": "~1.4.0"
+  },
+  "resolutions": {
+    "angular": "1.2.21"
   }
 }

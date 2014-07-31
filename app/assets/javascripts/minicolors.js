@@ -3,5 +3,5 @@
     $(".minicolors").minicolors();
   }
 
-  app.ready(init);
+  utils.ready(init);
 })();

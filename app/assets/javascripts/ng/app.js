@@ -4,7 +4,6 @@
 
   root.app = angular.module('fabrium', [
     'ngRoute', 
-    'ngResource',
     'ui.bootstrap',
     'minicolors-ng',
     'alerts-ng',

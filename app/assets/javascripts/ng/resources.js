@@ -2,25 +2,27 @@
 
   var Links = function (model) {
     model.link = function (rel) {
-
       var found = _.find(this.links || [], function (link) {
         return rel === link.rel;
       });
-
       return found && found.href;
     }
+    return model;
+  };
 
+  var Tags = function (model) {
+    model.tags_list = function () {
+      return model.tags.length ? model.tags.join(", ") : "None";
+    };
     return model;
   };
 
   app.run(function (Restangular) {
 
-
-    Restangular.extendModel("fabric_variants", Links);
-
+    Restangular.extendModel("fabrics", Links);
+    Restangular.extendModel("fabrics", Tags);
 
     Restangular.extendModel("users", function Favorites (model) {
-
       // favorites come down as a list of ids, but lets track them as
       // a hash so they can be easily added/removed and watched by angular
       model.favorites = {};

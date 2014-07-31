@@ -1,4 +1,6 @@
 class FabricsController < ResourceController
+  add_collection_filter_scope :collection_filter_includes
+
   permit_params [
     :bulk_lead_time, 
     :bulk_minimum_quality, 
@@ -38,5 +40,12 @@ class FabricsController < ResourceController
 
     resource.category || resource.build_category
     resource.dye_method || resource.build_dye_method
+  end
+
+  def collection_filter_includes(object)
+    object.
+      includes(:fabric_variants).
+      includes(:category).
+      includes(:dye_method)
   end
 end

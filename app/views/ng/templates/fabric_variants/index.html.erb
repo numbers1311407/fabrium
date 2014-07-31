@@ -269,8 +269,7 @@
 
 <ul class="fabric-variant-resultlist">
   <li class="fabric-variant-result" ng-repeat="item in items">
-    <div class="fabric-variant-result-inner" ng-click="show(item.id)">
-
+    <div class="fabric-variant-result-inner" ng-click="show(item.fabric_id, item.position)">
       <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
         <a target="_self" href="{{ item.link('edit') }}">Edit</a>
       </div>
@@ -294,7 +293,7 @@
           <td>Item #</td><td class="resultdetails-data">{{item.item_number || 'n/a'}}</td>
         </tr>
         <tr>
-          <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>
+          <td>Fabrium #</td><td class="resultdetails-data">{{item.id}}</td>
         </tr>
       </table>
     </div>

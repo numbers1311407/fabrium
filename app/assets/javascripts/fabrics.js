@@ -67,7 +67,7 @@ $(function () {
         $container.append(tmpl(data));
       }
 
-      app.runReadyCallbacks();
+      utils.runReadyCallbacks();
     }
 
     $(document).on("ajax:success", selector, function (event, data, msg, xhr) {

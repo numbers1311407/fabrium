@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h3 class="modal-title">Fabric: {{ resource.id }}</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-sm-6">
+      <img ng-src="{{ resource.variants[position].image.thumb }}" />
+    </div>
+    <div class="col-sm-6">
+      <p>Tags: {{ resource.tags_list() }}</p>
+      <a ng-click="printModal()">Print</a>
+    </div>
+    <div ng-switch on="current_user.favorites[resource.id]" class="fabric-favorite-status">
+      <div ng-switch-when="true">
+        <a class="favorite-toggle-link favorite-toggle-active" title="This fabric is one of your favorites.  Click to unfavorite." ng-click="current_user.toggleFavorite($event, resource.id)">
+          <i class="fa fa-heart"></i>
+        </a>
+      </div>
+      <div ng-switch-default>
+        <a class="favorite-toggle-link favorite-toggle-inactive" title="Click to add this fabric to your favorites." ng-click="current_user.toggleFavorite($event, resource.id)">
+          <i class="fa fa-heart"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

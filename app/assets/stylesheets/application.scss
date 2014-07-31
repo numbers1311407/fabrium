@@ -480,3 +480,24 @@ li.disabled {
 a[rel~=popover] .popover {
   line-height: 1.4;
 }
+
+@media screen {
+  #printSection {
+    display: none;
+  }
+}
+
+@media print {
+  body * {
+    visibility:hidden;
+  }
+  #printSection, #printSection * {
+    visibility: visible;
+    width: 100%;
+  }
+  #printSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

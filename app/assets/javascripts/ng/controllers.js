@@ -1,8 +1,14 @@
 ;(function (root) {
 
-  app.controller('FabricVariantShowCtrl',
+  app.controller('FabricShowCtrl',
     function ($scope, $modalInstance, resource) {
       $scope.resource = resource;
+
+      $scope.printModal = function () {
+        var $el = $(".ng-modal .modal-dialog");
+        utils.printElement($el[0]);
+        window.print();
+      }
     }
   );
 
@@ -196,15 +202,19 @@
         }
       };
 
-      $scope.show = function (id) {
+      $scope.show = function (id, position) {
+
+        $scope.position = position;
+
         var modalInstance = $modal.open({
-          templateUrl: "/templates/fabric_variants/show",
-          controller: "FabricVariantShowCtrl",
+          templateUrl: "/templates/fabrics/show",
+          controller: "FabricShowCtrl",
+          windowClass: "ng-modal",
           scope: $scope,
           resolve: {
             resource: function () {
               // resolve accepts promises and resolves them!
-              return Restangular.one("fabric_variants", id).get();
+              return Restangular.one("fabrics", id).get();
             }
           }
         })
