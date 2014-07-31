@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729233344) do
+ActiveRecord::Schema.define(version: 20140731200957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,9 +33,37 @@ ActiveRecord::Schema.define(version: 20140729233344) do
   add_index "buyer_mills", ["mill_id"], name: "index_buyer_mills_on_mill_id", using: :btree
 
   create_table "buyers", force: true do |t|
+    t.integer  "pending_cart_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "cart_items", force: true do |t|
+    t.integer  "fabric_variant_id"
+    t.integer  "cart_id"
+    t.integer  "mill_id"
+    t.integer  "state",             default: 0
+    t.text     "notes"
+    t.decimal  "sample_yardage"
+    t.string   "tracking_number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cart_items", ["cart_id"], name: "index_cart_items_on_cart_id", using: :btree
+  add_index "cart_items", ["fabric_variant_id"], name: "index_cart_items_on_fabric_variant_id", using: :btree
+  add_index "cart_items", ["mill_id"], name: "index_cart_items_on_mill_id", using: :btree
+
+  create_table "carts", force: true do |t|
+    t.integer  "mill_id"
+    t.integer  "buyer_id"
+    t.integer  "state",      default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "carts", ["buyer_id"], name: "index_carts_on_buyer_id", using: :btree
+  add_index "carts", ["mill_id"], name: "index_carts_on_mill_id", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -43,15 +71,11 @@ ActiveRecord::Schema.define(version: 20140729233344) do
     t.datetime "updated_at"
   end
 
-  add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
-
   create_table "dye_methods", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "dye_methods", ["name"], name: "index_dye_methods_on_name", using: :btree
 
   create_table "fabric_variants", force: true do |t|
     t.integer  "fabric_id"
@@ -74,6 +98,7 @@ ActiveRecord::Schema.define(version: 20140729233344) do
   end
 
   add_index "fabric_variants", ["cie_l", "cie_a", "cie_b"], name: "by_cie_lab", using: :btree
+  add_index "fabric_variants", ["fabric_id"], name: "index_fabric_variants_on_fabric_id", using: :btree
 
   create_table "fabrics", force: true do |t|
     t.integer  "mill_id"
@@ -99,10 +124,7 @@ ActiveRecord::Schema.define(version: 20140729233344) do
 
   add_index "fabrics", ["category_id"], name: "index_fabrics_on_category_id", using: :btree
   add_index "fabrics", ["dye_method_id"], name: "index_fabrics_on_dye_method_id", using: :btree
-  add_index "fabrics", ["glm"], name: "index_fabrics_on_glm", using: :btree
-  add_index "fabrics", ["gsm"], name: "index_fabrics_on_gsm", using: :btree
   add_index "fabrics", ["mill_id"], name: "index_fabrics_on_mill_id", using: :btree
-  add_index "fabrics", ["osy"], name: "index_fabrics_on_osy", using: :btree
   add_index "fabrics", ["price_eu"], name: "index_fabrics_on_price_eu", using: :gist
   add_index "fabrics", ["price_us"], name: "index_fabrics_on_price_us", using: :gist
   add_index "fabrics", ["tags"], name: "index_fabrics_on_tags", using: :gin
@@ -113,6 +135,9 @@ ActiveRecord::Schema.define(version: 20140729233344) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "favorites", ["fabric_variant_id"], name: "index_favorites_on_fabric_variant_id", using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "material_assignments", force: true do |t|
     t.integer "material_id"
@@ -129,8 +154,6 @@ ActiveRecord::Schema.define(version: 20140729233344) do
     t.datetime "updated_at"
   end
 
-  add_index "materials", ["name"], name: "index_materials_on_name", using: :btree
-
   create_table "mills", force: true do |t|
     t.string   "name"
     t.boolean  "active",     default: true
@@ -144,23 +167,23 @@ ActiveRecord::Schema.define(version: 20140729233344) do
     t.datetime "updated_at"
   end
 
-  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
-
   create_table "users", force: true do |t|
     t.integer  "meta_id"
     t.string   "meta_type"
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "failed_attempts",        default: 0,  null: false
+    t.integer  "failed_attempts",        default: 0,     null: false
     t.datetime "locked_at"
+    t.boolean  "wants_email",            default: true
+    t.boolean  "admin",                  default: false
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -175,6 +198,7 @@ ActiveRecord::Schema.define(version: 20140729233344) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
+  add_index "users", ["meta_id", "meta_type"], name: "index_users_on_meta_id_and_meta_type", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

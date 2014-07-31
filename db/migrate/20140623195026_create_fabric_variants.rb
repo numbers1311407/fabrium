@@ -1,7 +1,7 @@
 class CreateFabricVariants < ActiveRecord::Migration
   def change
     create_table :fabric_variants do |t|
-      t.references :fabric
+      t.references :fabric, index: true
       t.integer :position, default: 0
       t.string :fabrium_id
       t.string :item_number, default: ""

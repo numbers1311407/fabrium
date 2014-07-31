@@ -8,9 +8,9 @@ class CreateFabrics < ActiveRecord::Migration
 
   def change
     create_table :fabrics do |t|
-      t.references :mill
-      t.references :dye_method
-      t.references :category
+      t.references :mill, index: true
+      t.references :dye_method, index: true
+      t.references :category, index: true
       t.string :item_number, default: ""
       t.numrange :price_eu
       t.numrange :price_us
@@ -28,14 +28,8 @@ class CreateFabrics < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :fabrics, :mill_id
-    add_index :fabrics, :dye_method_id
-    add_index :fabrics, :category_id
     add_index :fabrics, :price_eu, using: 'gist'
     add_index :fabrics, :price_us, using: 'gist'
-    add_index :fabrics, :gsm
-    add_index :fabrics, :glm
-    add_index :fabrics, :osy
     add_index :fabrics, :tags, using: 'gin'
 
     reversible do |dir|

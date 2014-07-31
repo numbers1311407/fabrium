@@ -2,7 +2,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
   def change
     create_table(:users) do |t|
       ## meta record for this user (admin, mill, buyer)
-      t.references :meta, :polymorphic => true
+      t.references :meta, index: true, polymorphic: true
 
       ## Database authenticatable
       t.string :email,              :null => false, :default => ""
@@ -32,6 +32,14 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.integer  :failed_attempts, :default => 0, :null => false # Only if lock strategy is :failed_attempts
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       t.datetime :locked_at
+
+      # email preference
+      t.boolean :wants_email, default: true
+
+      # An "admin" type of user for the associated meta.  This could
+      # be more descriptive as "role" but probably unnecessary.  I suppose
+      # if an Admin user was admin? they'd be a super user.
+      t.boolean :admin, default: false
 
       ## Invitable
       t.string     :invitation_token

@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   resources :dye_methods
   resources :favorites
 
+  resources :carts do
+    get :cart
+  end
+
   # Templates.
   # These should probably be static and handle all logic client side 
   # but... they use some form helpers and contextual chunks based on
