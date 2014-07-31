@@ -13,6 +13,7 @@
     var initial_crop = $crop_field.val();
     var crop_labels = $("#crop_actions").data("labels");
     var initial_image_src = $(".fabric_image").attr("src");
+    var initial_image_color = $("#fabric_variant_color").minicolors("value");
 
     var showPreview = function (coords) {
       var $img = $("#full_image img");
@@ -106,6 +107,7 @@
       $crop_field.val(initial_crop);
       $("#fabric_variant_retained_image").val('');
       $(".fabric_image").attr("src", initial_image_src);
+      $("#fabric_variant_color").minicolors("value", initial_image_color);
       api.close();
     }
 

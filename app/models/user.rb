@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Authority::UserAbilities
+  include Authority::Abilities
 
   include Users::BelongsToMeta
 
@@ -16,4 +17,9 @@ class User < ActiveRecord::Base
     :timeoutable,
     :validatable, 
     :lockable
+
+  # don't require password on creation as users are created in the admin
+  def password_required?
+    super if persisted?
+  end
 end

@@ -16,6 +16,7 @@
     "alertify": "~0.3.10",
     "jquery-ujs": "~1.0.0",
     "underscore": "~1.6.0",
-    "jcrop": "~0.9.12"
+    "jcrop": "~0.9.12",
+    "restangular": "~1.4.0"
   }
 }

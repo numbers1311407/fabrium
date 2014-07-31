@@ -1,0 +1,11 @@
+.page-header
+  #content-title
+    h1= title st(:title, controller: :profiles)
+
+#content-body 
+  = simple_form_for resource, url: resource_path do |f|
+    .form-inputs-row.row
+      .form-inputs
+        = render 'form_fields', form: f, f: f
+    .form-actions
+      = render 'form_inputs', form: f, f: f

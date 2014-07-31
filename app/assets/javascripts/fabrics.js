@@ -1,5 +1,8 @@
 $(function () {
 
+  // On submitting the form, set all the position values to be that of
+  // their order in the list.  Sorting the elements simply moves them
+  // around, while on form submit the positions are taken into account.
   $("form#fabrics_form").submit(function (e) {
     $('tr.fabric-variant input[name$="[position]"]', this).each(function (i) {
       $(this).val(i);

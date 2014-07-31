@@ -18,6 +18,10 @@ en:
     messages:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'
+    profiles:
+      actions:
+        edit:
+          title: "Edit Your Profile"
     actions:
       show:
         title: '%{name}'

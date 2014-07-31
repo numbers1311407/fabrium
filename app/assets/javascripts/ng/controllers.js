@@ -1,14 +1,17 @@
 ;(function (root) {
 
   app.controller('FabricVariantShowCtrl',
-    function ($scope, $modalInstance, fabric_variant) {
-      $scope.fabric_variant = fabric_variant;
+    function ($scope, $modalInstance, resource) {
+      $scope.resource = resource;
     }
   );
 
   app.controller('FabricVariantIndexCtrl', 
-    function ($scope, $location, $timeout, $modal, FabricVariant, Tag, Mill) {
+    function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse) {
 
+      Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
+        $scope.current_user = user;
+      });
 
       $scope.mill_options = {};
       $scope.mill_cache = {};
@@ -22,7 +25,7 @@
         }, []);
 
         if (ids.length) {
-          Mill.query({id: ids.join(",")}, function (results) {
+          Restangular.all("mills").getList({id: ids.join(",")}).then(function (results) {
             angular.forEach(results, function (result) {
               $scope.mill_cache[result.id] = result;
             });
@@ -91,22 +94,29 @@
       $scope.submit = function () {
         $scope.parseSearch();
 
+        $scope.current_page_height = 
+            angular.element(".fabric-variant-resultlist").height();
+
         $scope.lastSearch = angular.copy($scope.search);
 
-        $scope.items = FabricVariant.query($scope.search, function (result, headers) {
+        var items = RestangularWithResponse.all("fabric_variants");
 
-          var pagination;
-          if (pagination = headers('X-Pagination')) {
-            $scope.pagination = JSON.parse(pagination);
-          } else {
-            delete $scope.pagination;
-          }
-
-          result.loading = false;
-        });
+        items.getList($scope.search)
+          .then(function (res) {
+            $scope.items = res.data;
+            var pagination;
+            if (pagination = res.headers('X-Pagination')) {
+              $scope.pagination = JSON.parse(pagination);
+            } else {
+              delete $scope.pagination;
+            }
+          })
+          .finally(function () {
+            $scope.loading = false;
+          });
 
         // set the new result to loading status
-        $scope.items.loading = true;
+        $scope.loading = true;
       };
 
 
@@ -166,7 +176,7 @@
           },
           load: function (query, callback) {
             if (!query.length) { return callback(); }
-            Mill.query({name: query}, callback);
+            Restangular.all("mills").getList({name: query}).then(callback);
           }
 
         },
@@ -181,7 +191,7 @@
           plugins: ['remove_button', 'close_button'],
           load: function (query, callback) {
 						if (!query.length) return callback();
-            Tag.query({name: query}, callback);
+            Restangular.all("tags").getList({name: query}).then(callback);
           }
         }
       };
@@ -190,9 +200,11 @@
         var modalInstance = $modal.open({
           templateUrl: "/templates/fabric_variants/show",
           controller: "FabricVariantShowCtrl",
+          scope: $scope,
           resolve: {
-            fabric_variant: function () {
-              return FabricVariant.get({id: id});
+            resource: function () {
+              // resolve accepts promises and resolves them!
+              return Restangular.one("fabric_variants", id).get();
             }
           }
         })

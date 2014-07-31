@@ -65,6 +65,8 @@
           <button type="submit" class="btn btn-primary">Search</button>
         </div>
 
+        <hr>
+
         <div class="checkbox">
           <label>
             <input type="checkbox" ng-model="search.favorites" ng-true-value="1"> Limit search to favorites
@@ -88,16 +90,24 @@
                 placeholder="Type to search mills by name..."
                 options="mill_options"
               >
-              <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills).present? %>
-                <a class="btn btn-default" ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
+            </div>
+            <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
+              <div class="form-link">
+                <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
                   Load my preferred mills
                 </a>
-              <% end %>
-            </div>
+                <a rel="popover">
+                  <i class="fa fa-question-circle" ></i>
+                </a>
+                <div class="hidden-content">
+                  You can manage your preferred mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                </div>
+              </div>
+            <% end %>
           </div>
 
           <div class="row form-row-not_mills">
-            <div class="form-group" ng-hide="b_mills">
+            <div class="form-group">
               <label>Exclude these Mills</label>
               <input
                 selectize="selectize.mills" 
@@ -106,13 +116,20 @@
                 placeholder="Type to search mills by name..."
                 options="mill_options"
               >
-
-              <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills).present? %>
-                <a class="btn btn-default" ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
+            </div>
+            <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
+              <div class="form-link">
+                <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
                   Load my blocked mills
                 </a>
-              <% end %>
-            </div>
+                <a rel="popover">
+                  <i class="fa fa-question-circle" ></i>
+                </a>
+                <div class="hidden-content">
+                  You can manage your blocked mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                </div>
+              </div>
+            <% end %>
           </div>
         <% end %>
 
@@ -132,15 +149,15 @@
 
         <div class="row">
           <div class="form-group">
-            <label>Fabrium Number</label>
+            <label>Fabrium #</label>
             <div class="input-group">
               <div class="input-group-addon">#</div>
-              <input class="form-control" type="text" ng-model="search.fabrium_number">
+              <input class="form-control" type="text" ng-model="search.fid">
             </div>
           </div>
           <% unless current_user.is_buyer? %>
             <div class="form-group">
-              <label>Item Number</label>
+              <label>Item #</label>
               <div class="input-group">
                 <div class="input-group-addon">#</div>
                 <input class="form-control" type="text" ng-model="search.item_number">
@@ -223,7 +240,7 @@
   </div>
 </div>
 
-<div ng-if="pagination && !items.loading">
+<div ng-if="pagination">
   <div ng-switch="pagination.total_count">
     <div ng-switch-when="0">
       No results were found
@@ -246,15 +263,40 @@
   ></pagination>
 </div>
 
-<div ng-if="items.loading">
+<div ng-show="loading" class="page-loading" ng-style="{height: current_page_height}">
   Loading...
 </div>
 
 <ul class="fabric-variant-resultlist">
   <li class="fabric-variant-result" ng-repeat="item in items">
     <div class="fabric-variant-result-inner" ng-click="show(item.id)">
+
+      <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
+        <a target="_self" href="{{ item.link('edit') }}">Edit</a>
+      </div>
+
+      <div ng-switch on="current_user.favorites[item.id]" class="result-panel fabric-favorite-status">
+        <div ng-switch-when="true">
+          <a class="favorite-toggle-link favorite-toggle-active" title="This fabric is one of your favorites.  Click to unfavorite." ng-click="current_user.toggleFavorite($event, item.id)">
+            <i class="fa fa-heart"></i>
+          </a>
+        </div>
+        <div ng-switch-default>
+          <a class="favorite-toggle-link favorite-toggle-inactive" title="Click to add this fabric to your favorites." ng-click="current_user.toggleFavorite($event, item.id)">
+            <i class="fa fa-heart"></i>
+          </a>
+        </div>
+      </div>
+
       <img ng-if="item.image.thumb" ng-src="{{item.image.thumb}}">
-      <div ng-if="!item.image.thumb" class="fabric-variant-image" style="background-color: #{{ item.color }};">
+      <table class="resultdetails">
+        <tr ng-if="!current_user.isBuyer()">
+          <td>Item #</td><td class="resultdetails-data">{{item.item_number || 'n/a'}}</td>
+        </tr>
+        <tr>
+          <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>
+        </tr>
+      </table>
     </div>
   </li>
 </ul>

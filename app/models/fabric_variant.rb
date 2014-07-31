@@ -41,8 +41,17 @@ class FabricVariant < ActiveRecord::Base
   scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
   scope :in_stock, ->(val=true) { where(in_stock: val) }
 
-  scope :fabrium_id, ->(val) { where(arel_table[:fabrium_id].eq(val).or(Fabric.arel_table[:id].eq(val))) }
-  scope :item_number, ->(val) { where(arel_table[:item_number].eq(val).or(Fabric.arel_table[:item_number].eq(val))) }
+  scope :fabrium_id, ->(val) { 
+    # if a plain number is passed, search by parent id, otherwise search variants
+    if val.to_s =~ /^\d+$/
+      joins(:fabric).merge(Fabric.fabrium_id(val))
+    else
+      where(fabrium_id: val)
+    end
+  }
+  scope :item_number, ->(val) { 
+    joins(:fabric).where(arel_table[:item_number].eq(val).or(Fabric.arel_table[:item_number].eq(val))) 
+  }
 
   #
   # Variants delegate most of their attributes to their parent fabric.
@@ -55,7 +64,6 @@ class FabricVariant < ActiveRecord::Base
     :mill, 
     :dye_method, 
     :category, 
-    :item_number, 
     :price_eu, 
     :price_us,
     :width,

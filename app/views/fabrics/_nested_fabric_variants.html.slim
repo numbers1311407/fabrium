@@ -5,7 +5,7 @@
     script(type="html/template")
       | <tr class="fabric-variant" data-id="<%= obj.id %>">
           <td class="thumb">
-            <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal popover">
+            <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal popover" data-placement="left">
               <img src="<%= obj.image.thumb %>" />
             </a>
           </td>
@@ -45,7 +45,7 @@
           - variant = vf.object
           tr.fabric-variant(data-id=variant.id)
             td.thumb
-              = link_to edit_fabric_variant_path(variant), rel: "modal popover" do
+              = link_to edit_fabric_variant_path(variant), rel: "modal popover", data: {placement: 'left'} do
                 - if variant.thumb
                   = image_tag(variant.thumb.url)
                 - else

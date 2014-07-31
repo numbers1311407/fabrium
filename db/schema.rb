@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20140729233344) do
 
   create_table "fabric_variants", force: true do |t|
     t.integer  "fabric_id"
-    t.integer  "position"
+    t.integer  "position",     default: 0
     t.string   "fabrium_id"
     t.string   "item_number",  default: ""
     t.integer  "mill_id"
@@ -137,14 +137,6 @@ ActiveRecord::Schema.define(version: 20140729233344) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "tag_assignments", force: true do |t|
-    t.integer "tag_id"
-    t.integer "fabric_id"
-  end
-
-  add_index "tag_assignments", ["fabric_id"], name: "index_tag_assignments_on_fabric_id", using: :btree
-  add_index "tag_assignments", ["tag_id"], name: "index_tag_assignments_on_tag_id", using: :btree
 
   create_table "tags", force: true do |t|
     t.string   "name"

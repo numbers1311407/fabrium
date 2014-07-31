@@ -25,25 +25,29 @@ $result-padding: 10px;
 
 // fabric search
 ul.fabric-variant-resultlist {
-  // margin: 0;
-  // padding: 0;
   @include make-row($result-padding);
   padding: 0;
   list-style: none none;
+  margin: 20px 0;
 }
+
+.page-loading {
+  margin: 20px 0;
+  height: 1200px;
+}
+
 
 li.fabric-variant-result {
 
   @include make-xs-column(4, $result-padding);
   @include make-sm-column(3, $result-padding);
+  @include make-lg-column(2, $result-padding);
   padding-bottom: $result-padding;
 
   // display: block;
   // float: left;
   // line-height: 100px;
   // margin: 0 10px 10px 0;
-  text-align: center;
-  font-size: 20px;
   overflow: hidden;
   img {
     display: block;
@@ -55,7 +59,7 @@ li.fabric-variant-result {
   }
 
   .fabric-variant-result-inner {
-    margin: 5px;
+    position: relative;
     cursor: pointer;
   }
 }
@@ -340,8 +344,13 @@ select[data-select],
 }
 
 td.thumb {
-  width: 30px;
+  width: 30px !important;
   padding: 2px 0 2px 5px !important;
+  position: relative;
+
+  a {
+    display: block;
+  }
   img {
     width: 100%;
     border: 1px solid #eee;
@@ -357,9 +366,21 @@ td.thumb {
   color: $state-danger-text;
 }
 
+
 .form-search {
-  .form-group {
+  .form-group, .form-link {
     @include make-sm-column(6);
+  }
+  .form-link {
+    > a {
+      line-height: 34px;
+    }
+    margin-top: -8px;
+    margin-bottom: 15px;
+    @media (min-width: $screen-sm-min) {
+      margin-top: 25px;
+      margin-bottom: 0;
+    }
   }
   .form-row-mills, .form-row-not_mills {
     .form-group {
@@ -370,6 +391,7 @@ td.thumb {
       margin-top: 0;
       margin-bottom: 15px;
     }
+
     @media (min-width: $screen-sm-min) {
       .form-group {
         margin-bottom: 15px;
@@ -401,4 +423,61 @@ tfoot.paginator {
 
 li.disabled {
   // display: none;
+}
+
+[ng-click], a[rel="popover"] {
+  cursor: pointer;
+}
+
+.popover img.popover-thumb {
+  width: 150px;
+  display: block;
+}
+
+.hidden-content {
+  display: none;
+}
+
+.result-panel {
+  position: absolute;
+  top: 0;
+  padding: 3px 6px;
+  background-color: rgba(255,255,255,0.7);
+
+  &.fabric-actions {
+    left: 0;
+  }
+
+  &.fabric-favorite-status {
+    right: 0;
+  }
+}
+
+.fabric-favorite-status {
+  a {
+    color: #f88;
+    &:hover { color: #f66; }
+
+    &.favorite-toggle-inactive {
+      color: #999;
+      &:hover { color: #aaa; }
+    }
+  }
+}
+
+.pagination {
+  margin-bottom: 0;
+}
+
+.fabric-variant-resultlist table.resultdetails {
+  width: 100%;
+  // font-size: 13px;
+  // text-align: left;
+}
+.resultdetails-data {
+  text-align: right;
+}
+
+a[rel~=popover] .popover {
+  line-height: 1.4;
 }

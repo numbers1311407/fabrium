@@ -8,7 +8,8 @@
     'ui.bootstrap',
     'minicolors-ng',
     'alerts-ng',
-    'selectize-ng'
+    'selectize-ng',
+    'restangular'
   ]);
 
 })(window);

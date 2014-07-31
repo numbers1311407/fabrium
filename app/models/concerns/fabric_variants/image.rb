@@ -32,6 +32,13 @@ module FabricVariants
       image_stored? ? image.url : nil
     end
 
+    def dominant_colors
+      return [] unless image_stored?
+      Miro::DominantColors.new(image.file).to_hex
+    rescue
+      []
+    end
+
     protected
 
     def should_validate_crop?

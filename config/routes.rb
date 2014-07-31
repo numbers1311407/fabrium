@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   resources :mills
 
+  resource :profile
+
   resources :tags
   resources :materials
   resources :categories

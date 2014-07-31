@@ -5,9 +5,9 @@ class FabricVariantsController < ResourceController
   # important that they are never shown publicly as orphans
   add_collection_filter_scope :collection_filter_orphans
 
-  # In a normal search, only the *first* variant of each fabric should
-  # be returned, *unless* the search is by color, in which case all
-  # matching variants for each fabric are shown.
+  # In a typical search, only the *first* variant of each fabric should
+  # be returned.  The exceptions to this are searching by color, exact
+  # item number / fabrium id, favorites
   add_collection_filter_scope :collection_filter_primary_variant
 
   # always includes
@@ -36,6 +36,15 @@ class FabricVariantsController < ResourceController
 
   has_scope :weight_max, if: 'params[:weight_min].blank?' do |controller, scope, value|
     scope.weight -Float::INFINITY..(value.to_f), controller.params[:weight_units]
+  end
+
+  has_scope :price_range_or_min, as: :price_min do |controller, scope, value|
+    max = controller.params[:price_max] || Float::INFINITY
+    scope.weight (value.to_f)..(max.to_f), controller.params[:price_units]
+  end
+
+  has_scope :price_max, as: :price_min do |controller, scope, value|
+    scope.weight -Float::INFINITY..(value.to_f), controller.params[:price_units]
   end
 
 
@@ -90,7 +99,7 @@ class FabricVariantsController < ResourceController
   has_scope :category
   has_scope :country
   has_scope :dye_method
-  has_scope :fabrium_id
+  has_scope :fabrium_id, as: :fid
   has_scope :item_number
   has_scope :material
   has_scope :price
@@ -122,6 +131,7 @@ class FabricVariantsController < ResourceController
       if @image
         attrs.merge!({ name: params[:image].original_filename })
         @retained_image = Dragonfly::Serializer.json_b64_encode(attrs)
+        @colors = Miro::DominantColors.new(params[:image].tempfile).to_hex
       end
     end
 
@@ -142,7 +152,13 @@ class FabricVariantsController < ResourceController
   end
 
   def collection_filter_primary_variant(object)
-    params[:color] ? object : object.primary
+    non_primary_search_keys = [:color, :fid, :item_number]
+
+    if non_primary_search_keys.any? {|key| params.has_key?(key) }
+      object
+    else
+      object.primary
+    end
   end
 
   def collection_filter_includes(object)

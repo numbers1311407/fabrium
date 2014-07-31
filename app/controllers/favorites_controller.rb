@@ -1,4 +1,7 @@
 class FavoritesController < ResourceController
+  defaults finder: :find_by_fabric_variant_id!
+
+  permit_params :fabric_variant_id
 
   respond_to :html, only: [:update]
 

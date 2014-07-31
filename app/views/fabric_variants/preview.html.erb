@@ -13,10 +13,12 @@
   };
   
   <% if @image %>
+
   // if an image was uploaded, replace the relevant parts of the parent form
   var pwin = window.parent, pdoc = pwin.document;
   pdoc.getElementById("fabric_variant_image_crop").value = null;
   pdoc.getElementById("fabric_variant_retained_image").value = "<%= @retained_image %>";
+  pwin.$("#fabric_variant_color").minicolors('value', "<%= @colors[0] %>");
   var imgs = pdoc.getElementsByClassName("fabric_image");
   for (var i=0; i<imgs.length; i++) { imgs[i].src = "<%= @image.url  %>"; }
 
