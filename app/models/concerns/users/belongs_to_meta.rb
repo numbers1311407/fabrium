@@ -4,7 +4,6 @@ module Users
 
     included do
       belongs_to :meta, polymorphic: true
-      validates :meta, presence: true
       accepts_nested_attributes_for :meta, allow_destroy: false
     end
 

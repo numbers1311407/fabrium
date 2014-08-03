@@ -16,7 +16,9 @@
     "jquery-ujs": "~1.0.0",
     "underscore": "~1.6.0",
     "jcrop": "~0.9.12",
-    "restangular": "~1.4.0"
+    "restangular": "~1.4.0",
+    "angular-carousel": "~0.2.5",
+    "jquery-cycle2": "~2.1.5"
   },
   "resolutions": {
     "angular": "1.2.21"

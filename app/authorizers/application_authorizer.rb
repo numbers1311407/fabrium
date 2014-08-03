@@ -12,8 +12,6 @@ class ApplicationAuthorizer < Authority::Authorizer
     # considered forbidden.
     # false
 
-    # until auth is worked on, ignore it
-    true
+    user.persisted?
   end
-
 end

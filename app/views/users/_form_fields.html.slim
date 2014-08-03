@@ -1,0 +1,6 @@
+= f.input :email
+- unless f.object.is_admin?
+  = f.input :pending, label: false, inline_label: "Deactivate this user?"
+= f.input :wants_email, label: false, inline_label: "Receives email notifications?"
+- if f.object.is_mill?
+  = f.input :admin, label: false, inline_label: true

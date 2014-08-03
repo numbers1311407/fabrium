@@ -14,7 +14,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'quiet_assets', group: :development
-gem 'miro', group: :development
+gem 'miro'
 
 gem 'bootstrap-sass'
 gem 'puma'
@@ -25,12 +25,13 @@ gem 'fog'
 gem 'devise'
 gem 'devise_invitable'
 gem 'inherited_resources'
+gem 'responders'
 gem 'has_scope'
 gem 'simple_form'
 gem 'simple_form_angular'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
-gem 'font-awesome-sass'
+gem 'font-awesome-rails'
 gem 'rollbar'
 gem 'roar-rails'
 gem 'dragonfly'
@@ -39,3 +40,4 @@ gem 'ransack'
 gem 'gretel'
 gem 'htmlcompressor'
 gem 'ngannotate-rails'
+gem 'sucker_punch'

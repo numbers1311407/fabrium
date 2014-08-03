@@ -2,7 +2,8 @@ module FabricVariantRepresenter
   include Roar::Representer::JSON
   include Roar::Representer::Feature::Hypermedia
 
-  property :fabrium_id, as: :id
+  property :id
+  property :fabrium_id
   property :fabric_id
   property :item_number
   property :color
@@ -13,4 +14,7 @@ module FabricVariantRepresenter
     # property :image_path, as: :full
     property :thumb_path, as: :thumb
   end
+
+  link(:self) { fabric_url(self.fabric) }
+  link(:edit) { edit_fabric_url(self.fabric) }
 end

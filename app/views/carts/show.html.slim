@@ -1,0 +1,36 @@
+- if false # resource.persisted?
+
+  / In reality there are several states for the cart which mean different views
+  / for different user types
+
+  / when 'mill'
+  /  ONLY the owning mill can view the cart at all.  The cart is in a form state
+  /  where the mill can enter sample yardages, and submit to a buyer email
+  / when 'buyer'
+  /  ONLY the owning buyer can view the cart at all.  The cart is in a form state
+  /  where the buyer can edit notes and submit the form as an order.
+  / when 'order'
+  /  Any mill which has cart items will view the cart as a form of ONLY the
+  /  cart items they are responsible for.  Once an item is shipped or refused those
+  /  buttons will no longer appear, but I think the other fields will remain editable.
+  /  The buyer sees this form as a static page which is updated as the mills edit
+  /  the fields.
+  / when 'closed'
+  /  This is largely the same as #2, the only difference being that the buyer
+  /  will see a "closed" status in their list of carts, as opposed to a "pending"
+  /
+  / This means that there should probably be several views
+  /
+  / the 'mill' state - pre-order form (building a buyer cart)
+  / the 'buyer' state - pre-order form (putting together an order or processing a mill gen'd cart)
+  / the 'buyer' 'order' state - a semi static view of the order as it is processed and completed
+  / the 'mill' 'order' state - a form for mills to edit their individual cart items
+
+- else
+  = simple_form_for resource do |f|
+    = f.simple_fields_for :cart_items do |ff|
+      .cart-items
+        = render ff.object, f: ff
+
+    .form-inputs
+      = f.submit class: 'btn btn-primary'

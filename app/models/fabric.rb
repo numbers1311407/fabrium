@@ -21,5 +21,7 @@ class Fabric < ActiveRecord::Base
   scope :sample_minimum_quality, ->(val) { where(arel_table[:sample_minimum_quality].lteq(val)) }
   scope :country, ->(val) { where(country: val) }
 
+  has_many :fabric_notes
+
   validates :width, numericality: { greater_than: 0 }
 end

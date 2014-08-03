@@ -46,6 +46,7 @@ class FabricsController < ResourceController
     object.
       includes(:fabric_variants).
       includes(:category).
+      includes(:mill).
       includes(:dye_method)
   end
 end

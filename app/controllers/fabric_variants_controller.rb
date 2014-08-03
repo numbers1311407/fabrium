@@ -16,6 +16,9 @@ class FabricVariantsController < ResourceController
   # filter the scope by role
   add_collection_filter_scope :collection_filter_roles
 
+  # block searches as defined by each mill's block list
+  add_collection_filter_scope :collection_filter_blocklists
+
   ##
   # Scopes
   #
@@ -175,6 +178,14 @@ class FabricVariantsController < ResourceController
     # mills only see their own fabrics
     when 'mill'
       object = object.mills(current_user.meta.id)
+    end
+
+    object
+  end
+
+  def collection_filter_blocklists(object)
+    if current_user.is_buyer?
+      object = object.merge(Mill.filter_by_domain(current_user.domain))
     end
 
     object

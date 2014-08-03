@@ -9,7 +9,8 @@ module Resources
 
     module ClassMethods
       def add_collection_filter_scope(scope)
-        # Note the 
+        # Note this is `+=` instead of `<<` to force creation of a new array 
+        # rather than appending to the parent
         self.collection_filter_scopes += [scope]
       end
     end

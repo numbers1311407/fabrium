@@ -1,0 +1,4 @@
+= f.button :submit, class: 'btn btn-primary'
+
+- if f.object.persisted? && f.object.user != current_user
+  = f.button :submit, st('helpers.commit_and_resend_invitation'), name: 'commit_and_resend_invitation', class: "btn btn-default", remote: true

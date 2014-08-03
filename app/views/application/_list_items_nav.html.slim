@@ -1,0 +1,8 @@
+li(class=(current_page?(tags_path) ? "active" : nil))
+  = link_to Tag.model_name.human.pluralize, tags_path
+li(class=(current_page?(categories_path) ? "active" : nil))
+  = link_to Category.model_name.human.pluralize, categories_path
+li(class=(current_page?(dye_methods_path) ? "active" : nil))
+  = link_to DyeMethod.model_name.human.pluralize, dye_methods_path
+li(class=(current_page?(materials_path) ? "active" : nil))
+  = link_to Material.model_name.human.pluralize, materials_path

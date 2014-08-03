@@ -1,4 +1,5 @@
 class ResourceController < InheritedResources::Base
+  self.layout_name = 'admin'
 
   include Resources::Authority
   include Resources::PermitParams
@@ -7,6 +8,8 @@ class ResourceController < InheritedResources::Base
   include Resources::Pagination
 
   include Roar::Rails::ControllerAdditions
+
+  responders :flash
 
   respond_to :json
 
@@ -23,10 +26,6 @@ class ResourceController < InheritedResources::Base
   end
 
   protected
-
-  def determine_layout
-    request.xhr? ? false : 'admin'
-  end
 
   def after_commit_redirect_path
     collection_path

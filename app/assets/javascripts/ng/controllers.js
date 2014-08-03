@@ -1,23 +1,19 @@
 ;(function (root) {
-
-  app.controller('FabricShowCtrl',
-    function ($scope, $modalInstance, resource) {
-      $scope.resource = resource;
-
-      $scope.printModal = function () {
-        var $el = $(".ng-modal .modal-dialog");
-        utils.printElement($el[0]);
-        window.print();
-      }
-    }
-  );
+  var autosave_timeout = 1000 * 10;
 
   app.controller('FabricVariantIndexCtrl', 
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse) {
 
       Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
         $scope.current_user = user;
+
+        if (!user.isAdmin()) {
+          Restangular.oneUrl("carts", "/cart.json").get().then(function (cart) {
+            $scope.cart = cart;
+          });
+        }
       });
+
 
       $scope.mill_options = {};
       $scope.mill_cache = {};
@@ -42,6 +38,10 @@
           $scope.mill_options.values = [];
           $timeout(cache);
         }
+      };
+
+      $scope.favorite = function (n) {
+        return !!$scope.current_user.favorites[n];
       };
 
       // this will be populated after the form is parsed (see advancedOptions directive)
@@ -198,6 +198,7 @@
           load: function (query, callback) {
 						if (!query.length) return callback();
             Restangular.all("tags").getList({name: query}).then(callback);
+
           }
         }
       };
@@ -213,7 +214,6 @@
           scope: $scope,
           resolve: {
             resource: function () {
-              // resolve accepts promises and resolves them!
               return Restangular.one("fabrics", id).get();
             }
           }
@@ -224,43 +224,92 @@
     }
   );
 
-  app.directive('advancedOptions', [function() {
-    return {
-      restrict : 'C', 
-      link : function(scope, element, attrs) {
-        // Set up the "advanced fields".  Currently all fields with an ngModel
-        // attriubte,  this may have to become more sophisticated if the form 
-        // inputs require it
-        scope.advanced_fields = _.map(element.find("[ng-model]"), function (el) {
-          return $(el).attr("ng-model").replace("search.", "");
-        });
+  app.controller('FabricShowCtrl',
+    function ($scope, $modalInstance, Restangular, resource) {
+      $scope.resource = resource;
 
-        // Set the initial value for the `advanced` var depending on if
-        // the initial query includes an advanced param
-        scope.advanced = !!_.detect(scope.advanced_fields, function (field) {
-          return !!scope.search[field];
-        });
+      $scope.$watch("position", function (val) {
+        $scope.variant = resource.variants[val];
+      });
 
-        // when toggling the advanced fields off, loop over the advanced
-        // params to see if any were included in the query, and if found,
-        // update the search.
-        scope.$watch("advanced", function (value) {
-          if (!value) {
-            var deleted = 0;
+      $scope.printModal = function () {
+        var $el = $(".ng-modal .modal-dialog");
+        utils.printElement($el[0]);
+        window.print();
+      };
 
-            angular.forEach(scope.advanced_fields, function (field) {
-              if (scope.search[field]) {
-                delete scope.search[field];
-                deleted++;
-              }
-            });
+      /**
+       * Super kludgy note implementation.
+       *
+       * Could use a refactor!
+       *
+       * The double flag approach of saving & dirty is necessitated by
+       * the throttled execution of the update request itself and then
+       * the time of the request.
+       *
+       * The note should save every X seconds while the modal is opened,
+       * but if the modal closes it needs to save immediately.  If the
+       * modal closes while in the middle of a throttled delay, the throttled
+       * request will not occur because the note is already either saving
+       * or has been cleaned.
+       */
 
-            if (deleted) {
-              scope.updateSearch();
-            }
-          }
+      // note tracks the note itself, it's "dirty" state, and whether
+      // it's currently enroute to save
+      $scope.note = {note: null, dirty: false, saving: false};
+
+      // note updating function
+      var updateNote = function () {
+        // if the note isn't dirty, or if it's already saving, return
+        if (!$scope.note.dirty || $scope.note.saving) {
+          return;
+        }
+        // mark it as saving (or deleting, whatevs)
+        $scope.note.saving = true;
+
+        var note = $scope.note.note, promise;
+
+        // then make the request based on note's contents
+        if (note) {
+          var req = Restangular.one("fabric_notes", resource.id);
+          req.note = note;
+          promise = req.put();
+        } else {
+          promise = Restangular.one("fabric_notes", resource.id).remove();
+        }
+
+        promise.then(function () {
+          $scope.note.dirty = false;
+          $scope.note.saving = false;
         });
       }
-    };
-  }])
+
+      // throttled note updater for changes to the text area
+      var throttledUpdate = _.throttle(updateNote, autosave_timeout, {leading: false});
+
+      // Call update immediately on close.  This will only result in
+      // a request if the note has been changed.
+      $modalInstance.result.finally(updateNote);
+
+      // As the note changes, set the note as dirty then queue up the 
+      // throttled update.  It will execute after N seconds or whenever
+      // the modal is closed.
+      $scope.$watch('note.note', function (note, oldnote) {
+        // On the initial server response the note will change from null.
+        // Don't respond to this with a persistence request.
+        if (null !== oldnote) {
+          $scope.note.dirty = true;
+          throttledUpdate(note);
+        }
+      });
+
+      $scope.onCycleBefore = function (e, API) {
+        $scope.position = API.nextSlide;
+      };
+
+      Restangular.one("fabric_notes", resource.id).get().then(function (note) {
+        $scope.note.note = note.note;
+      });
+    }
+  );
 })(window);

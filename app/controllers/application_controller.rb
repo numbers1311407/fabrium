@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
 
+  include FlashToHeaders
+  include DeterminesLayout
+
   rescue_from ActionController::UnknownFormat, with: :render_406
   # rescue_from ActionView::MissingTemplate, with: :render_404
 
-  layout :determine_layout
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -14,10 +16,6 @@ class ApplicationController < ActionController::Base
   after_filter :set_csrf_cookie_for_ng
 
   protected
-
-  def determine_layout
-    false if request.xhr?
-  end
 
   def render_406
     render file: 'public/406.html', layout: false, status: 406

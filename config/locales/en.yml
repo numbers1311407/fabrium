@@ -6,15 +6,19 @@ en:
       create: "Save %{model}"
       update: "Save %{model}"
       submit: "Save %{model}"
-    commit_and_redirect: "Save %{model} and Create Another"
 
   st:
+    helpers:
+      commit_and_redirect: "Save %{Resource} and Create Another"
+      commit_and_resend_invitation: "Save %{Resource} and Resend Invitation"
     links:
       back: 'Back'
       destroy: 'Delete'
       edit: 'Edit'
       new: 'New %{Resource}'
       show: 'Details'
+      activate: 'Activate'
+      resend_invitation: 'Resend Invitation'
     messages:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'
@@ -22,6 +26,8 @@ en:
       actions:
         edit:
           title: "Edit Your Profile"
+        blocklist:
+          title: 'Edit Approved Domains'
     actions:
       show:
         title: '%{name}'
@@ -51,9 +57,10 @@ en:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
-      inclusion: "Must be included in the list"
+      inclusion: "%{attribute} must be included in the list"
+      taken: "%{attribute} has already been taken."
       exclusion: "%{attribute} is reserved"
-      invalid: "Invalid entry"
+      invalid: "%{attribute} is not valid"
       confirmation: "Must match %{attribute}"
       accepted: "%{attribute} must be accepted"
       empty: "%{attribute} can't be empty"
@@ -129,6 +136,9 @@ en:
     # Translate model names. Used in Model.human_name().
     models:
       fabric_variant: Fabric Variant
+      dye_method: Dye Method
+      tag: Keyword
+      approved_domain: Approved Domain
 
     # Translate model attribute names. Used in Model.human_attribute_name(attribute).
     attributes:
@@ -139,6 +149,15 @@ en:
         bulk_lead_time: Bulk Lead Time
         dye_method: Dye Method
         fabric_variants: Variants
+        tags: Keywords
+      mill:
+        domain_filter: Domain Filter Type
+        domain_names: Filtered Domains
+      approved_domain:
+        name: Domain Name
+        entity: Type
+      user:
+        meta_type: Type
 
     #attributes:
       # For example,

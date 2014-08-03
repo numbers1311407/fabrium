@@ -98,6 +98,9 @@ Devise.setup do |config|
   # config.pepper = '50462a41a820e58e7ce5541cc560c5401d158a62177240a48401e5c5f740d32e5f0f00d3574f5f8ccf86e80d07f16df88b4510f28c448ac4a6de4d57c8b134cf'
 
   # ==> Configuration for :invitable
+  # 
+  Devise.invited_by_class_name = 'User'
+ 
   # The period the generated invitation token is valid, after
   # this period, the invited resource won't be able to accept the invitation.
   # When invite_for is 0 (the default), the invitation won't expire.

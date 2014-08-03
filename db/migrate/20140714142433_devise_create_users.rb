@@ -36,6 +36,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # email preference
       t.boolean :wants_email, default: true
 
+      # pending confirmation
+      t.boolean :pending, default: true
+
       # An "admin" type of user for the associated meta.  This could
       # be more descriptive as "role" but probably unnecessary.  I suppose
       # if an Admin user was admin? they'd be a super user.

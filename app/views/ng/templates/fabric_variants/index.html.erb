@@ -269,31 +269,25 @@
 
 <ul class="fabric-variant-resultlist">
   <li class="fabric-variant-result" ng-repeat="item in items">
-    <div class="fabric-variant-result-inner" ng-click="show(item.fabric_id, item.position)">
+    <div class="fabric-variant-result-inner">
       <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
-        <a target="_self" href="{{ item.link('edit') }}">Edit</a>
+        <a target="_self" href="{{ item.links | link:'edit' }}">Edit</a>
       </div>
 
-      <div ng-switch on="current_user.favorites[item.id]" class="result-panel fabric-favorite-status">
-        <div ng-switch-when="true">
-          <a class="favorite-toggle-link favorite-toggle-active" title="This fabric is one of your favorites.  Click to unfavorite." ng-click="current_user.toggleFavorite($event, item.id)">
-            <i class="fa fa-heart"></i>
-          </a>
-        </div>
-        <div ng-switch-default>
-          <a class="favorite-toggle-link favorite-toggle-inactive" title="Click to add this fabric to your favorites." ng-click="current_user.toggleFavorite($event, item.id)">
-            <i class="fa fa-heart"></i>
-          </a>
-        </div>
-      </div>
+      <a class="result-panel fabric-favorite-status" 
+        ng-click="current_user.toggleFavorite(item.id)"
+        ng-attr-title="{{ favorite(item.id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
+        <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[favorite(item.id)]"></i>
+      </a>
 
-      <img ng-if="item.image.thumb" ng-src="{{item.image.thumb}}">
+      <img ng-src="{{item.image.thumb}}" ng-click="show(item.fabric_id, item.position)">
+
       <table class="resultdetails">
         <tr ng-if="!current_user.isBuyer()">
-          <td>Item #</td><td class="resultdetails-data">{{item.item_number || 'n/a'}}</td>
+          <td>Item #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
         </tr>
         <tr>
-          <td>Fabrium #</td><td class="resultdetails-data">{{item.id}}</td>
+          <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>
         </tr>
       </table>
     </div>

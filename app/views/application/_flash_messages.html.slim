@@ -6,3 +6,9 @@
         span(aria-hidden="true") &times;
         span.sr-only Close
       = msg
+  script(id="alertTmpl" type="html/template")
+    div(class=("alert alert-<%= type %>".html_safe))
+      button.close(type="button" data-dismiss="alert")
+        span(aria-hidden="true") &times;
+        span.sr-only Close
+      | <%= msg %>

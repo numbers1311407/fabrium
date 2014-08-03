@@ -11,12 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140731200957) do
+ActiveRecord::Schema.define(version: 20140803173307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "admins", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "approved_domains", force: true do |t|
+    t.string   "name"
+    t.integer  "entity",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -57,6 +64,7 @@ ActiveRecord::Schema.define(version: 20140731200957) do
   create_table "carts", force: true do |t|
     t.integer  "mill_id"
     t.integer  "buyer_id"
+    t.string   "public_id"
     t.integer  "state",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -73,6 +81,14 @@ ActiveRecord::Schema.define(version: 20140731200957) do
 
   create_table "dye_methods", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fabric_notes", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "fabric_id"
+    t.text     "note"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -156,9 +172,11 @@ ActiveRecord::Schema.define(version: 20140731200957) do
 
   create_table "mills", force: true do |t|
     t.string   "name"
-    t.boolean  "active",     default: true
+    t.boolean  "active",        default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "domains",       default: [],   array: true
+    t.integer  "domain_filter", default: 0
   end
 
   create_table "tags", force: true do |t|
@@ -183,6 +201,7 @@ ActiveRecord::Schema.define(version: 20140731200957) do
     t.integer  "failed_attempts",        default: 0,     null: false
     t.datetime "locked_at"
     t.boolean  "wants_email",            default: true
+    t.boolean  "pending"
     t.boolean  "admin",                  default: false
     t.string   "invitation_token"
     t.datetime "invitation_created_at"

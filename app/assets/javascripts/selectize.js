@@ -95,6 +95,9 @@ $(function () {
 
       $.getJSON(options.url, search, function (data) {
         callback(_.map(data, function (o) {
+          if ('string' == typeof o) {
+            return { value: o, text: o };
+          }
           return { value: o.id, text: o[options.param] };
         }));
       });

@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: fabrium_production
-  username: fabrium
-  password: <%= ENV['FABRIUM_DATABASE_PASSWORD'] %>
+  #username: fabrium
+  #password: <%= ENV['FABRIUM_DATABASE_PASSWORD'] %>

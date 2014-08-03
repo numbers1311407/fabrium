@@ -1,0 +1,2 @@
+= f.input :entity, as: :select, collection: ApprovedDomain.entities.map {|k, v| [k.humanize, k] }, input_html: { data: { select: {} } }
+= f.input :name

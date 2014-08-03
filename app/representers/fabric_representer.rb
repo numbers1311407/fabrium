@@ -5,10 +5,27 @@ module FabricRepresenter
   property :id
   property :item_number
   property :tags
-
-  property :dye_method
-  property :category
   property :width
+
+  collection :materials do
+    property :name, as: :fiber
+    property :value, as: :percentage
+  end
+
+  property :dye_method do
+    property :id
+    property :name
+  end
+
+  property :category do
+    property :id
+    property :name 
+  end
+
+  property :mill do
+    property :id
+    property :name
+  end
 
   nested :price do
     nested :us do
@@ -28,7 +45,13 @@ module FabricRepresenter
     property :osy
   end
 
-  property :country
+  property :country, prepare: ->(o, opts) { 
+    return {} if o.blank?;
+
+    option = CountrySelectInput::OPTIONS.detect {|opt| opt[1] == o }
+
+    { code: o, name: option[0] }
+  }
 
   nested :minimum_quality do
     property :sample_minimum_quality, as: :sample
@@ -40,7 +63,19 @@ module FabricRepresenter
     property :bulk_lead_time, as: :bulk
   end
 
-  collection :fabric_variants, extend: FabricVariantRepresenter, as: :variants
+  collection :fabric_variants, as: :variants do
+    property :id
+    property :fabrium_id
+    property :item_number
+    property :color
+    property :in_stock
+    property :position
+
+    nested :image do
+      # property :image_path, as: :full
+      property :thumb_path, as: :thumb
+    end
+  end
 
   link(:self) { fabric_url(self) }
   link(:edit) { edit_fabric_url(self) }

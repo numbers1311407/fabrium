@@ -1,28 +1,34 @@
 ;(function () {
-
-  var Links = function (model) {
-    model.link = function (rel) {
-      var found = _.find(this.links || [], function (link) {
-        return rel === link.rel;
-      });
-      return found && found.href;
-    }
-    return model;
-  };
-
-  var Tags = function (model) {
-    model.tags_list = function () {
-      return model.tags.length ? model.tags.join(", ") : "None";
-    };
-    return model;
-  };
-
   app.run(function (Restangular) {
 
-    Restangular.extendModel("fabrics", Links);
-    Restangular.extendModel("fabrics", Tags);
+    Restangular.extendModel("carts", function Cart (model) {
+      // var baseroute = Restangular.one("carts", model.id);
+      window.asshole = model;
 
-    Restangular.extendModel("users", function Favorites (model) {
+      model.toggleItem = function (id) {
+        this.hasItem(id) ? this.removeItem(id) : this.addItem(id);
+      };
+
+      model.addItem = function (id) {
+        if (this.hasItem(id)) { return; }
+        this.variant_ids.push(id);
+        this.all("items").post({fabric_variant_id: id});
+      };
+
+      model.removeItem = function (id) {
+        if (!this.hasItem(id)) { return; }
+        this.variant_ids.splice(this.variant_ids.indexOf(id), 1);
+        this.one("items", id).remove();
+      };
+
+      model.hasItem = function (id) {
+        return -1 !== this.variant_ids.indexOf(id);
+      };
+
+      return model;
+    });
+
+    Restangular.extendModel("users", function User (model) {
       // favorites come down as a list of ids, but lets track them as
       // a hash so they can be easily added/removed and watched by angular
       model.favorites = {};
@@ -56,8 +62,7 @@
         Restangular.one("favorites", id).remove();
       };
 
-      model.toggleFavorite = function (e, id) {
-        e.stopPropagation();
+      model.toggleFavorite = function (id) {
         this.hasFavorite(id) 
           ? this.removeFavorite(id, true) 
           : this.addFavorite(id, true);

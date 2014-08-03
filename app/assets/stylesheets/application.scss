@@ -1,4 +1,5 @@
-//= require font-awesome
+
+@import "vendor";
 
 // Sass imports
 @import "bootstrap-fabrium";
@@ -8,6 +9,7 @@
 @import "alertify";
 @import "admin";
 @import "jcrop";
+
 
 html {
   overflow-y: scroll;
@@ -107,6 +109,10 @@ body .form-group-range {
   display: block;
   line-height: 20px;
   color: #999;
+
+  @media (max-width: $screen-xs-max) {
+    padding: 10px 15px;
+  }
 }
 
 .property-assignment {
@@ -205,6 +211,7 @@ body .form-group-range {
       float: left;
     }
   }
+
   .panel-notice {
     background: #ffd;
     a {
@@ -277,6 +284,11 @@ select[data-select],
   &:hover {
     background-color: transparent !important;
     color: #999;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    margin-right: 0;
+    padding: 0 20px;
   }
 }
 
@@ -453,15 +465,14 @@ li.disabled {
   }
 }
 
-.fabric-favorite-status {
-  a {
+a.fabric-favorite-status {
+  i {
+    color: #999;
+    &:hover { color: #aaa; }
+  }
+  i.fa-favorite {
     color: #f88;
     &:hover { color: #f66; }
-
-    &.favorite-toggle-inactive {
-      color: #999;
-      &:hover { color: #aaa; }
-    }
   }
 }
 
@@ -499,5 +510,91 @@ a[rel~=popover] .popover {
     position: absolute;
     left: 0;
     top: 0;
+  }
+}
+
+dt {
+  font-weight: bold;
+}
+dd, dt {
+  display: inline;
+}
+dd:after {
+  content: "\A";
+  white-space: pre;
+}
+dt:after {
+  content: ":";
+}
+
+.fabrics-show {
+  .buttons {
+    text-align: right;
+    margin: 20px 0;
+    .btn {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+  }
+}
+
+.fabrics-show-main-image {
+  img {
+    width: 100%;
+  }
+}
+
+.modal[role=dialog] {
+  cursor: default;
+}
+
+/**
+ * Cycle2 code for the fabric show modal
+ */
+#cycle-1 div { width:100%; }
+#cycle-2 .cycle-slide { border: 3px solid #fff; }
+#cycle-2 .cycle-slide-active { border: 3px solid #004; }
+
+#slideshow-1,#slideshow-2 { width: 100%; }
+#slideshow-2 { margin-top: 10px }
+#slideshow-2 [ng-repeat] { width: 20%; }
+[cycle] img { width: 100%; height: auto; display: block; }
+#adv-custom-pager {
+  margin: 5px 0;
+
+  a {
+    border: 3px #ffffff solid;
+    display: inline-block;
+  }
+
+  a.cycle-pager-active {
+    border-color: #ff0;
+  }
+
+  img {
+    width: 30px;
+    height: 30px;
+    float: left;
+  }
+}
+
+.nav-subnav {
+  margin-bottom: 20px;
+}
+
+.fa-lg {
+  line-height: 1;
+}
+
+.cart-item.row {
+  margin-bottom: 20px;
+  img {
+    width: 100%;
+  }
+  .col-thumb {
+    @include make-sm-column(3);
+  }
+  .col-fields {
+    @include make-sm-column(9);
   }
 }

@@ -1,0 +1,6 @@
+li(class=(current_page?(controller: :profiles, action: :edit) ? "active" : nil))
+  = link_to t('st.profiles.actions.edit.title'), edit_profile_path
+
+- if current_user.is_mill?
+  li(class=(current_page?(controller: :profiles, action: :blocklist) ? "active" : nil))
+    = link_to t('st.profiles.actions.blocklist.title'), blocklist_profile_path

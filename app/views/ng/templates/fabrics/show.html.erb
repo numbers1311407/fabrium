@@ -1,25 +1,65 @@
-<div class="modal-header">
-  <h3 class="modal-title">Fabric: {{ resource.id }}</h3>
-</div>
-<div class="modal-body">
+<div class="modal-body fabrics-show">
   <div class="row">
-    <div class="col-sm-6">
-      <img ng-src="{{ resource.variants[position].image.thumb }}" />
-    </div>
-    <div class="col-sm-6">
-      <p>Tags: {{ resource.tags_list() }}</p>
-      <a ng-click="printModal()">Print</a>
-    </div>
-    <div ng-switch on="current_user.favorites[resource.id]" class="fabric-favorite-status">
-      <div ng-switch-when="true">
-        <a class="favorite-toggle-link favorite-toggle-active" title="This fabric is one of your favorites.  Click to unfavorite." ng-click="current_user.toggleFavorite($event, resource.id)">
-          <i class="fa fa-heart"></i>
-        </a>
+    <div class="fabrics-show-image col-sm-6">
+      <div id="slideshow-1">
+        <div id="cycle-1" cycle
+            on-cycle-before="onCycleBefore"
+            data-cycle-slides="[ng-repeat]"
+            data-starting-slide="{{position}}"
+            data-cycle-timeout="0"
+            data-cycle-fx="fade"
+            data-cycle-log="false"
+            data-cycle-pager="#adv-custom-pager"
+            data-cycle-pager-template="<a href='#'><img src='@@children.0.src@@'></a>"
+        >
+          <div ng-repeat="v in resource.variants">
+            <img ng-src="{{ v.image.thumb }}" />
+          </div>
+        </div>
+        <div id=adv-custom-pager class="center external"></div>
       </div>
-      <div ng-switch-default>
-        <a class="favorite-toggle-link favorite-toggle-inactive" title="Click to add this fabric to your favorites." ng-click="current_user.toggleFavorite($event, resource.id)">
-          <i class="fa fa-heart"></i>
-        </a>
+    </div>
+    <div class="fabics-show-details col-sm-6">
+      <dl>
+        <dt>Mill</dt> <dd ng-bind="resource.mill.name | default"></dd>
+        <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd>
+        <dt>Fiber Content</dt> <dd ng-bind="resource.materials | materials | default"></dd>
+        <dt>Weight</dt> <dd ng-bind-html="resource.weight | weight"></dd>
+        <dt>Width</dt> <dd ng-bind="resource.width | width"></dd>
+        <dt>Country of Origin</dt> <dd ng-bind="resource.country.name | default"></dd>
+        <dt>Price</dt> <dd ng-bind="resource.price | price"></dd>
+        <dt>In Stock</dt> <dd ng-bind="variant.in_stock | yesno"></dd>
+        <dt>Category</dt> <dd ng-bind="resource.category.name | default"></dd>
+        <dt>Dye Method</dt> <dd ng-bind="resource.dye_method.name | default"></dd>
+        <dt>Keywords</dt> <dd ng-bind="resource.tags | tags"></dd>
+        <dt>Sample Lead Time</dt> <dd ng-bind="resource.lead_time.sample"></dd>
+        <dt>Bulk Lead Time</dt> <dd ng-bind="resource.lead_time.bulk"></dd>
+        <dt>Sample Minimum M<sup>2</sup></dt> <dd ng-bind="resource.minimum_quality.sample"></dd>
+        <dt>Bulk Minimum M<sup>2</sup></dt> <dd ng-bind="resource.minimum_quality.bulk"></dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="buttons col-sm-12">
+      <a class="btn" ng-show="cart" ng-class="{true: 'btn-warning', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
+      <a class="btn btn-default" ng-click="current_user.toggleFavorite(variant.id)">
+        <i class="fa fa-heart-o"></i>
+        <span ng-bind="favorite(variant.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
+      </a>
+      <a class="btn btn-default" href="{{ resource.links | link:'edit' }}">Edit</a>
+      <a class="btn btn-default" href="#print" ng-click="printModal()">Print</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <label for="mynotes">
+          <span>My Notes</span>
+          &mdash;
+          <i>These are private and not shared with the mill</i>
+        </label>
+        <textarea id="mynotes" class="form-control" rows="3" ng-model="note.note"></textarea>
       </div>
     </div>
   </div>

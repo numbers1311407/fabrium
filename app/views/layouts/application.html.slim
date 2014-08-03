@@ -16,10 +16,10 @@ html
     #root
       .container
         main#main role="main"
+          = render 'flash_messages'
           - if content_for?(:top)
             #top
               = yield(:top)
-          = render 'flash_messages'
           = content_for?(:main) ? yield(:main) : yield
     #body_end
       = javascript_include_tag 'vendor'

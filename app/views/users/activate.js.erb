@@ -1,0 +1,6 @@
+$("tr[data-id=<%= resource.id %>]").each(function () {
+  $(this).find("[href$=activate]").<%= resource.pending? ? "show" : "hide" %>();
+  $(this).find("td.resource-pending").html(function () {
+    return $(this).data("<%= resource.pending? ? "yes" : "no" %>");
+  });
+});

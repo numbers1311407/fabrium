@@ -1,0 +1,9 @@
+.cart-item.row
+  .col-thumb
+    = image_tag(cart_item.fabric_variant.thumb.url)
+  .col-fields
+    = f.input :notes, as: :text, input_html: { rows: 3 }
+    - if cart_item.fabric_variant.in_stock?
+      span.stocked.in-stock In Stock
+    - if current_user.is_mill?
+      = f.input :sample_yardage
