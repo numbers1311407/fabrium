@@ -2,8 +2,20 @@
   .col-thumb
     = image_tag(cart_item.fabric_variant.thumb.url)
   .col-fields
-    = f.input :notes, as: :text, input_html: { rows: 3 }
+    / Buyer always sees the notes in this form
+    - if current_user.is_buyer?
+      = f.input :notes, as: :text, input_html: { rows: 3 }
+
+    / Otherwise show the notes unless this is an initial
+    / build (the notes will be blank)
+    - elsif !cart.mill_build?
+      .form-group
+        label.control-label Notes
+        p.fake-input.form-control-static.form-control
+          = f.object.notes
+
     - if cart_item.fabric_variant.in_stock?
       span.stocked.in-stock In Stock
+
     - if current_user.is_mill?
       = f.input :sample_yardage

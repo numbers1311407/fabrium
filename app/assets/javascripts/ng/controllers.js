@@ -4,16 +4,28 @@
   app.controller('FabricVariantIndexCtrl', 
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse) {
 
+      // On load get the current user
       Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
         $scope.current_user = user;
 
+        // Get the pending cart unless the user is an Admin, who doesn't
+        // have one
         if (!user.isAdmin()) {
-          Restangular.oneUrl("carts", "/cart.json").get().then(function (cart) {
-            $scope.cart = cart;
+
+          // This defies expectation a bit, but the way Restangular works,
+          // it does not update existing "models" as you might think.  There
+          // may be a way to do this but it was not obvious.  As such the
+          // scope's `cart` is created initially (in the case that the user
+          // does not have a pending cart available)...
+          $scope.cart = Restangular.one("cart");
+
+          // ... and then replaces itself via a `get` if the request does 
+          // not 404.
+          $scope.cart.get().then(function (cart) {
+            $scope.cart.variant_ids = cart.variant_ids;
           });
         }
       });
-
 
       $scope.mill_options = {};
       $scope.mill_cache = {};
@@ -40,7 +52,7 @@
         }
       };
 
-      $scope.favorite = function (n) {
+      $scope.isFavorite = function (n) {
         return !!$scope.current_user.favorites[n];
       };
 

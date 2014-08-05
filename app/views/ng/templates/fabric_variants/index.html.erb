@@ -1,295 +1,311 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-    <form role="form" class="form-search" ng-submit="updateSearch(1)">
-      <fieldset>
-        <legend>Search Fabrics</legend>
+<div id="fabric-variants-index">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form role="form" class="form-search" ng-submit="updateSearch(1)">
+        <fieldset>
+          <legend>Search Fabrics</legend>
 
-        <div class="row">
-          <div class="form-group">
-            <label>Category</label>
-            <select 
-              selectize="selectize.category"
-              ng-model="search.category" 
-              class="form-control"
-              placeholder="Select..."
-            >
-              <%= select_options_for_categories %>
-            </select>
+          <div class="row">
+            <div class="form-group">
+              <label>Category</label>
+              <select 
+                selectize="selectize.category"
+                ng-model="search.category" 
+                class="form-control"
+                placeholder="Select..."
+              >
+                <%= select_options_for_categories %>
+              </select>
+            </div>
+
+            <div class="form-group form-group-material">
+              <label>Fiber Content</label>
+              <select
+                selectize="selectize.material" 
+                ng-model="search.material" 
+                class="form-control" 
+                placeholder="Select..."
+              >
+                <%= select_options_for_material %>
+              </select>
+            </div>
+           
+            <div class="form-group form-group-weights form-group-range">
+              <label>Weight</label>
+              <input type="number" ng-model="search.weight_min" class="form-control" placeholder="Any" min=0 step="any">
+              <span>to</span>
+              <input type="number" ng-model="search.weight_max" class="form-control" placeholder="Any" min=0 step="any">
+              <select class="form-group-range-units" ng-model="search.weight_units">
+                <option value="">GSM</option>
+                <option value="glm">GLM</option>
+                <option value="osy">OSY</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Keywords</label>
+              <input 
+                selectize="selectize.tags"
+                type="text"
+                ng-model="search.tags"
+                class="form-control" 
+                placeholder="Type to search available keywords..."
+              >
+            </div>
+          </div>
+        </fieldset>
+
+        <a href="#" ng-click="advanced = !advanced">
+          Toggle Advanced Options
+        </a>
+
+        <hr>
+
+        <fieldset class="advanced-options" ng-show="advanced">
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Search</button>
           </div>
 
-          <div class="form-group form-group-material">
-            <label>Fiber Content</label>
-            <select
-              selectize="selectize.material" 
-              ng-model="search.material" 
-              class="form-control" 
-              placeholder="Select..."
-            >
-              <%= select_options_for_material %>
-            </select>
-          </div>
-         
-          <div class="form-group form-group-weights form-group-range">
-            <label>Weight</label>
-            <input type="number" ng-model="search.weight_min" class="form-control" placeholder="Any" min=0 step="any">
-            <span>to</span>
-            <input type="number" ng-model="search.weight_max" class="form-control" placeholder="Any" min=0 step="any">
-            <select class="form-group-range-units" ng-model="search.weight_units">
-              <option value="">GSM</option>
-              <option value="glm">GLM</option>
-              <option value="osy">OSY</option>
-            </select>
+          <hr>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="search.favorites" ng-true-value="1"> Limit search to favorites
+            </label>
           </div>
 
-          <div class="form-group">
-            <label>Keywords</label>
-            <input 
-              selectize="selectize.tags"
-              type="text"
-              ng-model="search.tags"
-              class="form-control" 
-              placeholder="Type to search available keywords..."
-            >
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="search.in_stock" ng-true-value="1"> Limit search to in stock fabrics
+            </label>
           </div>
-        </div>
-      </fieldset>
 
-      <a href="#" ng-click="advanced = !advanced">
-        Toggle Advanced Options
-      </a>
+          <% unless current_user.is_mill? %>
+            <div class="row form-row-mills">
+              <div class="form-group">
+                <label>Limit to these Mills</label>
+                <input
+                  selectize="selectize.mills" 
+                  ng-model="search.mills" 
+                  class="form-control" 
+                  placeholder="Type to search mills by name..."
+                  options="mill_options"
+                >
+              </div>
+              <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
+                <div class="form-link">
+                  <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
+                    Load my preferred mills
+                  </a>
+                  <a rel="popover">
+                    <i class="fa fa-question-circle" ></i>
+                  </a>
+                  <div class="hidden-content">
+                    You can manage your preferred mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                  </div>
+                </div>
+              <% end %>
+            </div>
 
-      <hr>
+            <div class="row form-row-not_mills">
+              <div class="form-group">
+                <label>Exclude these Mills</label>
+                <input
+                  selectize="selectize.mills" 
+                  ng-model="search.not_mills" 
+                  class="form-control" 
+                  placeholder="Type to search mills by name..."
+                  options="mill_options"
+                >
+              </div>
+              <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
+                <div class="form-link">
+                  <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
+                    Load my blocked mills
+                  </a>
+                  <a rel="popover">
+                    <i class="fa fa-question-circle" ></i>
+                  </a>
+                  <div class="hidden-content">
+                    You can manage your blocked mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
 
-      <fieldset class="advanced-options" ng-show="advanced">
+          <div class="row form-row-dye_method">
+            <div class="form-group">
+              <label>Dye Method</label>
+              <select
+                selectize="selectize.dye_method" 
+                ng-model="search.dye_method" 
+                class="form-control" 
+                placeholder="Select..."
+              >
+                <%= select_options_for_dye_method %>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Fabrium #</label>
+              <div class="input-group">
+                <div class="input-group-addon">#</div>
+                <input class="form-control" type="text" ng-model="search.fid">
+              </div>
+            </div>
+            <% unless current_user.is_buyer? %>
+              <div class="form-group">
+                <label>Item #</label>
+                <div class="input-group">
+                  <div class="input-group-addon">#</div>
+                  <input class="form-control" type="text" ng-model="search.item_number">
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" selectize="selectize.country" ng-model="search.country">
+                <%= options_for_select(CountrySelectInput::OPTIONS) %>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group form-group-range">
+              <label>Price</label>
+              <input type="number" ng-model="search.price_min" class="form-control" placeholder="Any" min=0 step="any">
+              <span>to</span>
+              <input type="number" ng-model="search.price_max" class="form-control" placeholder="Any" min=0 step="any">
+              <select class="form-group-range-units" ng-model="search.price_units">
+                <option value="">$</option>
+                <option value="eu">&#8364;</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Sample Lead Time less than</label>
+              <select
+                selectize="selectize.weeks"
+                ng-model="search.sample_lead_time"
+                placeholder="Select..."
+              >
+                <%= options_for_select(weeks_select_options) %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Bulk Lead Time less than</label>
+              <select
+                selectize="selectize.weeks"
+                ng-model="search.bulk_lead_time"
+                placeholder="Select..."
+              >
+                <%= options_for_select(weeks_select_options) %>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label>Sample Minimum Quality less than</label>
+              <input type="number" class="form-control" ng-model="search.sample_min" step=1 min=0>
+            </div>
+            <div class="form-group">
+              <label>Bulk Minimum Quality less than</label>
+              <input type="number" class="form-control" ng-model="search.bulk_min" step=1 min=0>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group form-group-color">
+              <label>Color</label>
+              <input minicolors ng-model="search.color" class="form-control" placeholder="Choose a color...">
+            </div>
+          </div>
+
+          <hr>
+        </fieldset>
+
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Search</button>
         </div>
-
-        <hr>
-
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="search.favorites" ng-true-value="1"> Limit search to favorites
-          </label>
-        </div>
-
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" ng-model="search.in_stock" ng-true-value="1"> Limit search to in stock fabrics
-          </label>
-        </div>
-
-        <% unless current_user.is_mill? %>
-          <div class="row form-row-mills">
-            <div class="form-group">
-              <label>Limit to these Mills</label>
-              <input
-                selectize="selectize.mills" 
-                ng-model="search.mills" 
-                class="form-control" 
-                placeholder="Type to search mills by name..."
-                options="mill_options"
-              >
-            </div>
-            <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
-              <div class="form-link">
-                <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
-                  Load my preferred mills
-                </a>
-                <a rel="popover">
-                  <i class="fa fa-question-circle" ></i>
-                </a>
-                <div class="hidden-content">
-                  You can manage your preferred mills list by editing <a target="_self" href="/profile/edit">your profile</a>
-                </div>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="row form-row-not_mills">
-            <div class="form-group">
-              <label>Exclude these Mills</label>
-              <input
-                selectize="selectize.mills" 
-                ng-model="search.not_mills" 
-                class="form-control" 
-                placeholder="Type to search mills by name..."
-                options="mill_options"
-              >
-            </div>
-            <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
-              <div class="form-link">
-                <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
-                  Load my blocked mills
-                </a>
-                <a rel="popover">
-                  <i class="fa fa-question-circle" ></i>
-                </a>
-                <div class="hidden-content">
-                  You can manage your blocked mills list by editing <a target="_self" href="/profile/edit">your profile</a>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-
-        <div class="row form-row-dye_method">
-          <div class="form-group">
-            <label>Dye Method</label>
-            <select
-              selectize="selectize.dye_method" 
-              ng-model="search.dye_method" 
-              class="form-control" 
-              placeholder="Select..."
-            >
-              <%= select_options_for_dye_method %>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label>Fabrium #</label>
-            <div class="input-group">
-              <div class="input-group-addon">#</div>
-              <input class="form-control" type="text" ng-model="search.fid">
-            </div>
-          </div>
-          <% unless current_user.is_buyer? %>
-            <div class="form-group">
-              <label>Item #</label>
-              <div class="input-group">
-                <div class="input-group-addon">#</div>
-                <input class="form-control" type="text" ng-model="search.item_number">
-              </div>
-            </div>
-          <% end %>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label>Country</label>
-            <select class="form-control" selectize="selectize.country" ng-model="search.country">
-              <%= options_for_select(CountrySelectInput::OPTIONS) %>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-group-range">
-            <label>Price</label>
-            <input type="number" ng-model="search.price_min" class="form-control" placeholder="Any" min=0 step="any">
-            <span>to</span>
-            <input type="number" ng-model="search.price_max" class="form-control" placeholder="Any" min=0 step="any">
-            <select class="form-group-range-units" ng-model="search.price_units">
-              <option value="">$</option>
-              <option value="eu">&#8364;</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label>Sample Lead Time less than</label>
-            <select
-              selectize="selectize.weeks"
-              ng-model="search.sample_lead_time"
-              placeholder="Select..."
-            >
-              <%= options_for_select(weeks_select_options) %>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Bulk Lead Time less than</label>
-            <select
-              selectize="selectize.weeks"
-              ng-model="search.bulk_lead_time"
-              placeholder="Select..."
-            >
-              <%= options_for_select(weeks_select_options) %>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label>Sample Minimum Quality less than</label>
-            <input type="number" class="form-control" ng-model="search.sample_min" step=1 min=0>
-          </div>
-          <div class="form-group">
-            <label>Bulk Minimum Quality less than</label>
-            <input type="number" class="form-control" ng-model="search.bulk_min" step=1 min=0>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group form-group-color">
-            <label>Color</label>
-            <input minicolors ng-model="search.color" class="form-control" placeholder="Choose a color...">
-          </div>
-        </div>
-
-        <hr>
-      </fieldset>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Search</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div ng-if="pagination">
-  <div ng-switch="pagination.total_count">
-    <div ng-switch-when="0">
-      No results were found
-    </div>
-    <div ng-switch-when="1">
-      Displaying 1 result
-    </div>
-    <div ng-switch-default>
-      Displaying {{pagination.from}} to {{pagination.to}} of {{pagination.total_count}} results.
+      </form>
     </div>
   </div>
 
-  <pagination 
-    ng-show="pagination.pages > 1"
-    items-per-page="pagination.per_page" 
-    max-size="10" 
-    total-items="pagination.total_count" 
-    ng-model="pagination.page"
-    ng-change="updateSearch(pagination.page)"
-  ></pagination>
-</div>
+  <div class="row">
+    <div id="pagination" class="col-sm-6">
+      <div ng-if="pagination">
+        <div ng-switch="pagination.total_count">
+          <div ng-switch-when="0">
+            No results were found
+          </div>
+          <div ng-switch-when="1">
+            Displaying 1 result
+          </div>
+          <div ng-switch-default>
+            Displaying {{pagination.from}} to {{pagination.to}} of {{pagination.total_count}} results.
+          </div>
+        </div>
 
-<div ng-show="loading" class="page-loading" ng-style="{height: current_page_height}">
-  Loading...
-</div>
-
-<ul class="fabric-variant-resultlist">
-  <li class="fabric-variant-result" ng-repeat="item in items">
-    <div class="fabric-variant-result-inner">
-      <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
-        <a target="_self" href="{{ item.links | link:'edit' }}">Edit</a>
+        <pagination 
+          ng-show="pagination.pages > 1"
+          items-per-page="pagination.per_page" 
+          max-size="10" 
+          total-items="pagination.total_count" 
+          ng-model="pagination.page"
+          ng-change="updateSearch(pagination.page)"
+        ></pagination>
       </div>
-
-      <a class="result-panel fabric-favorite-status" 
-        ng-click="current_user.toggleFavorite(item.id)"
-        ng-attr-title="{{ favorite(item.id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
-        <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[favorite(item.id)]"></i>
-      </a>
-
-      <img ng-src="{{item.image.thumb}}" ng-click="show(item.fabric_id, item.position)">
-
-      <table class="resultdetails">
-        <tr ng-if="!current_user.isBuyer()">
-          <td>Item #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
-        </tr>
-        <tr>
-          <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>
-        </tr>
-      </table>
     </div>
-  </li>
-</ul>
+    <div id="pagesort" class="col-sm-6">
+      <select class="form-control" ng-model="search.sort" ng-change="updateSearch()">
+        <!-- because for whatever reason, angular select is just painfully broken -->
+        <option value="">Newest First</option>
+        <option value="fabrium_id">Fabrium Number</option>
+        <option ng-if="!current_user.isBuyer()" value="item_number">Item Number</option>
+      </select>
+    </div>
+  </div>
+
+  <div ng-show="loading" class="page-loading" ng-style="{height: current_page_height}">
+    Loading...
+  </div>
+
+  <ul ng-show="!loading" class="fabric-variant-resultlist">
+    <li class="fabric-variant-result" ng-repeat="item in items">
+      <div class="fabric-variant-result-inner">
+        <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
+          <a target="_self" href="{{ item.links | link:'edit' }}">Edit</a>
+        </div>
+
+        <a class="result-panel fabric-favorite-status" 
+          ng-click="current_user.toggleFavorite(item.id)"
+          ng-attr-title="{{ isFavorite(item.id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
+          <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[isFavorite(item.id)]"></i>
+        </a>
+
+        <img ng-src="{{item.image.thumb}}" ng-click="show(item.fabric_id, item.position)">
+
+        <div class="resultdetails-outer">
+          <table class="resultdetails">
+            <tr ng-if="!current_user.isBuyer()">
+              <td>Item #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
+            </tr>
+            <tr>
+              <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

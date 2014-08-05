@@ -10,12 +10,12 @@
       = resource_menu_link(Tag) do
         li.dropdown
           = link_to("/lists", data: {toggle: "dropdown"}) do
-            | Manage Lists
+            span Manage Lists
             span.caret
           ul.dropdown-menu(role="menu")
             = render "application/list_items_nav"
       = resource_menu_link(ApprovedDomain)
-          
+
     - if current_user && current_user.persisted?
       ul.nav.navbar-nav.navbar-right
         li.text
@@ -27,6 +27,11 @@
               | Other
               span.caret
           ul.dropdown-menu
+            - unless current_user.is_admin?
+              li
+                a href=pending_cart_path
+                  i.fa.fa-shopping-cart
+                  span My Cart
             li
               = link_to edit_profile_path do
                 i.fa.fa-user

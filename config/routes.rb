@@ -46,7 +46,16 @@ Rails.application.routes.draw do
   resources :carts, except: :edit do
     resources :cart_items, path: :items
   end
-  get :cart, to: "carts#pending_cart"
+
+  # The "public" cart route, emailed to prospective buyers when mill's 
+  # generate carts for them
+  get '/carts/:public_id/pub', to: "carts#public_show", as: :public_cart
+
+  # The singular "cart" routes, which map to cart resources as expected
+  # but determine the cart id from the logged in user and their role
+  get '/cart', to: "carts#pending_cart", as: :pending_cart
+  delete '/cart/items/:id', to: "cart_items#destroy"
+  post  '/cart/items', to: "cart_items#create"
 
   # Templates.
   # These should probably be static and handle all logic client side 

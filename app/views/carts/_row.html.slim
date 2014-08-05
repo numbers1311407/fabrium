@@ -1,0 +1,8 @@
+- index_table_headers do
+  th= sort_link(@q, :created_at)
+  th= sort_link(@q, :public_id)
+  th= sort_link(@q, :state)
+
+td= l(resource.created_at)
+td= resource.public_id
+td= t("states.cart.#{resource.state}")

@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
 
   after_commit :send_invitation_if_admin, on: :create
 
-  before_create :set_pending
+  before_create :set_initial_pending_status
+  after_update :on_pending_change, if: :pending_changed?
 
   define_meta_types :admin, :mill, :buyer
 
@@ -51,17 +52,20 @@ class User < ActiveRecord::Base
 
   protected
 
-  def set_pending
-    if is_buyer?
-      self.pending = !ApprovedDomain.for_buyer.exists?(name: self.domain)
+  def set_initial_pending_status
+    self.pending = if is_buyer?
+      !ApprovedDomain.for_buyer.exists?(name: self.domain)
     elsif is_mill?
-      self.pending = !ApprovedDomain.for_mill.exists?(name: self.domain)
+      !ApprovedDomain.for_mill.exists?(name: self.domain)
     else
-      self.pending = false
+      false
     end
 
-    # returning false would prevent the filter
     true
+  end
+
+  def on_pending_change
+    TransitionPendingUserJob.new.async.perform(id) if !pending
   end
 
   def send_invitation_if_admin

@@ -1,37 +1,238 @@
 class Cart < ActiveRecord::Base
   include Authority::Abilities
+  include HasState
+
+  MILL_NAME_TEMPLATE = "%s Generated Hanger Request %s"
+  BUYER_NAME_TEMPLATE = "Hanger Request %s"
+
+  validates :buyer_email, email: true, confirmation: true, if: :transitioning_from_mill_build_to_buyer_unclaimed?
+  validate :buyer_email_must_be_blank_or_buyer, if: :transitioning_from_mill_build_to_buyer_unclaimed?
+  attr_accessor :buyer_email_confirmation
 
   before_create :generate_public_id
+  after_create :generate_name
 
-  enum state: [:mill, :buyer, :ordered, :closed]
+  before_save :perform_state_update
 
-  scope :state, ->(v) { (n = states[v]) ? where(state: n) : none }
-  scope :mill_created, ->(v=true) { v ? where.not(mill_id: nil) : where(mill_id: nil) }
-  scope :buyer_created, ->(v=true) { mill_created(!v) }
+  define_states(
+    # Mill created, not yet submitted to buyer
+    # Mill can edit items or remove cart
+    :mill_build,
 
-  has_many :cart_items,
-    -> { includes(:fabric_variant).joins(:fabric_variant).order("fabric_variants.fabrium_id ASC") },
-    dependent: :destroy
+    # TODO I think we're missing a state here where the buyer hasn't yet
+    # claimed the cart.  It's TBD how this happens though:
+    #
+    # - Does the mill build process CREATE a buyer with the given email?
+    # - Is the prospective buyer redirected to create an account when he/she
+    #   submits the form?  If that's the case, what if their email is not
+    #   accepted and they end up in a pending queue?
+    #
+    # - I think the latter is probably the case:
+    # 1. Buyer follows email to site.
+    :buyer_unclaimed,
 
+    # In the hands of the buyer, awaiting edit/submit
+    :buyer_build,
+
+    # Submitted, but awaiting change in buyer pending status
+    :pending,
+
+    # Submitted, has active items
+    :ordered,
+
+    # Submitted, all items resolved
+    :closed
+  )
+
+  has_many :cart_items, -> { order(fabrium_id: :asc) }, dependent: :destroy
   accepts_nested_attributes_for :cart_items
+
+
+  # At the order processing stage, sub carts are created if a cart has items
+  # within that belong to more than one mill.  This alias will subquery
+  # the relevant items from the parent for the mill of this cart
+  def cart_items_with_parent
+    if parent
+      parent.cart_items.where(mill_id: self.mill_id)
+    else
+      cart_items_without_parent
+    end
+  end
+  alias_method_chain :cart_items, :parent
+
+  def build_subcarts
+    # do not build subcarts for subcarts
+    return [] if parent
+
+    grouped_items = cart_items.group_by(&:mill_id)
+
+    grouped_items.keys.map do |mill_id|
+      cart = self.dup
+      cart.parent = self
+      cart.mill_id = mill_id
+      cart
+    end
+  end
 
   has_many :fabric_variants, through: :cart_items
 
-  # Optional, the mill that generated this cart.  This is probably the
-  # less common case, whereas the buyer would normally create a cart by
-  # visiting the site and adding items.
-  belongs_to :mill
+  # The cart belongs to a `creator` which may be either a cart or a mill.
+  # This distinction is important for authority rules and made clear via this
+  # column.  Carts that are not created by a buyer cannot have items added or
+  # removed, for example.
+  #
+  belongs_to :creator, polymorphic: true
 
-  # The buyer for the cart.  This is not optional but may not be populated
-  # immediately if this is a mill-generated cart for a buyer email that
-  # does not exist.  Upon submitting the cart the buyer will be created.
+  # A Cart, once ordered will be split up into sub carts if it contains cart
+  # items for more than one mill.  This greatly simplifies the query logic
+  # for the carts resource control, meaning that Mills load only carts belonging
+  # to them, instead of having to join on cart items OR carts belonging to them.
+  #
+  # The buyer on the other hand will only ever load the parent carts and see all
+  # cart items together.
+  #
+  belongs_to :parent, class_name: 'Cart', foreign_key: :parent_id
+
+  # The buyer for the cart may be assigned at 3 stages.
+  #
+  # 1. The buyer itself creates a cart.  This is the typical case, effected
+  # by a buyer user searching for and adding items
+  #
+  # 2. A mill creates a cart and submits it to a buyer by email, and a buyer
+  # by that email EXISTS.  The cart is associated immediately.
+  #
+  # 3. A mill creates a cart and submits it to a buyer by email, and a buyer
+  # by that email DOES NOT EXIST.  The buyer can edit the cart and on submit,
+  # will be directed to create an account.
+  #
+  # In case 2 or 3, if the buyer account is still pending, the cart will
+  # be put into a pending state.  When the buyer is activated, any
+  # pending orders they have should be put into the `ordered` state.
+  #
   belongs_to :buyer
 
-  def to_param
-    public_id
+  # The mill for the cart may be assigned at 2 stages.
+  #
+  # 1. A mill may create a cart, and will be assigned on creation.
+  #
+  # 2. When a buyer created cart transitions from the pending state 
+  # into `ordered`, "child" carts will be created for each mill that is
+  # responsible for items in the cart, provided that more than one such 
+  # mill exists.  If all the items in the cart belong to a single mill
+  # then the cart will simply be assigned to that mill.
+  #
+  belongs_to :mill
+
+  class << self
+    def created_by_buyer(buyer=nil)
+      buyer ? where(creator: buyer) : where(creator_type: 'Buyer')
+    end
+
+    def created_by_mill(mill=nil)
+      mill ? where(creator: mill) : where(creator_type: 'Mill')
+    end
   end
 
+  scope :exclude_subcarts, -> { where(parent_id: nil) }
+  scope :subcarts, -> { where.not(parent_id: nil) }
+
   protected
+
+  def buyer_email_must_be_blank_or_buyer
+    # clear the buyer user each validation
+    @buyer_user = nil
+
+    if buyer_user && !buyer_user.is_buyer?
+      errors.add(:buyer_email, :email_not_buyer)
+    end
+  end
+
+  def buyer_user
+    return nil if buyer_email.blank?
+    @buyer_user ||= User.find_by(email: buyer_email)
+  end
+
+  #
+  # Super basic "state machine" setup to capture transitions.  If 
+  # anything more sophisticated becomes necessary I'd probably transition
+  # to a plugin.
+  #
+  def perform_state_update
+    return unless state_changed?
+
+    case state_change
+    when %w(mill_build buyer_unclaimed)
+      transition_mill_build_to_buyer_unclaimed
+    when %w(buyer_unclaimed buyer_build)
+      transition_buyer_unclaimed_buyer_build
+    when %w(buyer_build pending)
+      transition_buyer_build_to_pending
+    when %w(pending ordered)
+      transition_pending_to_ordered
+    when %w(ordered closed)
+      transition_ordered_to_closed
+    end
+  end
+
+  def transition_mill_build_to_buyer_unclaimed
+    MailerJob.new.async.perform(AppMailer, :mill_cart_created, self)
+
+    # if there's a buyer user attach them to the cart immediately and
+    # re-run the state update
+    if buyer_user
+      self.buyer = buyer_user
+      self.state = states[:buyer_build]
+      self.changed_attributes[:state] = 'buyer_unclaimed'
+      perform_state_update
+    end
+  end
+
+  def transition_buyer_unclaimed_buyer_build
+    # nothing to do here
+  end
+
+  # As long as the user is not pending, transition straight
+  # out of pending into ordered
+  def transition_buyer_build_to_pending
+    if buyer.respond_to?(:user) && !buyer.user.pending?
+      self.state = states[:ordered]
+      self.changed_attributes[:state] = 'pending'
+      perform_state_update
+    end
+  end
+
+  def transition_pending_to_ordered
+    subcarts = build_subcarts
+
+    # NOTE this should probably be an async job
+    #
+    # If subcarts are created, it means that the cart items belong to
+    # more than one mill.  Subcarts are clones used to split up carts
+    # so mills can each manage their own cart object
+    if subcarts.length
+      subcarts.each(&:save)
+
+    # If no subcarts are created it means that all the cart items belong
+    # to this mill.  Rather than creating a subcart, just assign the
+    # mill to this cart
+    else
+      self.mill = cart_items.first.mill
+    end
+  end
+
+  def transition_ordered_to_closed
+    # nothing to do here
+  end
+
+  def generate_name
+    generated_name = if creator_type == "Mill"
+      MILL_NAME_TEMPLATE % [creator.name, id]
+    else
+      BUYER_NAME_TEMPLATE % [id]
+    end
+
+    update(name: generated_name)
+  end
 
   def generate_public_id
     self.public_id = loop do

@@ -1,0 +1,14 @@
+= simple_form_for resource do |f|
+  - if resource.cart_items.empty?
+    p
+      = st('messages.empty_cart')
+  - else
+    = f.simple_fields_for :cart_items do |ff|
+      = render ff.object, f: ff, cart: resource
+
+    - if current_user.is_mill?
+      = f.input :buyer_email
+      = f.input :buyer_email_confirmation
+
+  .form_actions
+    = f.submit class: 'btn btn-primary'

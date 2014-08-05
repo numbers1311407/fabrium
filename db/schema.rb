@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20140803173307) do
     t.integer  "fabric_variant_id"
     t.integer  "cart_id"
     t.integer  "mill_id"
+    t.string   "fabrium_id"
     t.integer  "state",             default: 0
     t.text     "notes"
     t.decimal  "sample_yardage"
@@ -64,8 +65,14 @@ ActiveRecord::Schema.define(version: 20140803173307) do
   create_table "carts", force: true do |t|
     t.integer  "mill_id"
     t.integer  "buyer_id"
+    t.integer  "creator_id"
+    t.string   "creator_type"
+    t.integer  "parent_id"
+    t.string   "buyer_email"
+    t.string   "name"
     t.string   "public_id"
-    t.integer  "state",      default: 0
+    t.string   "fabrium_id"
+    t.integer  "state",        default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

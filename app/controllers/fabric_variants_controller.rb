@@ -23,8 +23,13 @@ class FabricVariantsController < ResourceController
   # Scopes
   #
 
-  # TODO the default scope, unless color is specified, will only display
-  # the FIRST swatch for each fabric
+  has_scope :sort, default: "newest_first" do |controller, scope, value|
+    case value
+    when "newest_first" then scope.order(created_at: :desc)
+    when "fabrium_id"   then scope.order(fabrium_id: :asc)
+    when "item_number"  then scope.order(item_number: :asc)
+    end
+  end
 
   has_scope :near_color, as: :color do |controller, scope, value|
     # The 2nd param for `near_color` is the acceptable delta.  It

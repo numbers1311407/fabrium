@@ -1,53 +1,25 @@
 class Mill < ActiveRecord::Base
-  has_many :users, as: :meta, dependent: :destroy
-
-  enum domain_filter: [:blacklist, :whitelist]
-
   include Authority::Abilities
+
+  include Mills::FilteredDomains
+
+  has_many :users, as: :meta, dependent: :destroy
 
   scope :active, ->{ where(active: true) }
 
-  class << self
-    def filter_by_domain(domain)
-      where domain_blacklist_conditions(domain).
-              or(domain_whitelist_conditions(domain))
-    end
-
-    # Condition for "blacklisting" domains, which is the default.
-    # Only domains that *are* in the domain list will be rejected.  All
-    # other mills will come through.
-    def domain_blacklist_conditions(domain)
-      arel_table[:domain_filter].eq(domain_filters[:blacklist]).and(
-        arel_table[:domains].contains(domain).not
-      )
-    end
-
-    # Condition for "whitelisting" domains.
-    # Only domains that *are NOT* in the domain list will be accepted.
-    # This is the opt-in setting as it's much more restrictive
-    def domain_whitelist_conditions(domain)
-      arel_table[:domain_filter].eq(domain_filters[:whitelist]).and(
-        arel_table[:domains].contains(domain)
-      )
-    end
-  end
-
-  has_many :fabrics
-  has_many :cart_items
   belongs_to :user
+  has_many :fabrics
 
+  # carts for a mill include carts which they've created for buyers, 
+  # and "subcarts" which are copies of buyer created carts that are
+  # split up by cart_items, allowing mills to manage carts when the
+  # order went to multiple mills
   has_many :carts
 
-  def pending_cart
-    scoped = carts.state(:mill)
-    scoped.first || scoped.create
-  end
+  # cart_items are a denormalized association
+  has_many :cart_items
 
-  def domain_names
-    domains.join(",");
-  end
-
-  def domain_names=(str)
-    self.domains = str.split(",")
+  def pending_carts
+    carts.created_by_mill(self).state(:mill_build)
   end
 end

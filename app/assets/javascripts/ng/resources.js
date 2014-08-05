@@ -1,9 +1,11 @@
 ;(function () {
   app.run(function (Restangular) {
 
-    Restangular.extendModel("carts", function Cart (model) {
-      // var baseroute = Restangular.one("carts", model.id);
-      window.asshole = model;
+    Restangular.extendModel("cart", function Cart (model) {
+
+      if (!model.variant_ids) { 
+        model.variant_ids = []; 
+      }
 
       model.toggleItem = function (id) {
         this.hasItem(id) ? this.removeItem(id) : this.addItem(id);

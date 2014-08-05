@@ -7,6 +7,17 @@ en:
       update: "Save %{model}"
       submit: "Save %{model}"
 
+  states:
+    cart:
+      buyer_build: "Buyer in progress"
+      mill_build: "Active"
+      pending: "Pending"
+      ordered: "Ordered"
+      closed: "Closed"
+    cart_item:
+      pending: "Pending"
+      shipped: "Shipped"
+
   st:
     helpers:
       commit_and_redirect: "Save %{Resource} and Create Another"
@@ -22,6 +33,7 @@ en:
     messages:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'
+      empty_cart: 'Your order is currently empty'
     profiles:
       actions:
         edit:
@@ -132,6 +144,17 @@ en:
           attributes:
             name:
               invalid: "%{attribute} must be made up of only numbers, letters and dashes"
+        cart:
+          attributes:
+            buyer_email_confirmation:
+              confirmation: "Must match the buyer's email"
+            buyer_email:
+              email_not_buyer: "This email already exists for a user who is not a buyer"
+        cart_item:
+          attributes:
+            fabric_variant:
+              cart_mill_mismatch: "The item you are trying to add does not belong to the right mill"
+
 
     # Translate model names. Used in Model.human_name().
     models:
@@ -158,6 +181,11 @@ en:
         entity: Type
       user:
         meta_type: Type
+      cart_item:
+        sample_yardage: Current Sample Yardage Availability
+      cart:
+        buyer_email: Buyer's Email
+        buyer_email_confirmation: Confirm Buyer's Email
 
     #attributes:
       # For example,

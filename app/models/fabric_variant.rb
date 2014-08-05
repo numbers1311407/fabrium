@@ -8,9 +8,14 @@ class FabricVariant < ActiveRecord::Base
   include FabricVariants::FabriumId
 
   belongs_to :fabric
+  belongs_to :mill
 
   has_many :favorites
   has_many :favoriting_users, through: :favorites, source: :user
+
+  before_save :denormalize_columns
+
+  validates :fabric, presence: true
 
   scope :orphans, ->(bool=true) { 
     bool ? where(fabric_id: nil) : where.not(fabric_id: nil)
@@ -61,7 +66,6 @@ class FabricVariant < ActiveRecord::Base
   #
   delegate(
     :tags, 
-    :mill, 
     :dye_method, 
     :category, 
     :price_eu, 
@@ -79,5 +83,11 @@ class FabricVariant < ActiveRecord::Base
     :tags,
     to: :fabric, allow_nil: true
   )
+
+  protected
+
+  def denormalize_columns
+    self.mill = fabric.mill
+  end
 
 end

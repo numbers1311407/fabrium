@@ -8,12 +8,9 @@ class Buyer < ActiveRecord::Base
   has_many :preferred_mills, through: :preferred_buyer_mills, source: :mill, class_name: 'Mill'
   has_many :blocked_mills, through: :blocked_buyer_mills, source: :mill, class_name: 'Mill'
 
-  has_many :carts
-  has_many :buyer_carts, -> { buyer_created }, class_name: 'Cart'
-  has_many :mill_carts, -> { mill_created }, class_name: 'Cart'
+  has_many :carts, -> { exclude_subcarts }
 
-  def pending_cart
-    scoped = buyer_carts.state(:buyer)
-    scoped.first || scoped.create
+  def pending_carts
+    carts.created_by_buyer(self).state(:buyer_build)
   end
 end
