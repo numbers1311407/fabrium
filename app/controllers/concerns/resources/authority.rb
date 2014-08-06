@@ -40,6 +40,8 @@ module Resources
 
       def auth_resource
         @auth_resource ||= end_of_association_chain.send(method_for_build)
+        Rails.logger.info(@auth_resource.inspect)
+        @auth_resource
       end
 
       def authorize_auth_resource

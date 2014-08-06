@@ -1,11 +1,24 @@
 en:
   site_title: "Fabrium"
 
+  boolean:
+    yes: "Yes"
+    no: "No"
+
   helpers:
     submit:
       create: "Save %{model}"
       update: "Save %{model}"
       submit: "Save %{model}"
+
+  scopes:
+    all: "All"
+    pending: "Pending"
+    admin: "Admins"
+    users:
+      fabrium: "Fabrium"
+      buyer: "Buyer"
+      mill: "Mill"
 
   states:
     cart:
@@ -187,6 +200,7 @@ en:
         entity: Type
       user:
         meta_type: Type
+        admin: Admin privileges?
       cart_item:
         sample_yardage: Current Sample Yardage Availability
         request_yardage: Request Current Sample Yardage?
@@ -200,9 +214,3 @@ en:
       #   user:
       #     login: "Handle"
       # will translate User attribute "login" as "Handle"
-      #
-      #
-
-  time:
-    formats:
-      short: "arrrround %H'ish"

@@ -28,6 +28,30 @@ class ApplicationController < ActionController::Base
     CleanupFabricVariantOrphansJob.new.perform
   end
 
+  # Can't go to root on sign out, as it's a protected page
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
+
+  # Send users to different places on login by default.  Note this will
+  # be overridden if the user is redirected to sign in when trying to view
+  # an auth protected page.  Sign in should then continue to where they
+  # attempted to go.
+  def signed_in_root_path(resource_or_scope)
+    case resource.meta_type.human
+    when 'admin'
+      users_path(scope: 'pending')
+    when 'buyer'
+      root_path
+    when 'mill'
+      carts_path(scope: 'active')
+    else
+      super
+    end
+  end
+
+  # NOTE using this for a hook only.  
+  #
   def after_sign_in_path_for(resource_or_scope)
     if resource.respond_to?(:is_admin?) && resource.is_admin?
       initiate_async_jobs

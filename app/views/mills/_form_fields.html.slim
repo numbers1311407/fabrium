@@ -1,3 +1,4 @@
 = f.input :name
+= f.input :active, label: false, inline_label: true
 = f.input :domain_filter, as: :select, collection: Mill.domain_filters.map {|k, v| [k.titleize, k] }, input_html: { data: { select: {} } }
 = f.input :domain_names, input_html: {data: {select: {create: true, createFilter: '.*\\..*', plugins: {endpoint: {url: domains_users_path(:json)}}}}}

@@ -21,4 +21,17 @@ $(function () {
 
     $tt.remove();
   });
+
+  $(".scope-select select").each(function () {
+    var api = this.selectize;
+
+    api.on("ajax_success", function (html) {
+      var $res = $(html).find("#collection-results");
+      if ($res.length) {
+        $("#collection-results").html($res.html());
+      } else {
+        throw "Error loading index";
+      }
+    });
+  });
 });

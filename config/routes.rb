@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: "registrations" }
+  devise_for :users, path: 'auth', controllers: { registrations: "registrations" }
 
   resources :fabrics
   resources :fabric_variants do

@@ -23,10 +23,9 @@ module CartsHelper
     elsif current_user.is_mill? && resource.mill_created?
       t('labels.my_carts')
     else
-      resource.creator.name
+      resource.creator.class.name
     end
   end
-
 
   def pending_cart_size
     meta = current_user.meta
@@ -35,5 +34,9 @@ module CartsHelper
     else
       0
     end
+  end
+
+  def carts_scope_select_tag
+    scope_select_tag :carts
   end
 end

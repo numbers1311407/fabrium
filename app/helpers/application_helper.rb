@@ -30,4 +30,28 @@ module ApplicationHelper
     end
   end
 
+  def translate_scope_name scope, type
+    t(:"scopes.#{type}.#{scope}", default: [:"scopes.#{scope}"])
+  end
+
+  def scope_select_tag scope
+    options = scope_options.map do |option|
+      scope_name = translate_scope_name(option, scope)
+      [scope_name, option]
+    end
+
+    options.unshift [translate_scope_name(:all, scope), ""]
+
+    options = options_for_select(options, params[:scope])
+
+    html_options = {}
+    html_options[:class] = 'form-control'
+    html_options[:data] = {select: {plugins: {route_on_change: {remote: true}}}}
+
+    select_tag :scope, options, html_options
+  end
+
+  def humanize_boolean(v)
+    t(v ? :"boolean.yes" : :"boolean.no")
+  end
 end

@@ -1,4 +1,5 @@
 class Cart < ActiveRecord::Base
+
   include Authority::Abilities
   include HasState
 

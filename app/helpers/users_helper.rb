@@ -1,5 +1,10 @@
 module UsersHelper
-  def current_user_json
-    current_user ? UserRepresenter.new(current_user).to_json : ""
+
+  def users_scope_select_tag
+    scope_select_tag :users
+  end
+
+  def translate_users_scope_name(scope)
+    translate_scope_name scope, :users
   end
 end

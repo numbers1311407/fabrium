@@ -5,7 +5,7 @@ class Mill < ActiveRecord::Base
 
   has_many :users, as: :meta, dependent: :destroy
 
-  scope :active, ->{ where(active: true) }
+  scope :active, ->(v=true) { where(active: v) }
 
   belongs_to :user
   has_many :fabrics

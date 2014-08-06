@@ -26,21 +26,22 @@
   - if content_for?(:heading)
     .panel-heading.panel-notice
       = yield(:heading)
-  - if collection.empty?
-    .panel-body
-      .empty
-        = @no_results_message || st('messages.no_results')
-  - else
-    .table-responsive
-      table.table.table-bordered.table-hover
-        thead
-          tr
-            = yield(:th)
-            th.actions
-        tbody
-          = yield(:tbody)
-        - if collection.total_pages > 1
-          tfoot.paginator
+  #collection-results
+    - if collection.empty?
+      .panel-body
+        .empty
+          = @no_results_message || st('messages.no_results')
+    - else
+      .table-responsive
+        table.table.table-bordered.table-hover
+          thead
             tr
-              td(colspan=42)
-                = paginate collection
+              = yield(:th)
+              th.actions
+          tbody
+            = yield(:tbody)
+          - if collection.total_pages > 1
+            tfoot.paginator
+              tr
+                td(colspan=42)
+                  = paginate collection

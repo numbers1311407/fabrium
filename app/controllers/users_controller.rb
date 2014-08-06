@@ -8,6 +8,17 @@ class UsersController < ResourceController
     :admin
   ]
 
+  has_scope :scope do |controller, scope, value|
+    case value
+    when 'pending' then scope = scope.pending
+    when 'mill'    then scope = scope.mills
+    when 'buyer'   then scope = scope.buyers
+    when 'admin'   then scope = scope.admins
+    end
+
+    scope
+  end
+
   # eager load the metas
   add_collection_filter_scope :collection_filter_include_meta
 
@@ -41,12 +52,24 @@ class UsersController < ResourceController
     resource.pending = false
     resource.save
 
-    respond_with(resource) do |wants|
-      wants.js
-    end
+    respond_with(resource)
   end
 
   protected
+
+  helper_method :scope_options
+
+  # non admins are scoped to their users (mills, basically, as buyers
+  # only have one user and should not have admin access to this page)
+  def begin_of_association_chain
+    unless current_user.is_admin?
+      current_user.meta
+    end
+  end
+
+  def scope_options
+    scopes = %w(pending fabrium mill buyer)
+  end
 
   def collection_filter_include_meta(object)
     object.includes(:meta)

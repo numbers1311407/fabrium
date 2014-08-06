@@ -2,11 +2,91 @@ $(function () {
   $("[data-select]").each(function () {
     var $el = $(this), options = $el.data('select');
     $el.selectize(options);
-    window.api = $el[0].selectize;
   });
 });
 
 ;(function () {
+  Selectize.define('route_on_change', function (options) {
+    var self = this;
+
+    self.setup = (function () {
+      var original = self.setup;
+
+      return function () {
+        original.apply( this, arguments );
+
+        var route = function (url) {
+          window.location.href = url;
+        }
+
+        if (options.remote && window.history.pushState) {
+          var ajaxGet = function (url) {
+            $.get(url)
+              .then(function () {
+                var args = Array.prototype.slice.apply(arguments);
+                args.unshift('ajax_success');
+                self.trigger.apply(self, args);
+              });
+          }
+
+          $(window).on("popstate", function (e) {
+            var state = e.originalEvent.state;
+            if (state !== null && state.scope)  {
+              ajaxGet(location.href);
+            }
+          });
+
+          route = function (url) {
+            history.pushState({scope: true}, "", url);
+            ajaxGet(url);
+          }
+        }
+
+        var name = this.$input.attr("name");
+        var $blank = this.revertSettings.$children.filter("[value='']");
+        var blankValue = "_blank";
+
+        if ($blank.length) {
+          // if this were more robust it'd make sure the valueField and
+          // labelField were correct
+          this.addOption({text: $blank.text(), value: blankValue});
+          this.getValue() || this.setValue(blankValue);
+        }
+
+        this.on('change', function (v) {
+          if (!v) return;
+
+          var param = v != blankValue ? name+'='+v : ''
+            , s = location.search
+            , rx = new RegExp(name+"=\\w+");
+
+          // NOTE this original bit was to preserve the query, which
+          // is fine but for the purposes here is not really necessary
+          // as there's typically only going to be one param, besides
+          // `page`, and `page` is probably something that should be
+          // replaced on search query change (otherwise you end up with
+          // empty results when the search is narrowed).
+          //
+          // Anyway, this could be better done using some kind of 
+          // param/deparam plugin that parses and resets search.
+          //
+          // var search = (s) 
+          //   ? s.match(rx)
+          //     ? s.replace(rx, param)
+          //     : param ? s + '&' + param : s
+          //   : param ? '?'+param : '';
+          // if ('?' == search) search = '';
+          var search = param ? '?'+param : '';
+
+          var url = window.location.pathname + search;
+
+          route(url);
+        });
+      }
+    })();
+  });
+
+
   Selectize.define('clear_selection', function ( options ) {
     var self = this;
 

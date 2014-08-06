@@ -1,4 +1,3 @@
-# Other authorizers should subclass this one
 class CartAuthorizer < ApplicationAuthorizer
 
   def readable_by?(user)

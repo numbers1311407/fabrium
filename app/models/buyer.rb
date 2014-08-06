@@ -1,4 +1,6 @@
 class Buyer < ActiveRecord::Base
+  include Authority::Abilities
+
   has_one :user, as: :meta, dependent: :destroy
 
   has_many :buyer_mills

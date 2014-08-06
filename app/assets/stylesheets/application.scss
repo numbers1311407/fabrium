@@ -264,12 +264,26 @@ body .form-group-range {
     padding-right: 0;
   }
 
-  .btn-group {
-    margin: 10px 0;
+  .btn-group, .scope-select {
+    margin: 10px 0 0;
+    &, .selectize-input {
+      height: 36px;
+    }
+
+    .form-group {
+      width: 100%;
+    }
+    .selectize-control {
+      width: 100%;
+    }
+    select {
+      display: none;
+      width: 100%;
+    }
 
     @media (min-width: $screen-md-min) {
       float: right;
-      margin: 0;
+      margin: 0 0 0 10px;
     }
   }
 }
@@ -728,4 +742,22 @@ span + span.badge {
 
 [data-toggle]:focus {
   outline: none;
+}
+
+.scope-select {
+  width: 200px;
+}
+
+.form-inline .form-group {
+  margin: 0;
+}
+
+.table-responsive {
+  &, table {
+    margin-bottom: 0;
+  }
+}
+
+.breadcrumb {
+  background: none;
 }

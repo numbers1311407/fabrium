@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   after_commit :send_invitation_if_admin, on: :create
 
+  before_validation :preset_pending_status, on: :create
   before_create :set_initial_pending_status
   after_update :on_pending_change, if: :pending_changed?
 
@@ -23,15 +24,16 @@ class User < ActiveRecord::Base
     :registerable,
     :recoverable, 
     :trackable, 
-    :timeoutable,
     :validatable, 
     :lockable
 
   validates :email, presence: true, email: true, uniqueness: true
 
-  # don't require password on creation as users are created in the admin
+  scope :pending, -> { where(pending: true) }
+
+  # don't require password while users are not pending
   def password_required?
-    super if persisted? || invited_by.blank?
+    pending? ? false : super
   end
 
   def send_invitation!(from)
@@ -51,6 +53,11 @@ class User < ActiveRecord::Base
   end
 
   protected
+
+  # as this affects validation
+  def preset_pending_status
+    self.pending = true if nil == self.pending
+  end
 
   def set_initial_pending_status
     self.pending = if is_buyer?

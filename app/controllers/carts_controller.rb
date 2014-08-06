@@ -1,4 +1,5 @@
 class CartsController < ResourceController
+
   custom_actions resource: [:pending_cart]
   authority_actions pending_cart: :read
 
@@ -20,12 +21,28 @@ class CartsController < ResourceController
     ]
   ]
 
+  has_scope :scope do |controller, scope, value|
+    user = controller.current_user
+
+    case value
+    when 'active'
+      if user.is_mill?
+        scope = scope.mill_build
+      elsif user.is_buyer?
+        scope = scope.buyer_build
+      end
+    when 'ordered', 'mill_build', 'buyer_build'
+      scope = scope.send(value)
+    end
+
+    scope
+  end
+
   #
   # GET /cart
   #
   def pending_cart
     object = resource
-
 
     respond_with(object) do |wants|
       wants.html { render 'edit' }
@@ -54,6 +71,15 @@ class CartsController < ResourceController
 
   protected
 
+  helper_method :scope_options
+
+  def scope_options
+    if current_user.is_admin?
+      %w(buyer_build mill_build ordered)
+    else
+      %w(active ordered)
+    end
+  end
 
   def resource
     # If this is a `public_show` request, skip the authority action and
@@ -114,21 +140,48 @@ class CartsController < ResourceController
   # Mills filter out carts that are in the hands of the buyer or
   # in a pending state
   #
+  # Mills only see carts belonging to them, meaning they'll only see
+  # carts they created (which by definition cannot include items from
+  # other mills), "subcarts" which have been split off of buyer created
+  # carts, and buyer created carts which have been assigned to the mill
+  # because it is the sole mill responsible for the items.  This should
+  # naturally exclude buyer carts that have fabrics in them for multiple
+  # mills.
+  #
+  # Mills should also not see their "current" cart, which should be
+  # edited at /cart (though it is technically available at its full
+  # resource URI)
+  #
   def collection_filter_mill_carts(object)
     if current_user.is_mill?
       object = object.not_state(:buyer_build, :pending)
+
+      ids = current_user.meta.pending_carts.ids
+      object = object.where.not(id: ids)
     end
 
     object
   end
 
   #
-  # Buyers filter out all states that are not "ordered", only seeing
-  # submitted carts in the list.
+  # Buyers see the carts they're currently building (buyer_build) and
+  # carts that are past the "order" stage.
+  #
+  # Buyers do not see "subcarts" which were split up for mills, but 
+  # rather only the full carts.
+  #
+  # Buyers should also not see their "current" cart, which should be
+  # edited at /cart (though it is technically available at its full
+  # resource URI)
   #
   def collection_filter_buyer_carts(object)
     if current_user.is_buyer?
       object = object.state(:buyer_build, :ordered, :closed)
+      object = object.exclude_subcarts
+
+      # TODO this should be a scope "not the pending cart"
+      ids = current_user.meta.pending_carts.ids
+      object = object.where.not(id: ids)
     end
 
     object
