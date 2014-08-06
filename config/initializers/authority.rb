@@ -28,7 +28,16 @@ Authority.configure do |config|
     :edit    => 'update',
     :update  => 'update',
     :destroy => 'delete',
-    :activate => 'activate'
+
+    # Activatable came over from another app where it was required to 
+    # separate it from update.  It is probably not really necessary here.
+    :activate => 'activate',
+
+    # To administer is essentially to read the administrative interface.
+    # It may be replaceable with update permissions, but this allows for
+    # a blanket permission, for example, to read a resource index, while
+    # having no bearing on the permission on the results.
+    :administer => 'administer'
   }
 
   # ABILITIES
@@ -44,7 +53,8 @@ Authority.configure do |config|
     :read   => 'readable',
     :update => 'updatable',
     :delete => 'deletable',
-    :activate => 'activatable'
+    :activate => 'activatable',
+    :administer => 'administerable'
   }
 
   # LOGGER

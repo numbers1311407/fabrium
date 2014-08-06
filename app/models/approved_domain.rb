@@ -1,5 +1,7 @@
 class ApprovedDomain < ActiveRecord::Base
   include Authority::Abilities
+  self.authorizer = FabriumResourceAuthorizer
+
   enum entity: [:buyer, :mill]
   validates_format_of :name, with: /\A(.*)\.(.*)\z/
 

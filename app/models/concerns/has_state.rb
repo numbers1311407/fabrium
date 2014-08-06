@@ -20,6 +20,13 @@ module HasState
     end
   end
 
+  def bump_state
+    current = read_attribute(:state)
+    self.state = current + 1
+  rescue
+    false
+  end
+
   protected
 
   def states

@@ -1,8 +1,10 @@
 - index_table_headers do
   th= sort_link(@q, :created_at)
-  th= sort_link(@q, :public_id)
+  th= sort_link(@q, :name)
+  th= sort_link(@q, :creator_type, 'Source')
   th= sort_link(@q, :state)
 
-td= l(resource.created_at)
-td= resource.public_id
-td= t("states.cart.#{resource.state}")
+td= l(resource.created_at, format: :long)
+td= resource.name
+td= humanize_creator_type(resource)
+td= translate_cart_state(resource.state)

@@ -9,13 +9,16 @@ en:
 
   states:
     cart:
-      buyer_build: "Buyer in progress"
-      mill_build: "Active"
       pending: "Pending"
       ordered: "Ordered"
-      closed: "Closed"
+      buyer:
+        mill_build: "Mill"
+        buyer_build: "Active"
+      mill:
+        buyer_build: "Buyer"
+        mill_build: "Active"
     cart_item:
-      pending: "Pending"
+      pending: "Open"
       shipped: "Shipped"
 
   st:
@@ -33,7 +36,7 @@ en:
     messages:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'
-      empty_cart: 'Your order is currently empty'
+      empty_cart: 'The hanger request is currently empty'
     profiles:
       actions:
         edit:
@@ -58,6 +61,7 @@ en:
     crop_image: 'Crop Image'
     crop_cancel: 'Reset Changes'
     crop_commit: 'Commit Crop'
+    my_carts: 'My Carts'
   messages:
     crop_warning: "Your image must be exactly %{size}x%{size}px.  It must be cropped before it will appear in search results."
 
@@ -158,10 +162,11 @@ en:
 
     # Translate model names. Used in Model.human_name().
     models:
-      fabric_variant: Fabric Variant
-      dye_method: Dye Method
-      tag: Keyword
       approved_domain: Approved Domain
+      cart: Order
+      dye_method: Dye Method
+      fabric_variant: Fabric Variant
+      tag: Keyword
 
     # Translate model attribute names. Used in Model.human_attribute_name(attribute).
     attributes:
@@ -173,6 +178,7 @@ en:
         dye_method: Dye Method
         fabric_variants: Variants
         tags: Keywords
+        id: Fabrium ID
       mill:
         domain_filter: Domain Filter Type
         domain_names: Filtered Domains
@@ -183,6 +189,8 @@ en:
         meta_type: Type
       cart_item:
         sample_yardage: Current Sample Yardage Availability
+        request_yardage: Request Current Sample Yardage?
+        notes: Notes to the Mill
       cart:
         buyer_email: Buyer's Email
         buyer_email_confirmation: Confirm Buyer's Email
@@ -192,3 +200,9 @@ en:
       #   user:
       #     login: "Handle"
       # will translate User attribute "login" as "Handle"
+      #
+      #
+
+  time:
+    formats:
+      short: "arrrround %H'ish"

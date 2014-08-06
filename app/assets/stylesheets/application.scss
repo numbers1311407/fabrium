@@ -8,6 +8,33 @@
 @import "alertify";
 @import "admin";
 @import "jcrop";
+@import "sticky_footer";
+
+
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+header {
+  z-index: 10;
+}
+
+.navbar-brand {
+  background: asset_url('logo.png') no-repeat;
+  display: inline-block;
+  width: 180px;
+  height: 90px;
+  text-indent: -9999em;
+  margin: 12px 0 0;
+}
+
+.navbar {
+  @include box-shadow(0px 0px 20px rgba(0, 0, 0, 0.1));
+
+  .navbar-nav > li > a {
+    text-transform: uppercase;
+  }
+}
 
 
 html {
@@ -24,6 +51,9 @@ select.form-control option {
 
 #main {
   padding: 0 0 40px;
+  position: relative;
+  top: 0;
+  @include transition(top 0.7s ease);
 }
 
 $result-padding: 10px;
@@ -33,7 +63,8 @@ ul.fabric-variant-resultlist {
   @include make-row($result-padding);
   padding: 0;
   list-style: none none;
-  margin: 20px 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .page-loading {
@@ -108,10 +139,12 @@ body .form-group-range {
 }
 
 .nav li.text span {
+  $line-height: 20px;
+  $padding: ($navbar-height - $line-height) / 2;
   position: relative;
-  padding: 20px 20px;
+  padding: $padding;
   display: block;
-  line-height: 20px;
+  line-height: $line-height;
   color: #999;
 
   @media (max-width: $screen-xs-max) {
@@ -268,6 +301,10 @@ select[data-select],
   }
 }
 
+.modal-body {
+  padding: 25px 40px;
+}
+
 // decrease the double margin top on headers in modal titles
 .modal-title {
   h1, h2, h3, h4, h5, h6 {
@@ -383,7 +420,29 @@ td.thumb {
 
 }
 
+hr {
+  margin: 18px 0;
+}
+
+hr.no-botmargin {
+  margin-bottom: 0;
+}
+
 #fabric-variants-index {
+  .panel {
+    .panel-body {
+      padding-bottom: 0;
+    }
+  }
+
+  .search-footer {
+    margin: 18px 0;
+  }
+
+  legend {
+    display: none;
+  }
+
   #pagination {
     line-height: 32px;
   }
@@ -392,7 +451,8 @@ td.thumb {
     #pagesort {
       select {
         float: right;
-        width: 150px;
+        width: 180px;
+        font-size: 14px;
       }
     }
   }
@@ -487,8 +547,10 @@ a.fabric-favorite-status {
     &:hover { color: #aaa; }
   }
   i.fa-favorite {
-    color: #f88;
-    &:hover { color: #f66; }
+    // color: #f88;
+    // &:hover { color: #f66; }
+    color: $brand-primary;
+    &:hover { color: lighten($brand-primary, 10%); }
   }
 }
 
@@ -549,9 +611,13 @@ dt:after {
     margin: 20px 0;
     .btn {
       padding: 4px 8px;
-      font-size: 12px;
+      font-size: 14px;
     }
   }
+}
+
+.fabrics-show-details {
+  font-size: 14px;
 }
 
 .fabrics-show-main-image {
@@ -595,31 +661,71 @@ dt:after {
   }
 }
 
+.cart-wrapper {
+  @media (min-width: $screen-md-min) {
+    width: 800px;
+    margin: 0 auto;
+  }
+}
+
 .nav-subnav {
   margin-bottom: 20px;
 }
 
-// fixes a seeming issue where lg icons are pulled up too far by their
-// line height (might be a particular font size)
-.fa-lg {
-  line-height: 1;
-}
-
-.cart-item.row {
+.cart-items {
+  // border-top: 1px solid #eee;
+  // border-bottom: 1px solid #eee;
+  border: 1px solid #eee;
+  border-radius: 10px;
   margin-bottom: 20px;
+  padding: 20px;
+
+  a.remove {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    padding: 2px 5px;
+    font-size: 12px;
+  }
+}
+.cart-item {
+  @include make-row();
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  padding-top: 15px;
+
   img {
     width: 100%;
   }
   .col-thumb {
     @include make-xs-column(4);
-    @include make-sm-column(2);
+    @include make-sm-column(3);
   }
   .col-fields {
     @include make-xs-column(8);
-    @include make-sm-column(7);
+    @include make-sm-column(9);
   }
+}
+
+.in-stock-indicator {
+  margin-bottom: 12px;
 }
 
 p.fake-input {
   height: auto;
+}
+
+#buyer-email-form {
+  @include make-sm-column(6);
+}
+
+span + span.badge {
+  margin-left: 10px;
+}
+
+[data-toggle]:focus {
+  outline: none;
 }

@@ -16,6 +16,8 @@
 - unless content_for?(:title)
   - content_for(:title) { title st(:title) }
 
+- breadcrumb :resources
+
 .panel.panel-default
   .panel-heading.clearfix
     h1.panel-title
@@ -42,4 +44,3 @@
             tr
               td(colspan=42)
                 = paginate collection
-          

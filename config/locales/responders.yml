@@ -8,7 +8,7 @@ en:
         notice: '%{resource_name} was successfully updated.'
         # alert: '%{resource_name} could not be updated.'
       destroy:
-        notice: '%{resource_name} was successfully destroyed.'
+        notice: '%{resource_name} was successfully deleted.'
         alert: '%{resource_name} could not be destroyed.'
       activate:
         notice: '%{resource_name} was successfully activated.'

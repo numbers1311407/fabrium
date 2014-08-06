@@ -1,7 +1,18 @@
-.cart-item.row
+.cart-item(data-id=cart_item.id)
   .col-thumb
     = image_tag(cart_item.fabric_variant.thumb.url)
   .col-fields
+    p
+      label 
+        span Fabrium ##{cart_item.fabrium_id}
+
+        - if cart_item.fabric_variant.in_stock?
+          span.badge In Stock
+
+    - if cart_item.deletable_by?(current_user)
+      = link_to cart_cart_item_path(cart, cart_item.fabric_variant_id), class: 'remove btn btn-default', method: :delete, remote: true do
+        span Remove
+
     / Buyer always sees the notes in this form
     - if current_user.is_buyer?
       = f.input :notes, as: :text, input_html: { rows: 3 }
@@ -10,12 +21,12 @@
     / build (the notes will be blank)
     - elsif !cart.mill_build?
       .form-group
-        label.control-label Notes
+        label.control-label
+          = CartItem.human_attribute_name(:notes)
         p.fake-input.form-control-static.form-control
-          = f.object.notes
-
-    - if cart_item.fabric_variant.in_stock?
-      span.stocked.in-stock In Stock
+          = cart_item.notes
 
     - if current_user.is_mill?
       = f.input :sample_yardage
+    - elsif current_user.is_buyer?
+      = f.input :request_yardage, label: false, inline_label: true

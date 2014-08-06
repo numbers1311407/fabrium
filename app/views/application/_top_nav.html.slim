@@ -5,21 +5,16 @@
       i.fa.fa-gear.fa-lg
     = link_to t(:site_title), root_path, class: "navbar-brand"
   #topnav.collapse.navbar-collapse
-    ul.nav.navbar-nav
-      = resource_menu_link(Fabric)
-      = resource_menu_link(Tag) do
-        li.dropdown
-          = link_to("/lists", data: {toggle: "dropdown"}) do
-            span Manage Lists
-            span.caret
-          ul.dropdown-menu(role="menu")
-            = render "application/list_items_nav"
-      = resource_menu_link(ApprovedDomain)
-
     - if current_user && current_user.persisted?
       ul.nav.navbar-nav.navbar-right
         li.text
           span Welcome #{current_user.email}!
+        li.dropdown
+          = link_to("/lists", data: {toggle: "dropdown"}) do
+            span Manage
+            span.caret
+          ul.dropdown-menu(role="menu")
+            = render "application/list_items_nav"
         li.dropdown.dropdown-toggle
           a.dropdown-toggle data-toggle="dropdown" href="#"
             i.fa.fa-gear.fa-lg.hidden-xs
@@ -29,9 +24,11 @@
           ul.dropdown-menu
             - unless current_user.is_admin?
               li
-                a href=pending_cart_path
+                a.cart-link href=pending_cart_path
                   i.fa.fa-shopping-cart
                   span My Cart
+                  span.count-outer
+                    |  (<span class="count">#{pending_cart_size}</span>)
             li
               = link_to edit_profile_path do
                 i.fa.fa-user

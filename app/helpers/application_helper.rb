@@ -16,7 +16,7 @@ module ApplicationHelper
   end
 
   def resource_menu_link(resource_class, options={}, &block)
-    if current_user && current_user.can_read?(resource_class.new)
+    if current_user && current_user.can_administer?(resource_class.new)
       if block
         capture(&block)
       else

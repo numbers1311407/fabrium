@@ -8,6 +8,7 @@ class CreateCartItems < ActiveRecord::Migration
       t.integer :state, default: 0
       t.text :notes
       t.decimal :sample_yardage
+      t.boolean :request_yardage, default: true
       t.string :tracking_number
       t.timestamps
     end

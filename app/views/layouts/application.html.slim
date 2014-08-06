@@ -4,8 +4,10 @@ html
     meta charset="utf-8"
     meta name="description" content=""
     title Fabrium
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Roboto+Condensed', media: 'all'
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'head'
+    = favicon_link_tag 'favicon.ico'
     = csrf_meta_tags
     = yield :head
 
@@ -17,12 +19,16 @@ html
       .container
         main#main role="main"
           = render 'flash_messages'
-          - if content_for?(:top)
-            #top
-              = yield(:top)
+          #top
+            = yield(:top)
           = content_for?(:main) ? yield(:main) : yield
+    footer
+      .footer-inner
+        = render 'footer'
+
     #body_end
       = javascript_include_tag 'vendor'
       = javascript_include_tag 'application'
       = yield :body_end
       = render 'modal'
+

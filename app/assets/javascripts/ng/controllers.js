@@ -24,6 +24,10 @@
           $scope.cart.get().then(function (cart) {
             $scope.cart.variant_ids = cart.variant_ids;
           });
+
+          $scope.$watch("cart.size()", function (v) {
+            $("a.cart-link .count").text(v);
+          });
         }
       });
 
@@ -102,6 +106,25 @@
       $scope.parseSearch($location.search());
 
 
+      $scope.hideSearch = function () {
+        var $main = angular.element("#main");
+        var $searchFooter = angular.element("#main .search-footer");
+        var $navbar = angular.element("#navbar-main");
+        var $searchPanel = angular.element("#search-panel");
+        var height = $searchPanel.height() - $searchFooter.outerHeight() - 13;
+
+        $scope.searchHidden = true;
+        $main.css({top: -height});
+      };
+
+      $scope.showSearch = function (e) {
+        e.preventDefault();
+        var $main = angular.element("#main");
+        $scope.searchHidden = false;
+        $main.css({top: 0});
+      };
+
+
       // Sync the scope search with the location search and submit the form.
       //
       // Note that "submitting" the form does not trigger submit, but rather
@@ -118,6 +141,8 @@
         $scope.lastSearch = angular.copy($scope.search);
 
         var items = RestangularWithResponse.all("fabric_variants");
+
+        // $scope.hideSearch();
 
         items.getList($scope.search)
           .then(function (res) {
@@ -232,7 +257,9 @@
         })
       };
 
-      $timeout($scope.submit);
+      if (!_.isEmpty($scope.search)) {
+        $timeout($scope.submit);
+      }
     }
   );
 

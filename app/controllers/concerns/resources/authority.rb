@@ -4,6 +4,13 @@ module Resources
 
     included do
       helper_method :auth_resource
+
+      # NOTE the controller only authorizes in a filter on the `index`
+      # action, allowing the authorization in other actions to happen
+      # at the resource level.  This authorization happens on an instance
+      # of the resource, typically the equivalent of `build_resource`.
+      # To change the object that is subject to authorization, overwrite
+      # `auth_resource`
       before_filter :authorize_auth_resource, only: :index
       
       alias_method_chain :resource, :authority

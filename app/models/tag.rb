@@ -1,5 +1,6 @@
 class Tag < ActiveRecord::Base
   include Authority::Abilities
+  self.authorizer = FabriumResourceAuthorizer
 
   validates :name, 
     uniqueness: true,

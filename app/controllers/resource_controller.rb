@@ -13,6 +13,12 @@ class ResourceController < InheritedResources::Base
 
   respond_to :json
 
+  def show
+    show! do |wants|
+      wants.html { redirect_to edit_resource_path(resource) }
+    end
+  end
+
   def create
     create! do |success, failure|
       success.html { redirect_to after_commit_redirect_path }
@@ -22,6 +28,12 @@ class ResourceController < InheritedResources::Base
   def update
     update! do |success, failure|
       success.html { redirect_to after_commit_redirect_path }
+    end
+  end
+
+  def destroy
+    destroy! do |wants|
+      wants.js { head 204 }
     end
   end
 
@@ -50,7 +62,17 @@ class ResourceController < InheritedResources::Base
     resource_class.model_name.plural.titleize
   end
 
-  def resource_label attribute
-    resource_class.human_attribute_name(attribute)
+  def resource_label attribute, object=nil
+    klass = resource_class
+
+    if object
+      if object.respond_to?(:human_attribute_name)
+        klass = object
+      elsif object.class.respond_to?(:human_attribute_name)
+        klass = object.class
+      end
+    end
+
+    klass.human_attribute_name(attribute)
   end
 end

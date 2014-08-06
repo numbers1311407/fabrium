@@ -1,7 +1,7 @@
-- if current_user.can_read?(resource)
-  = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
-    i.fa.fa-info(title=st('links.show'))
-    span= st('links.show')
+- if current_user.can_update?(resource)
+  = link_to edit_resource_path(resource), class: 'btn btn-sm btn-default' do
+    i.fa.fa-edit(title=st('links.edit'))
+    span= st('links.edit')
 - if current_user.can_delete?(resource)
   = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, data: { confirm: st('messages.confirm_destroy') } do
     i.fa.fa-trash-o(title=st('links.destroy'))

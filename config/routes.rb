@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :favorites
   resources :fabric_notes, only: [:show, :update, :destroy]
 
-  resources :carts, except: :edit do
+  resources :carts, path: :orders do
     resources :cart_items, path: :items
   end
 

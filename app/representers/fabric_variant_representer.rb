@@ -15,6 +15,6 @@ module FabricVariantRepresenter
     property :thumb_path, as: :thumb
   end
 
-  link(:self) { fabric_url(self.fabric) }
-  link(:edit) { edit_fabric_url(self.fabric) }
+  link(:self) { fabric_url(self.fabric) if self.fabric }
+  link(:edit) { edit_fabric_url(self.fabric) if self.fabric }
 end

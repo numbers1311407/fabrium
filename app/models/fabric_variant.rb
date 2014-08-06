@@ -15,7 +15,15 @@ class FabricVariant < ActiveRecord::Base
 
   before_save :denormalize_columns
 
-  validates :fabric, presence: true
+  # WARN while it would make sense to validate that a fabric variant has
+  # a fabric attached, this is not currently possible because of the way
+  # fabric variants are created for new fabrics.  It happens BEFORE the
+  # fabric is created.  And further, because of the nonstandard way
+  # the fabric variants use accepts_nested_attributes_for, they are validated
+  # before the fabric in the fabric form (meaning there'd be another trick
+  # involved to get them to save, even if you only validated on update)
+  #
+  #validates :fabric, presence: true
 
   scope :orphans, ->(bool=true) { 
     bool ? where(fabric_id: nil) : where.not(fabric_id: nil)
@@ -87,7 +95,7 @@ class FabricVariant < ActiveRecord::Base
   protected
 
   def denormalize_columns
-    self.mill = fabric.mill
+    self.mill = fabric.mill if fabric.present?
   end
 
 end

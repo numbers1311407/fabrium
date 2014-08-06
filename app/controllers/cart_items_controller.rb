@@ -1,5 +1,5 @@
 class CartItemsController < ResourceController
-  belongs_to :cart, finder: :find_by_public_id
+  belongs_to :cart
   defaults finder: :find_by_fabric_variant_id!, instance_name: :item, route_instance_name: :item
 
   permit_params [

@@ -19,7 +19,7 @@
         <div id=adv-custom-pager class="center external"></div>
       </div>
     </div>
-    <div class="fabics-show-details col-sm-6">
+    <div class="fabrics-show-details col-sm-6">
       <dl>
         <dt>Mill</dt> <dd ng-bind="resource.mill.name | default"></dd>
         <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd>
@@ -42,13 +42,13 @@
 
   <div class="row">
     <div class="buttons col-sm-12">
-      <a class="btn" ng-show="cart" ng-class="{true: 'btn-warning', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
       <a class="btn btn-default" ng-click="current_user.toggleFavorite(variant.id)">
         <i class="fa fa-heart-o"></i>
         <span ng-bind="isFavorite(variant.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
       <a class="btn btn-default" href="{{ resource.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="printModal()">Print</a>
+      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
     </div>
   </div>
   <div class="row">

@@ -136,6 +136,18 @@ class Cart < ActiveRecord::Base
   scope :exclude_subcarts, -> { where(parent_id: nil) }
   scope :subcarts, -> { where.not(parent_id: nil) }
 
+  def mill_created?
+    creator_type == 'Mill'
+  end
+
+  def buyer_created?
+    creator_type == 'Buyer'
+  end
+
+  def public?
+    buyer.blank?
+  end
+
   protected
 
   def buyer_email_must_be_blank_or_buyer
@@ -174,16 +186,23 @@ class Cart < ActiveRecord::Base
     end
   end
 
+  #
+  # Resets the state and re-runs the perform_state_update
+  #
+  def reset_changed_state new_state
+    self.changed_attributes[:state] = self.state
+    self.state = new_state
+    perform_state_update
+  end
+
   def transition_mill_build_to_buyer_unclaimed
     MailerJob.new.async.perform(AppMailer, :mill_cart_created, self)
 
     # if there's a buyer user attach them to the cart immediately and
     # re-run the state update
     if buyer_user
-      self.buyer = buyer_user
-      self.state = states[:buyer_build]
-      self.changed_attributes[:state] = 'buyer_unclaimed'
-      perform_state_update
+      self.buyer = buyer_user.meta
+      reset_changed_state :buyer_build
     end
   end
 
@@ -191,13 +210,11 @@ class Cart < ActiveRecord::Base
     # nothing to do here
   end
 
-  # As long as the user is not pending, transition straight
-  # out of pending into ordered
   def transition_buyer_build_to_pending
+    # As long as the user is not pending, transition straight
+    # out of pending into ordered
     if buyer.respond_to?(:user) && !buyer.user.pending?
-      self.state = states[:ordered]
-      self.changed_attributes[:state] = 'pending'
-      perform_state_update
+      reset_changed_state :ordered
     end
   end
 
@@ -236,7 +253,7 @@ class Cart < ActiveRecord::Base
 
   def generate_public_id
     self.public_id = loop do
-      random_token = SecureRandom.urlsafe_base64(nil, false)
+      random_token = SecureRandom.urlsafe_base64(16).tr('lIO0_-', 'sxyzUD')
       break random_token unless self.class.exists?(public_id: random_token)
     end
   end

@@ -41,4 +41,5 @@ gem 'gretel'
 gem 'htmlcompressor'
 gem 'ngannotate-rails'
 gem 'sucker_punch'
-gem 'aasm'
+gem 'base62'
+

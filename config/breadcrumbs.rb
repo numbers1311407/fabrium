@@ -1,5 +1,5 @@
 crumb :root do
-  link "FOO", root_path
+  link "Home", "/"
 end
 
 crumb :resources do |options|

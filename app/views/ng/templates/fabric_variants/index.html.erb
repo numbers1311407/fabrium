@@ -1,5 +1,5 @@
 <div id="fabric-variants-index">
-  <div class="panel panel-default">
+  <div id="search-panel" class="panel panel-default">
     <div class="panel-body">
       <form role="form" class="form-search" ng-submit="updateSearch(1)">
         <fieldset>
@@ -56,6 +56,7 @@
         </fieldset>
 
         <a href="#" ng-click="advanced = !advanced">
+          <i class="fa fa-search-plus"></i>
           Toggle Advanced Options
         </a>
 
@@ -231,11 +232,13 @@
             </div>
           </div>
 
-          <hr>
+          <hr class="no-botmargin">
+
         </fieldset>
 
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Search</button>
+        <div class="form-actions search-footer">
+          <button ng-show="!searchHidden" type="submit" class="btn btn-primary">Search</button>
+          <button ng-show="searchHidden" class="btn btn-primary" ng-click="showSearch($event)">Edit Search Options</button>
         </div>
       </form>
     </div>
@@ -244,7 +247,7 @@
   <div class="row">
     <div id="pagination" class="col-sm-6">
       <div ng-if="pagination">
-        <div ng-switch="pagination.total_count">
+        <div ng-show="!loading" ng-switch="pagination.total_count">
           <div ng-switch-when="0">
             No results were found
           </div>
@@ -266,12 +269,13 @@
         ></pagination>
       </div>
     </div>
-    <div id="pagesort" class="col-sm-6">
+
+    <div ng-show="items" id="pagesort" class="col-sm-6">
       <select class="form-control" ng-model="search.sort" ng-change="updateSearch()">
         <!-- because for whatever reason, angular select is just painfully broken -->
-        <option value="">Newest First</option>
-        <option value="fabrium_id">Fabrium Number</option>
-        <option ng-if="!current_user.isBuyer()" value="item_number">Item Number</option>
+        <option value="">Sort: Newest First</option>
+        <option value="fabrium_id">Sort: Fabrium Number</option>
+        <option ng-if="!current_user.isBuyer()" value="item_number">Sort: Item Number</option>
       </select>
     </div>
   </div>

@@ -17,6 +17,10 @@
         this.all("items").post({fabric_variant_id: id});
       };
 
+      model.size = function () {
+        return this.variant_ids.length;
+      };
+
       model.removeItem = function (id) {
         if (!this.hasItem(id)) { return; }
         this.variant_ids.splice(this.variant_ids.indexOf(id), 1);

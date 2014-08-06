@@ -17,7 +17,7 @@
 // $gray-light:             lighten(#000, 46.7%) !default; // #777
 // $gray-lighter:           lighten(#000, 93.5%) !default; // #eee
 
-// $brand-primary:         #428bca !default;
+$brand-primary:         #F3B21D;
 // $brand-success:         #5cb85c !default;
 // $brand-info:            #5bc0de !default;
 // $brand-warning:         #f0ad4e !default;
@@ -31,12 +31,11 @@
 // //** Background color for `<body>`.
 // $body-bg:               #fff !default;
 // //** Global text color on `<body>`.
-// $text-color:            $gray-dark !default;
+$text-color:             #333;
 
 // //** Global textual link color.
-// $link-color:            $brand-primary !default;
-// //** Link hover color set via `darken()` function.
-// $link-hover-color:      darken($link-color, 15%) !default;
+$link-color:             #434343;
+$link-hover-color:       $brand-primary;
 
 
 // //== Typography
@@ -49,7 +48,7 @@
 // $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
 // $font-family-base:        $font-family-sans-serif !default;
 
-$font-size-base:          13px !default;
+$font-size-base:            16px;
 // $font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
 // $font-size-small:         ceil(($font-size-base * 0.85)) !default; // ~12px
 
@@ -306,7 +305,7 @@ $font-size-base:          13px !default;
 // //** Number of columns in the grid.
 // $grid-columns:              12 !default;
 // //** Padding between columns. Gets divided in half for the left and right.
-// $grid-gutter-width:         30px !default;
+$grid-gutter-width:         30px !default;
 // // Navbar collapse
 // //** Point at which the navbar becomes uncollapsed.
 // $grid-float-breakpoint:     $screen-sm-min !default;
@@ -329,9 +328,9 @@ $font-size-base:          13px !default;
 // $container-md:                 $container-desktop !default;
 
 // // Large screen / wide desktop
-// $container-large-desktop:      ((1140px + $grid-gutter-width)) !default;
+$container-large-desktop:      ((1140px + $grid-gutter-width)) !default;
 // //** For `$screen-lg-min` and up.
-// $container-lg:                 $container-large-desktop !default;
+$container-lg:                 $container-large-desktop !default;
 
 
 // //== Navbar
@@ -339,7 +338,7 @@ $font-size-base:          13px !default;
 // //##
 
 // // Basics of a navbar
-$navbar-height:                    60px;
+$navbar-height:                    110px;
 // $navbar-margin-bottom:             $line-height-computed !default;
 // $navbar-border-radius:             $border-radius-base !default;
 // $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
@@ -347,8 +346,8 @@ $navbar-height:                    60px;
 // $navbar-collapse-max-height:       340px !default;
 
 // $navbar-default-color:             #777 !default;
-// $navbar-default-bg:                #f8f8f8 !default;
-// $navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-bg:                    #fff;
+$navbar-default-border:             #e2e2e2;
 
 // // Navbar links
 // $navbar-default-link-color:                #777 !default;
@@ -586,9 +585,9 @@ $navbar-height:                    60px;
 // $modal-content-fallback-border-color:          #999 !default;
 
 // //** Modal backdrop background color
-// $modal-backdrop-bg:           #000 !default;
+$modal-backdrop-bg:           darken($brand-primary, 35%);
 // //** Modal backdrop opacity
-// $modal-backdrop-opacity:      .5 !default;
+$modal-backdrop-opacity:      .6;
 // //** Modal header border color
 // $modal-header-border-color:   #e5e5e5 !default;
 // //** Modal footer border color
