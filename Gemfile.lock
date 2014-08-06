@@ -64,6 +64,9 @@ GEM
     dragonfly (1.0.5)
       multi_json (~> 1.0)
       rack
+    dragonfly-s3_data_store (1.0.4)
+      dragonfly (~> 1.0)
+      fog
     erubis (2.7.0)
     excon (0.33.0)
     execjs (2.2.0)
@@ -247,6 +250,7 @@ DEPENDENCIES
   devise
   devise_invitable
   dragonfly
+  dragonfly-s3_data_store
   fog
   font-awesome-rails
   gretel
