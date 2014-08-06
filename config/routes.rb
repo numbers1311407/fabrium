@@ -1,5 +1,19 @@
 Rails.application.routes.draw do
-  devise_for :users, path: 'auth', controllers: { registrations: "registrations" }
+  devise_for :users, 
+    path: 'accounts', 
+    controllers: { 
+      registrations: "registrations" 
+    },
+    path_names: {
+      sign_in: 'login',
+      sign_out: 'logout',
+      sign_up: 'signup/:meta'
+    }
+
+  devise_scope :user do
+    #redirect the normal signup to buyer
+    get '/accounts/signup', to: redirect('/accounts/signup/buyer')
+  end
 
   resources :fabrics
   resources :fabric_variants do
@@ -8,6 +22,8 @@ Rails.application.routes.draw do
       post 'preview'
     end
   end
+
+  resources :buyers
 
   resources :mills do
     member do
@@ -28,6 +44,10 @@ Rails.application.routes.draw do
       # get :mills
       # get :admins
     end
+  end
+
+  scope :data, constraints: { format: :json } do
+    get "country_subregions", to: "carmen#subregions", as: :country_subregions
   end
 
   # simple editable redirect for the first controller hit by /lists,

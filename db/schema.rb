@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140803173307) do
+ActiveRecord::Schema.define(version: 20140806151757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,17 @@ ActiveRecord::Schema.define(version: 20140803173307) do
   add_index "buyer_mills", ["mill_id"], name: "index_buyer_mills_on_mill_id", using: :btree
 
   create_table "buyers", force: true do |t|
-    t.integer  "pending_cart_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "company"
+    t.string   "position"
+    t.string   "shipping_address_1"
+    t.string   "shipping_address_2"
+    t.string   "city"
+    t.string   "subregion"
+    t.string   "country"
+    t.string   "phone"
+    t.string   "postal_code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -144,6 +154,9 @@ ActiveRecord::Schema.define(version: 20140803173307) do
     t.text     "tags",                                           default: [],  array: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "favorites_count",                                default: 0
+    t.integer  "orders_count",                                   default: 0
+    t.integer  "views_count",                                    default: 0
   end
 
   add_index "fabrics", ["category_id"], name: "index_fabrics_on_category_id", using: :btree
@@ -209,7 +222,7 @@ ActiveRecord::Schema.define(version: 20140803173307) do
     t.integer  "failed_attempts",        default: 0,     null: false
     t.datetime "locked_at"
     t.boolean  "wants_email",            default: true
-    t.boolean  "pending"
+    t.boolean  "pending",                default: true
     t.boolean  "admin",                  default: false
     t.string   "invitation_token"
     t.datetime "invitation_created_at"

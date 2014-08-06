@@ -40,6 +40,10 @@
     - else
       ul.nav.navbar-nav.navbar-right
         li
+          = link_to "Mill Signup!", new_registration_path(:user, :mill)
+        li
+          = link_to "Buyer Signup!", new_registration_path(:user, :buyer)
+        li
           = link_to new_user_session_path do
             i.fa.fa-user
             span Sign In

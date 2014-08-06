@@ -11,3 +11,5 @@ td
   = resource.meta_type.humanize
   - if resource.is_mill?
     |  - #{link_to resource.meta.name, edit_mill_path(resource.meta)}
+  - if resource.is_buyer?
+    |  - #{link_to resource.meta.name, edit_buyer_path(resource.meta)}

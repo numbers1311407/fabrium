@@ -305,7 +305,7 @@ $font-size-base:            16px;
 // //** Number of columns in the grid.
 // $grid-columns:              12 !default;
 // //** Padding between columns. Gets divided in half for the left and right.
-$grid-gutter-width:         30px !default;
+$grid-gutter-width:         15px;
 // // Navbar collapse
 // //** Point at which the navbar becomes uncollapsed.
 // $grid-float-breakpoint:     $screen-sm-min !default;
@@ -490,9 +490,9 @@ $navbar-default-border:             #e2e2e2;
 // $state-warning-bg:               #fcf8e3 !default;
 // $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
 
-// $state-danger-text:              #a94442 !default;
-// $state-danger-bg:                #f2dede !default;
-// $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
+$state-danger-text:              #a94442 !default;
+$state-danger-bg:                #f2dede !default;
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
 
 
 // //== Tooltips

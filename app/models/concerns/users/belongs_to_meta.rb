@@ -18,7 +18,7 @@ module Users
     def build_meta(attributes={})
       if self.meta
         self.meta.assign_attributes(attributes)
-      elsif meta_type && (klass = meta_type.constantize.base_class)
+      elsif meta_type && (klass = meta_type.classify.constantize.base_class)
         self.meta = klass.new(attributes)
       end
 

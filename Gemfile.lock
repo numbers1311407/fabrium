@@ -36,6 +36,11 @@ GEM
     bootstrap-sass (3.2.0.0)
       sass (~> 3.2)
     builder (3.2.2)
+    carmen (1.0.1)
+      unicode_utils (~> 1.4.0)
+    carmen-rails (1.0.1)
+      carmen (~> 1.0.0)
+      rails
     celluloid (0.15.2)
       timers (~> 1.1.0)
     chunky_png (1.3.1)
@@ -44,6 +49,9 @@ GEM
     cocaine (0.5.4)
       climate_control (>= 0.0.3, < 1.0)
     color (1.7.1)
+    countries (0.9.3)
+      currencies (~> 0.4.2)
+    currencies (0.4.2)
     devise (3.2.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -123,6 +131,11 @@ GEM
       chunky_png (~> 1.3.0)
     orm_adapter (0.5.0)
     pg (0.17.1)
+    phony (2.2.14)
+    phony_rails (0.6.1)
+      activesupport (>= 3.0)
+      countries (>= 0.8.2)
+      phony (~> 2.1)
     polyamorous (1.0.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
@@ -218,6 +231,7 @@ GEM
     uglifier (2.5.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicode_utils (1.4.0)
     warden (1.2.3)
       rack (>= 1.0)
 
@@ -228,6 +242,8 @@ DEPENDENCIES
   authority
   base62
   bootstrap-sass
+  carmen
+  carmen-rails
   devise
   devise_invitable
   dragonfly
@@ -243,6 +259,7 @@ DEPENDENCIES
   miro
   ngannotate-rails
   pg
+  phony_rails
   puma
   quiet_assets
   rack-cache

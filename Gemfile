@@ -42,4 +42,7 @@ gem 'htmlcompressor'
 gem 'ngannotate-rails'
 gem 'sucker_punch'
 gem 'base62'
+gem 'carmen'
+gem 'carmen-rails'
+gem 'phony_rails'
 

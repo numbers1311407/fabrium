@@ -1,3 +1,11 @@
+- if user_signed_in? && current_user.is_admin? && f.object.persisted?
+  - if f.object.is_mill?
+    .top-actions
+      = link_to "Edit the mill for this user?", edit_mill_path(f.object.meta)
+  - if f.object.is_buyer?
+    .top-actions
+      = link_to "Edit the buyer for this user?", edit_buyer_path(f.object.meta)
+
 = f.input :email
 
 - if f.object.persisted? && !f.object.is_admin? && current_user.is_admin?

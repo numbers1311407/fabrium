@@ -1,0 +1,11 @@
+fieldset
+  legend Profile/Login Information
+  .row
+    .col-sm-12
+      = f.input :email, autofocus: true
+    .col-sm-6
+      = f.input :password
+    .col-sm-6
+      = f.input :password_confirmation
+    .col-sm-12
+      = f.input :wants_email, label: false, inline_label: true

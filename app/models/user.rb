@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :favorite_fabrics, through: :favorites, source: :fabric
 
   has_many :fabric_notes
+  before_validation :clean_password_fields
 
   after_commit :send_invitation_if_admin, on: :create
 
@@ -31,11 +32,6 @@ class User < ActiveRecord::Base
 
   scope :pending, -> { where(pending: true) }
 
-  # don't require password while users are not pending
-  def password_required?
-    pending? ? false : super
-  end
-
   def send_invitation!(from)
     InviteUserJob.new.async.perform(id, from.id)
   end
@@ -53,6 +49,10 @@ class User < ActiveRecord::Base
   end
 
   protected
+
+  def clean_password_fields
+    clean_up_passwords if password.blank?
+  end
 
   # as this affects validation
   def preset_pending_status

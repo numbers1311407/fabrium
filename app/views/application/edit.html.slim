@@ -1,8 +1,4 @@
 - breadcrumb :edit_resource
 
-.page-header
-  #content-title
-    h1= title st(:title, name: resource.try(:name) || "#{resource_name} #{resource.id}")
-
 #content-body
   = render 'form'

@@ -37,8 +37,10 @@ class ApplicationController < ActionController::Base
   # be overridden if the user is redirected to sign in when trying to view
   # an auth protected page.  Sign in should then continue to where they
   # attempted to go.
-  def signed_in_root_path(resource_or_scope)
-    case resource.meta_type.human
+  def signed_in_root_path(resource)
+    meta_type = resource.respond_to?(:meta_type) && resource.meta_type.human
+
+    case meta_type
     when 'admin'
       users_path(scope: 'pending')
     when 'buyer'

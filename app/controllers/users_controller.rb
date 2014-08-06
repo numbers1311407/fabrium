@@ -8,6 +8,10 @@ class UsersController < ResourceController
     :admin
   ]
 
+  has_scope :mill do |controller, scope, value|
+    scope.mills.where(meta_id: value)
+  end
+
   has_scope :scope do |controller, scope, value|
     case value
     when 'pending' then scope = scope.pending

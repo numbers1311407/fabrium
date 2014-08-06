@@ -1,0 +1,5 @@
+- if user_signed_in? && current_user.is_admin? && f.object.persisted?
+  .top-actions
+    = link_to "Edit the user for this buyer?", edit_user_path(f.object.user)
+
+= render 'buyers/profile_fields', f: f

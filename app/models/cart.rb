@@ -10,6 +10,8 @@ class Cart < ActiveRecord::Base
   validate :buyer_email_must_be_blank_or_buyer, if: :transitioning_from_mill_build_to_buyer_unclaimed?
   attr_accessor :buyer_email_confirmation
 
+  validates :cart_items, presence: true, if: :transitioning_from_buyer_build_to_buyer_pending?
+
   before_create :generate_public_id
   after_create :generate_name
 
@@ -61,11 +63,15 @@ class Cart < ActiveRecord::Base
   end
   alias_method_chain :cart_items, :parent
 
+
   def build_subcarts
     # do not build subcarts for subcarts
-    return [] if parent
+    return [] if parent.present?
 
     grouped_items = cart_items.group_by(&:mill_id)
+
+    # stop here if there's only one cart
+    return [] if grouped_items.length < 2
 
     grouped_items.keys.map do |mill_id|
       cart = self.dup
@@ -74,6 +80,7 @@ class Cart < ActiveRecord::Base
       cart
     end
   end
+
 
   has_many :fabric_variants, through: :cart_items
 
@@ -220,22 +227,7 @@ class Cart < ActiveRecord::Base
   end
 
   def transition_pending_to_ordered
-    subcarts = build_subcarts
-
-    # NOTE this should probably be an async job
-    #
-    # If subcarts are created, it means that the cart items belong to
-    # more than one mill.  Subcarts are clones used to split up carts
-    # so mills can each manage their own cart object
-    if subcarts.length
-      subcarts.each(&:save)
-
-    # If no subcarts are created it means that all the cart items belong
-    # to this mill.  Rather than creating a subcart, just assign the
-    # mill to this cart
-    else
-      self.mill = cart_items.first.mill
-    end
+    ProcessOrderJob.new.async.perform(:transition_to_ordered, id)
   end
 
   def transition_ordered_to_closed

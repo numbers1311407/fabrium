@@ -50,7 +50,7 @@ select.form-control option {
 }
 
 #main {
-  padding: 0 0 40px;
+  padding: 0 0 70px;
   position: relative;
   top: 0;
   @include transition(top 0.7s ease);
@@ -760,4 +760,32 @@ span + span.badge {
 
 .breadcrumb {
   background: none;
+}
+
+fieldset {
+  margin-bottom: 30px;
+}
+
+.has-error .selectize-input {
+  border-color: $state-danger-text;
+}
+
+.devise-links {
+  display: block;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.sign-up-actions {
+  @include clearfix;
+  margin: 10px 0;
+  a {
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 18px;
+  }
+}
+
+.top-actions {
+  padding: 0 0 20px;
 }

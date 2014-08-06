@@ -2,7 +2,7 @@ class Favorite < ActiveRecord::Base
   include Authority::Abilities
 
   belongs_to :user
-  belongs_to :fabric
+  belongs_to :fabric, counter_cache: true
 
   validates_presence_of :fabric
   validates_presence_of :user

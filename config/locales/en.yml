@@ -86,6 +86,7 @@ en:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
+      improbable_phone: "Must be a complete phone number"
       inclusion: "%{attribute} must be included in the list"
       taken: "%{attribute} has already been taken."
       exclusion: "%{attribute} is reserved"
@@ -119,8 +120,14 @@ en:
   attributes:
     created_at: "Created"
     updated_at: "Last Updated"
-    item_number: Item Number
-    fabrium_id: Fabrium ID
+    item_number: "Item Number"
+    fabrium_id: "Fabrium ID"
+    subregion: "State / Region"
+    password_confirmation: "Confirm Password"
+    first_name: "First Name"
+    last_name: "Last Name"
+    shipping_address_1: "Shipping Address 1"
+    shipping_address_2: "Shipping Address 2"
 
   # Active Record models configuration
   activerecord:
@@ -181,17 +188,19 @@ en:
       fabric_variant: Fabric Variant
       tag: Keyword
 
-    # Translate model attribute names. Used in Model.human_attribute_name(attribute).
     attributes:
       fabric:
-        sample_minimum_quality: Sample Min. Quality
-        bulk_minimum_quality: Bulk Min. Quality
-        sample_lead_time: Sample Lead Time
         bulk_lead_time: Bulk Lead Time
+        bulk_minimum_quality: Bulk Min. Quality
         dye_method: Dye Method
         fabric_variants: Variants
-        tags: Keywords
+        favorites_count: Favorited
         id: Fabrium ID
+        orders_count: Ordered
+        sample_lead_time: Sample Lead Time
+        sample_minimum_quality: Sample Min. Quality
+        tags: Keywords
+        views_count: Viewed
       mill:
         domain_filter: Domain Filter Type
         domain_names: Filtered Domains
@@ -201,6 +210,7 @@ en:
       user:
         meta_type: Type
         admin: Admin privileges?
+        wants_email: Send copies of requests to my email
       cart_item:
         sample_yardage: Current Sample Yardage Availability
         request_yardage: Request Current Sample Yardage?
@@ -208,9 +218,3 @@ en:
       cart:
         buyer_email: Buyer's Email
         buyer_email_confirmation: Confirm Buyer's Email
-
-    #attributes:
-      # For example,
-      #   user:
-      #     login: "Handle"
-      # will translate User attribute "login" as "Handle"

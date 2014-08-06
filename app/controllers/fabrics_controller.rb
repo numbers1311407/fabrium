@@ -29,6 +29,13 @@ class FabricsController < ResourceController
 
   before_filter :build_nested_associations, only: [:new, :edit]
 
+  # increment view count on show
+  def show
+    object = resource
+    object.increment!(:views_count)
+    show!
+  end
+
   protected
 
   def after_commit_redirect_path

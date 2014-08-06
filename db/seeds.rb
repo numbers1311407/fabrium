@@ -2,7 +2,6 @@ User.create(meta: Admin.create!, email: "foo@bar.com", password: "asdfasdf", pas
 
 cats = Category.create(name: 'CAT1'), Category.create(name: 'CAT2')
 tags = Tag.create(name: 'TAG1'), Tag.create(name: 'TAG2'), Tag.create(name: 'TAG3'), Tag.create(name: 'TAG4')
-
 mills = Mill.create(name: 'MILL1'), Mill.create(name: 'MILL2'), Mill.create(name: 'MILL3')
 
 files = Dir.glob("../fabrics/**/**.jpg") 
@@ -32,7 +31,7 @@ Dir["../fabrics/*"].each do |path|
     image_crop = "100x100%;200x200#nw"
 
     m = FabricVariant.create({
-      item_number: File.basename(image, '.jpg'),
+      item_number: "#{item_number}-#{i+1}",
       fabric: f, 
       color: color, 
       position: i, 

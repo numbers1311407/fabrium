@@ -6,6 +6,63 @@ $(function () {
 });
 
 ;(function () {
+  Selectize.define('country_select', function (options) {
+    var api = this;
+
+    api.setup = (function () {
+      var original = api.setup;
+      var subselect = $(options.subregion_select);
+      var subapi = null;
+      var endpoint = "/data/country_subregions.json";
+
+      var subselect_options = {
+        placeholder: 'Please select',
+        mode: 'single'
+      };
+
+      // country_options should be a global var defined in the form
+      var cache = country_options || {};
+
+      var setOptions = function (v) {
+        if (v.error || !v.length) {
+          if (subapi) {
+            subapi.clear();
+            subapi.destroy();
+            subapi = null;
+          }
+        } else {
+          if (subapi) {
+            subapi.setOptions(v);
+          } else {
+            subselect.selectize(_.extend({options: v}, subselect_options));
+            subapi = subselect[0].selectize;
+          }
+        }
+      };
+
+      var load = function (country_code) {
+        if (cache[country_code]) {
+          return setOptions(cache[country_code]);
+        };
+
+        $.ajax({
+          url: endpoint, 
+          data: { country: country_code },
+        }).done(function (res) {
+          setOptions(cache[country_code] = res);
+        });
+      };
+
+      return function () {
+        original.apply(this, arguments);
+        var v = this.$input.val();
+        if (v) { load(v) };
+        api.on("change", load);
+      };
+    })();
+  });
+
+
   Selectize.define('route_on_change', function (options) {
     var self = this;
 

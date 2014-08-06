@@ -1,0 +1,18 @@
+h2 Sign Up
+
+= simple_form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
+  = f.error_notification
+  = f.hidden_field :meta_type
+
+  = render 'users/profile_fields', f: f
+
+  = f.simple_fields_for :meta do |mf|
+    - if resource.is_buyer?
+      = render 'buyers/profile_fields', f: mf
+    - elsif resource.is_mill?
+      = render 'mills/profile_fields', f: mf
+
+  .form-actions
+    = f.button :submit, "Sign Up"
+
+= render "devise/shared/links"

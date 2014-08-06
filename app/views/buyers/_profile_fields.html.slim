@@ -1,0 +1,32 @@
+fieldset
+  legend Buyer Details
+  .row
+    .col-sm-6
+      = f.input :first_name
+    .col-sm-6
+      = f.input :last_name
+  .row
+    .col-sm-4
+      = f.input :company
+    .col-sm-4
+      = f.input :position
+    .col-sm-4
+      = f.input :phone
+  .row
+    .col-sm-6
+      = f.input :shipping_address_1
+    .col-sm-6
+      = f.input :shipping_address_2
+  .row
+    .col-sm-6
+      = f.input :city
+    .col-sm-6
+      = f.input :postal_code
+  .row
+    .col-sm-6
+      = f.input :country do
+        = f.country_select :country, {priority: %w(US CA), object: f.object, prompt: true}, {id: "country_select", data: {select: {plugins: {country_select: {subregion_select: '#subregion_select'}}}}}
+        javascript:
+          var country_options = JSON.parse("#{j subregions_json(f.object.country || 'US').html_safe}");
+    .col-sm-6
+      = f.input :subregion, input_html: { id: "subregion_select" }
