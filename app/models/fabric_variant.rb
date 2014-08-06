@@ -10,9 +10,6 @@ class FabricVariant < ActiveRecord::Base
   belongs_to :fabric
   belongs_to :mill
 
-  has_many :favorites
-  has_many :favoriting_users, through: :favorites, source: :user
-
   before_save :denormalize_columns
 
   # WARN while it would make sense to validate that a fabric variant has
@@ -50,8 +47,8 @@ class FabricVariant < ActiveRecord::Base
   scope :bulk_minimum_quality, ->(val) { joins(:fabric).merge(Fabric.bulk_minimum_quality(val)) }
   scope :sample_lead_time, ->(val) { joins(:fabric).merge(Fabric.bulk_lead_time(val)) }
   scope :sample_minimum_quality, ->(val) { joins(:fabric).merge(Fabric.bulk_minimum_quality(val)) }
+  scope :favorites, ->(val) { joins(:fabric).merge(Fabric.favorites(val)) }
 
-  scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
   scope :in_stock, ->(val=true) { where(in_stock: val) }
 
   scope :fabrium_id, ->(val) { 

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   include Users::BelongsToMeta
 
   has_many :favorites
-  has_many :favorite_fabric_variants, through: :favorites, source: :fabric_variant
+  has_many :favorite_fabrics, through: :favorites, source: :fabric
 
   has_many :fabric_notes
 

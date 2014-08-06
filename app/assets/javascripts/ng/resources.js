@@ -38,7 +38,7 @@
       // favorites come down as a list of ids, but lets track them as
       // a hash so they can be easily added/removed and watched by angular
       model.favorites = {};
-      angular.forEach(model.favorite_fabric_variant_ids, function (id) {
+      angular.forEach(model.favorite_fabric_ids, function (id) {
         model.favorites[id] = true;
       });
 
@@ -60,7 +60,7 @@
 
       model.addFavorite = function (id, sync) {
         this.favorites[id] = true;
-        Restangular.all("favorites").post({fabric_variant_id: id});
+        Restangular.all("favorites").post({fabric_id: id});
       };
 
       model.removeFavorite = function (id) {

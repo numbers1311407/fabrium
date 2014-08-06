@@ -5,5 +5,5 @@ module UserRepresenter
   property :email
 
   property :meta_type
-  property :favorite_fabric_variant_ids
+  property :favorite_fabric_ids
 end

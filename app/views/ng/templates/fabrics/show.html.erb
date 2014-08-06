@@ -42,9 +42,9 @@
 
   <div class="row">
     <div class="buttons col-sm-12">
-      <a class="btn btn-default" ng-click="current_user.toggleFavorite(variant.id)">
+      <a class="btn btn-default" ng-click="current_user.toggleFavorite(resource.id)">
         <i class="fa fa-heart-o"></i>
-        <span ng-bind="isFavorite(variant.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
+        <span ng-bind="isFavorite(resource.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
       <a class="btn btn-default" href="{{ resource.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="printModal()">Print</a>

@@ -7,7 +7,7 @@ class FabricVariantsController < ResourceController
 
   # In a typical search, only the *first* variant of each fabric should
   # be returned.  The exceptions to this are searching by color, exact
-  # item number / fabrium id, favorites
+  # item number / fabrium id
   add_collection_filter_scope :collection_filter_primary_variant
 
   # always includes
@@ -55,12 +55,11 @@ class FabricVariantsController < ResourceController
     scope.weight -Float::INFINITY..(value.to_f), controller.params[:price_units]
   end
 
-
   has_scope :in_stock
+
   has_scope :favorites, type: :boolean do |controller, scope, value|
     scope.favorites(controller.current_user)
   end
-
 
   has_scope :mills do |controller, scope, value|
     is_default = 'default' == value

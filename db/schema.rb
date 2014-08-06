@@ -155,12 +155,12 @@ ActiveRecord::Schema.define(version: 20140803173307) do
 
   create_table "favorites", force: true do |t|
     t.integer  "user_id"
-    t.integer  "fabric_variant_id"
+    t.integer  "fabric_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "favorites", ["fabric_variant_id"], name: "index_favorites_on_fabric_variant_id", using: :btree
+  add_index "favorites", ["fabric_id"], name: "index_favorites_on_fabric_id", using: :btree
   add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "material_assignments", force: true do |t|
