@@ -25,3 +25,4 @@ public/system
 *.swp
 
 /vendor/components
+.elasticbeanstalk/
