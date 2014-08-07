@@ -31,7 +31,6 @@ GEM
     authority (3.0.0)
       activesupport (>= 3.0.0)
       rake (>= 0.8.7)
-    base62 (1.0.0)
     bcrypt-ruby (3.1.2)
     bootstrap-sass (3.2.0.0)
       sass (~> 3.2)
@@ -243,7 +242,6 @@ PLATFORMS
 
 DEPENDENCIES
   authority
-  base62
   bootstrap-sass
   carmen
   carmen-rails
