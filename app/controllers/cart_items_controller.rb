@@ -1,10 +1,27 @@
 class CartItemsController < ResourceController
   belongs_to :cart
-  defaults finder: :find_by_fabric_variant_id!, instance_name: :item, route_instance_name: :item
+  defaults finder: :find_by_fabric_variant_id!
 
   permit_params [
-    :fabric_variant_id
+    :fabric_variant_id,
+    :notes,
+    :sample_yardage,
+    :tracking_number
   ]
+
+  respond_to :js, only: :update
+
+  def update
+    object = resource
+
+    if params[:state_shipped]
+      object.state = :shipped
+    elsif params[:state_refused]
+      object.state = :refused
+    end
+
+    update!
+  end
 
   protected
 
@@ -20,6 +37,9 @@ class CartItemsController < ResourceController
     cart
   end
 
+  def resource_request_name
+    :item
+  end
 
   def get_pending_cart
     # admins do not have a cart

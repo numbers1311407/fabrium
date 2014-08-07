@@ -1,0 +1,2 @@
+class FabricVariantAuthorizer < FabricAuthorizer
+end

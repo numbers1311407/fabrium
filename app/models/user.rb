@@ -18,10 +18,13 @@ class User < ActiveRecord::Base
   before_create :set_initial_pending_status
   after_update :on_pending_change, if: :pending_changed?
 
+  before_create :set_as_admin_if_attached_to_new_mill
+
   define_meta_types :admin, :mill, :buyer
 
   devise :database_authenticatable, 
     :invitable, 
+    :confirmable,
     :registerable,
     :recoverable, 
     :trackable, 
@@ -48,6 +51,9 @@ class User < ActiveRecord::Base
     pending? && :pending || super
   end
 
+  delegate :name, 
+    to: :meta, prefix: true, allow_nil: true
+
   protected
 
   def clean_password_fields
@@ -68,14 +74,33 @@ class User < ActiveRecord::Base
       false
     end
 
+    # If this user is pending, it doesn't need to be later confirmed,
+    # as the admin will be confirming them and sending the email that
+    # way.
+    if pending?
+      self.skip_confirmation!
+    end
+
     true
   end
 
   def on_pending_change
     TransitionPendingUserJob.new.async.perform(id) if !pending
+
+    # If we're the mill's creator, ensure that it is activated along
+    # with us.
+    if is_mill? && meta.creator == self
+      meta.update(active: true)
+    end
   end
 
   def send_invitation_if_admin
     send_invitation!(self.invited_by) if self.invited_by && is_admin?
+  end
+
+  def set_as_admin_if_attached_to_new_mill
+    if is_mill? && meta.new_record?
+      self.admin = true
+    end
   end
 end

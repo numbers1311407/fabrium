@@ -1,4 +1,4 @@
-User.create(meta: Admin.create!, email: "foo@bar.com", password: "asdfasdf", password_confirmation: "asdfasdf")
+User.create(meta: Admin.create!, email: "foo@bar.com", password: "asdfasdf", password_confirmation: "asdfasdf", confirmed_at: Time.now.utc)
 
 cats = Category.create(name: 'CAT1'), Category.create(name: 'CAT2')
 tags = Tag.create(name: 'TAG1'), Tag.create(name: 'TAG2'), Tag.create(name: 'TAG3'), Tag.create(name: 'TAG4')

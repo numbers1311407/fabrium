@@ -192,13 +192,16 @@ ActiveRecord::Schema.define(version: 20140806151757) do
   end
 
   create_table "mills", force: true do |t|
+    t.integer  "creator_id"
     t.string   "name"
-    t.boolean  "active",        default: true
+    t.boolean  "active",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "domains",       default: [],   array: true
+    t.text     "domains",       default: [],    array: true
     t.integer  "domain_filter", default: 0
   end
+
+  add_index "mills", ["domains"], name: "index_mills_on_domains", using: :gin
 
   create_table "tags", force: true do |t|
     t.string   "name"
@@ -219,6 +222,10 @@ ActiveRecord::Schema.define(version: 20140806151757) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
     t.integer  "failed_attempts",        default: 0,     null: false
     t.datetime "locked_at"
     t.boolean  "wants_email",            default: true

@@ -64,7 +64,7 @@ Rails.application.routes.draw do
   resources :fabric_notes, only: [:show, :update, :destroy]
 
   resources :carts, path: :orders do
-    resources :cart_items, path: :items
+    resources :cart_items, path: :items, except: [:index, :edit, :new]
   end
 
   # The "public" cart route, emailed to prospective buyers when mill's 

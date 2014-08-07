@@ -1,4 +1,5 @@
 .cart-form-wrapper
   .cart-form-block
     .cart-items
-      = render partial: 'cart_items/ordered_cart_item', collection: resource.cart_items, cart: resource
+      - partial = current_user.is_mill? ? 'cart_items/ordered_cart_item_form' : 'cart_items/ordered_cart_item'
+      = render partial: partial, collection: resource.cart_items, cart: resource

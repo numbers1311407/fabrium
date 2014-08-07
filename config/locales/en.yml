@@ -1,6 +1,8 @@
 en:
   site_title: "Fabrium"
 
+  public_cart_message: "The fabric mill %{mill} has built a hanger request for you.  Sign up to edit and submit it!"
+
   boolean:
     yes: "Yes"
     no: "No"
@@ -33,6 +35,7 @@ en:
     cart_item:
       pending: "Open"
       shipped: "Shipped"
+      refused: "Refused"
 
   st:
     helpers:

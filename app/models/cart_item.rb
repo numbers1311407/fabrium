@@ -2,7 +2,7 @@ class CartItem < ActiveRecord::Base
   include Authority::Abilities
   include HasState
 
-  define_states :pending, :shipped
+  define_states :pending, :shipped, :refused
 
   belongs_to :cart
   belongs_to :fabric_variant
@@ -13,6 +13,8 @@ class CartItem < ActiveRecord::Base
   validate :ensure_fabric_variant_belongs_to_cart_mill, on: :create
 
   before_create :denormalize_attrs
+
+  before_save :perform_state_update
 
   protected
 
@@ -27,5 +29,9 @@ class CartItem < ActiveRecord::Base
   def denormalize_attrs
     self.mill = fabric_variant.mill
     self.fabrium_id = fabric_variant.fabrium_id
+  end
+
+  def perform_state_update
+
   end
 end

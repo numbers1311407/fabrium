@@ -139,6 +139,14 @@ class Cart < ActiveRecord::Base
     def created_by_mill(mill=nil)
       mill ? where(creator: mill) : where(creator_type: 'Mill')
     end
+
+    def claim_cart(cart_id, buyer) 
+      if cart = state(:buyer_unclaimed).find_by(id: cart_id)
+        cart.buyer = buyer
+        cart.bump_state
+        cart.save
+      end
+    end
   end
 
   scope :exclude_subcarts, -> { where(parent_id: nil) }

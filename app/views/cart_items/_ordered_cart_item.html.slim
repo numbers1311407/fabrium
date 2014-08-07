@@ -8,9 +8,19 @@
         span Fabrium ##{cart_item.fabrium_id}
     .form-group
       label.control-label
+        = resource_label :state, cart_item
+        | : 
+        = translate_cart_item_state(cart_item.state)
+    .form-group
+      label.control-label
         = resource_label :notes, cart_item
       p.fake-input.form-control-static.form-control
         = cart_item.notes
+    .form-group
+      label.control-label
+        = resource_label :tracking_number, cart_item
+      p.fake-input.form-control-static.form-control
+        = cart_item.tracking_number
     .form-group
       label.control-label
         = resource_label :sample_yardage, cart_item

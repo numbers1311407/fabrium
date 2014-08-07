@@ -59,14 +59,29 @@ class CartsController < ResourceController
   def public_show
     object = resource
 
+    # If the object is not public (basically if it has a buyer attached
+    # already) then this will just redirect to the authenticated URL of
+    # the object.
+    #
+    # This handles the situation where a buyer who already exists visits
+    # the URL.  If they own the cart they are just redirect to its auth'd
+    # URL, if they do not, they will 403 on it.
+    #
     unless object.public?
       redirect_to object
       return
     end
 
-    respond_with(object) do |wants|
-      wants.html { render 'edit' }
-    end
+    # store the location so we'll return here after signing in directly
+    # (without hitting some other auth'd URL that would reset the stored
+    # location)
+    store_location_for(:user, public_cart_url(object.public_id))
+
+    # store the id of the cart which will be attached to a buyer after
+    # sign up
+    session[:public_cart_id] = object.id
+
+    respond_with(object)
   end
 
   protected
@@ -154,7 +169,7 @@ class CartsController < ResourceController
   #
   def collection_filter_mill_carts(object)
     if current_user.is_mill?
-      object = object.not_state(:buyer_build, :pending)
+      object = object.not_state(:buyer_unclaimed, :buyer_build, :pending)
 
       ids = current_user.meta.pending_carts.ids
       object = object.where.not(id: ids)

@@ -9,6 +9,7 @@ class ProfilesController < ResourceController
     :password,
     :password_confirmation,
     meta_attributes: [
+      :id,
       :domain_filter, 
       :domain_names
     ]

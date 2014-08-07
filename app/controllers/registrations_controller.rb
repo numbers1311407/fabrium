@@ -2,6 +2,8 @@ class RegistrationsController < Devise::RegistrationsController
   before_filter :handle_meta_param, only: [:new]
   before_action :configure_permitted_parameters
 
+  after_filter :attach_public_cart, on: :create
+
   def after_inactive_sign_up_path_for(resource)
     new_user_session_path
   end
@@ -15,7 +17,18 @@ class RegistrationsController < Devise::RegistrationsController
 
   def build_resource(hash=nil)
     object = resource_class.new_with_session(hash || {}, session)
+
+    # NOTE this works in the implementation because meta_type is always
+    # set in the params, either via the `meta` param or submitted with
+    # the form.  This way the user knows how to build the meta.
     object.build_meta unless object.meta.present?
+
+    # if registering a new mill user, then this user is that mill's
+    # creator
+    if object.is_mill?
+      object.meta.creator = object
+    end
+
     self.resource = object
   end
 
@@ -66,6 +79,12 @@ class RegistrationsController < Devise::RegistrationsController
       permits.concat(user_attributes)
 
       u.permit(permits)
+    end
+  end
+
+  def attach_public_cart
+    if resource.persisted? && resource.is_buyer? && cart_id = session[:public_cart_id]
+      Cart.claim_cart(cart_id, resource.meta)
     end
   end
 

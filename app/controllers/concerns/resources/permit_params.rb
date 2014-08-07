@@ -30,9 +30,17 @@ module Resources
     protected
 
     def permitted_params(parameters=nil)
+      parameters ||= params
+
+      name = if parameters[resource_request_name]
+        resource_request_name
+      else
+        resource_instance_name
+      end
+
       options = {}
-      options[resource_instance_name] = _permitted_params
-      (parameters || params).permit(options)
+      options[name] = _permitted_params
+      parameters.permit(options)
     end
 
     module ClassMethods

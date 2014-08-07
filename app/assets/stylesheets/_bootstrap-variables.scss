@@ -34,8 +34,8 @@ $brand-primary:         #F3B21D;
 $text-color:             #333;
 
 // //** Global textual link color.
-$link-color:             #434343;
-$link-hover-color:       $brand-primary;
+$link-color:             $brand-primary;
+$link-hover-color:       darken($brand-primary, 10%);
 
 
 // //== Typography

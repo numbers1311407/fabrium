@@ -1,0 +1,4 @@
+$(".cart-item[data-id=<%= resource.fabric_variant.id %>]").each(function () {
+  var html = "<%=j render(partial: "cart_items/ordered_cart_item_form", object: resource) %>";
+  $(this).replaceWith(html);
+});
