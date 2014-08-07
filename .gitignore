@@ -24,5 +24,4 @@ public/system
 # Ignore vim swaps
 *.swp
 
-/vendor/components
 .elasticbeanstalk/
