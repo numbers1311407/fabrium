@@ -4,7 +4,7 @@ cats = Category.create(name: 'CAT1'), Category.create(name: 'CAT2')
 tags = Tag.create(name: 'TAG1'), Tag.create(name: 'TAG2'), Tag.create(name: 'TAG3'), Tag.create(name: 'TAG4')
 mills = Mill.create(name: 'MILL1'), Mill.create(name: 'MILL2'), Mill.create(name: 'MILL3')
 
-files = Dir.glob("../fabrics/**/**.jpg") 
+files = Dir.glob("seeds/**/**.jpg") 
 
 uploader = Dragonfly.app
 
