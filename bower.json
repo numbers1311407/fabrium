@@ -16,7 +16,8 @@
     "underscore": "~1.6.0",
     "jcrop": "~0.9.12",
     "restangular": "~1.4.0",
-    "jquery-cycle2": "~2.1.5"
+    "jquery-cycle2": "~2.1.5",
+    "jquery-ui-sortable": "*"
   },
   "resolutions": {
     "angular": "1.2.21"
