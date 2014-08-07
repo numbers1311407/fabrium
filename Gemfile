@@ -14,13 +14,12 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 gem 'quiet_assets', group: :development
-gem 'miro'
 
+gem 'miro'
 gem 'bootstrap-sass'
 gem 'puma'
 gem 'authority'
 gem 'slim'
-# gem 'carrierwave'
 gem 'fog'
 gem 'devise'
 gem 'devise_invitable'
@@ -42,7 +41,6 @@ gem 'gretel'
 gem 'htmlcompressor'
 gem 'ngannotate-rails'
 gem 'sucker_punch'
-gem 'base62'
 gem 'carmen'
 gem 'carmen-rails'
 gem 'phony_rails'
