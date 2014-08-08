@@ -72,7 +72,7 @@ class UsersController < ResourceController
   end
 
   def scope_options
-    scopes = %w(pending fabrium mill buyer)
+    scopes = %w(pending mill buyer)
   end
 
   def collection_filter_include_meta(object)
