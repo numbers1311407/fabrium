@@ -1,3 +1,5 @@
+/ The "cart" form, "pre-ordered" status.
+
 - is_empty = resource.cart_items.empty?
 
 .cart-form-wrapper
@@ -7,8 +9,8 @@
         = st('messages.empty_cart')
     .cart-form-block class=(is_empty ? "hidden" : nil)
       .cart-items
-        = f.simple_fields_for :cart_items do |ff|
-          = render ff.object, f: ff, cart: resource
+        = f.simple_fields_for :cart_items do |cf|
+          = render cf.object, f: cf, cart: resource
 
       - if current_user.is_mill?
         .row
@@ -17,4 +19,4 @@
             = f.input :buyer_email_confirmation
 
       .form-actions
-        = f.submit class: 'btn btn-primary'
+        = f.submit cart_button_label(resource), class: 'btn btn-primary'

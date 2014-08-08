@@ -1,4 +1,8 @@
 module CartsHelper
+  def cart_button_label(cart)
+    I18n.t(:"helpers.submit.cart.states.#{cart.state}")
+  end
+
   def translate_cart_state(state)
     translate_state(state, :cart)
   end

@@ -1,0 +1,23 @@
+.cart-header
+  .shipping
+    h5 Ship To:
+
+    .shipping-name
+      = resource.buyer.name
+    .shipping-company
+      = resource.buyer.company
+    = buyer_address resource.buyer
+    .shipping-email
+      = resource.buyer.email
+
+.cart-form-wrapper
+  = simple_form_for resource do |f|
+    .cart-form-block
+      .cart-items
+        = f.simple_fields_for :cart_items do |cf|
+          = render partial: 'cart_items/ordered', object: cf.object, as: :cart_item, locals: { f: cf }
+
+      = f.input :tracking_number
+
+      .form-actions
+        = f.submit cart_button_label(resource), class: 'btn btn-primary'

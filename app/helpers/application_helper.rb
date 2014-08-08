@@ -54,4 +54,13 @@ module ApplicationHelper
   def humanize_boolean(v)
     t(v ? :"boolean.yes" : :"boolean.no")
   end
+
+  def fake_input attr, object
+    html = ''.html_safe.tap do |out|
+      out << content_tag(:label, resource_label(attr, object), class: 'control-label')
+      out << content_tag(:p, object.send(attr), class: 'fake-input form-control-static form-control')
+    end
+
+    content_tag(:div, html, class: 'form-group')
+  end
 end

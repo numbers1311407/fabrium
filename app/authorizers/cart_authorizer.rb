@@ -1,24 +1,31 @@
 class CartAuthorizer < ApplicationAuthorizer
 
+  def administerable_by?(user)
+    # everyone can see carts
+    true
+  end
+
   def readable_by?(user)
+    # all users can read the index
+    resource.new_record? ||
+
+    # admins can view all
     user.is_admin? ||
-    resource.buyer.blank? || 
-    user_is_buyer_and_owns_cart?(user) ||
-    user_is_mill_and_owns_cart?(user) ||
-    user_is_mill_and_responsible_for_item_in_cart?(user)
+
+    # mills see their own resources not in the buyer build state
+    user.is_mill? && mill_readable?(user) ||
+
+    # buyers see their own resources not in the mill build state
+    user.is_buyer? && buyer_readable?(user)
   end
 
   protected
 
-  def user_is_buyer_and_owns_cart?(user)
-    user.is_buyer? && resource.buyer_id == user.meta.id
+  def mill_readable?(user)
+    resource.mill_id == user.meta.id && !resource.buyer_build?
   end
 
-  def user_is_mill_and_owns_cart?(user)
-    user.is_mill? && resource.mill_id == user.meta.id
-  end
-
-  def user_is_mill_and_responsible_for_item_in_cart?(user)
-    user.is_mill? && resource.cart_items.exists?(mill_id: user.meta.id)
+  def buyer_readable?(user)
+    resource.buyer_id == user.meta.id && !resource.mill_build?
   end
 end

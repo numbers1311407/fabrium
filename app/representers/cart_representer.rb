@@ -3,4 +3,5 @@ module CartRepresenter
 
   property :public_id, as: :id
   property :fabric_variant_ids, as: :variant_ids
+  property :tracking_number
 end

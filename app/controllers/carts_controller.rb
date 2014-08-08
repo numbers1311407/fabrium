@@ -3,7 +3,7 @@ class CartsController < ResourceController
   custom_actions resource: [:pending_cart]
   authority_actions pending_cart: :read
 
-  skip_before_filter :authenticate_user!, :only => [:public_show]
+  skip_before_filter :authenticate_user!, only: [:public_show]
 
   add_collection_filter_scope :collection_filter_mill_carts
   add_collection_filter_scope :collection_filter_buyer_carts
@@ -11,13 +11,14 @@ class CartsController < ResourceController
   permit_params [
     :buyer_email,
     :buyer_email_confirmation,
+    :tracking_number, 
     cart_items_attributes: [
       :id, 
       :notes, 
       :sample_yardage, 
-      :tracking_number, 
+      :request_yardage,
       :fabric_variant_id,
-      :_destroy
+      :state
     ]
   ]
 
@@ -48,6 +49,19 @@ class CartsController < ResourceController
       wants.html { render 'edit' }
     end
   end
+
+
+  #
+  # Most other resources redirct HTML show requests to edit (no show view)
+  # Cart has several show and edit views based on the state and role of the
+  # viewer, but always renders the "edit" template.
+  #
+  def show
+    show! do |wants|
+      wants.html { render 'edit' }
+    end
+  end
+
 
   # GET /carts/<public id>/pub
   #
@@ -86,7 +100,9 @@ class CartsController < ResourceController
 
   protected
 
-  helper_method :scope_options
+  def after_commit_redirect_path
+    collection_path
+  end
 
   def scope_options
     if current_user.is_admin?
@@ -95,6 +111,7 @@ class CartsController < ResourceController
       %w(active ordered)
     end
   end
+  helper_method :scope_options
 
   def resource
     # If this is a `public_show` request, skip the authority action and
@@ -135,7 +152,9 @@ class CartsController < ResourceController
   def update_resource(object, attributes)
     object.attributes = attributes[0]
     object.bump_state
-    object.save
+    object.save.tap do |result|
+      object.state = object.state_was unless result
+    end
   end
 
 
@@ -170,9 +189,6 @@ class CartsController < ResourceController
   def collection_filter_mill_carts(object)
     if current_user.is_mill?
       object = object.not_state(:buyer_unclaimed, :buyer_build, :pending)
-
-      ids = current_user.meta.pending_carts.ids
-      object = object.where.not(id: ids)
     end
 
     object

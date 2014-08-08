@@ -1,2 +1,14 @@
+- breadcrumb :resource, name: resource.name
+
 .cart-wrapper
-  = render(template: "carts/states/#{resource.state}")
+  / before the cart is ordered, always show the "cart" form
+  - if resource.state <= "pending"
+    = render "form"
+
+  / afterwards, show the "order" form if the user is a mill
+  - elsif current_user.is_mill?
+    = render "order_form"
+
+  / otherwise the static view (for admins and buyers)
+  - else
+    = render "static"

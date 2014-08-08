@@ -12,6 +12,12 @@ en:
       create: "Save %{model}"
       update: "Save %{model}"
       submit: "Save %{model}"
+      cart:
+        states:
+          mill_build: "Send Request to Buyer"
+          buyer_build: "Submit Request"
+          ordered: "Save and Ship Request"
+          closed: "Update Request"
 
   scopes:
     all: "All"
@@ -35,7 +41,7 @@ en:
     cart_item:
       pending: "Open"
       shipped: "Shipped"
-      refused: "Refused"
+      refused: "This item will not be shipped"
 
   st:
     helpers:
@@ -53,6 +59,10 @@ en:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'
       empty_cart: 'The hanger request is currently empty'
+    carts:
+      actions:
+        pending_cart:
+          title: "New Hanger Request"
     profiles:
       actions:
         edit:
@@ -186,7 +196,7 @@ en:
     # Translate model names. Used in Model.human_name().
     models:
       approved_domain: Approved Domain
-      cart: Order
+      cart: Hanger Request 
       dye_method: Dye Method
       fabric_variant: Fabric Variant
       tag: Keyword
@@ -218,6 +228,8 @@ en:
         sample_yardage: Current Sample Yardage Availability
         request_yardage: Request Current Sample Yardage?
         notes: Notes to the Mill
+        shipped: Ship
+        refused: Refuse
       cart:
         buyer_email: Buyer's Email
         buyer_email_confirmation: Confirm Buyer's Email

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140806151757) do
+ActiveRecord::Schema.define(version: 20140808175356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,8 +63,7 @@ ActiveRecord::Schema.define(version: 20140806151757) do
     t.integer  "state",             default: 0
     t.text     "notes"
     t.decimal  "sample_yardage"
-    t.boolean  "request_yardage",   default: true
-    t.string   "tracking_number"
+    t.boolean  "request_yardage",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -83,9 +82,10 @@ ActiveRecord::Schema.define(version: 20140806151757) do
     t.string   "name"
     t.string   "public_id"
     t.string   "fabrium_id"
-    t.integer  "state",        default: 0
+    t.integer  "state",           default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tracking_number"
   end
 
   add_index "carts", ["buyer_id"], name: "index_carts_on_buyer_id", using: :btree

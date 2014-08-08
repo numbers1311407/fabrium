@@ -4,6 +4,12 @@ module HasState
   module ClassMethods
     def define_states *args
       enum state: args
+
+      # overwrite the state getter to return a comparable
+      # state object
+      define_method :state do
+        super() && State.new(super(), self)
+      end
     end
 
     def state(*args)
@@ -27,11 +33,11 @@ module HasState
     false
   end
 
-  protected
-
   def states
     self.class.states
   end
+
+  protected
 
   def method_missing(method_name, *args, &block)
     if method_name =~ /transitioning_from_(.+)_to_(.+)\?/
@@ -42,6 +48,21 @@ module HasState
              state_was == $1 && state == $2
     else
       super
+    end
+  end
+
+  class State < String
+    include Comparable
+
+    def initialize(str, model)
+      super(str)
+      @model = model
+    end
+
+    def <=>(other)
+      step = @model.states[self]
+      other_step = @model.states[other] || -1
+      step <=> other_step
     end
   end
 end

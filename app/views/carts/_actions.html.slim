@@ -1,5 +1,5 @@
 - if current_user.can_update?(resource)
-  = link_to edit_resource_path(resource), class: 'btn btn-sm btn-default' do
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
     i.fa.fa-edit(title=st('links.edit'))
     span= st('links.edit')
 - if current_user.can_delete?(resource)

@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   resources :favorites
   resources :fabric_notes, only: [:show, :update, :destroy]
 
-  resources :carts, path: :orders do
+  resources :carts, path: :hanger_requests, except: :edit do
     resources :cart_items, path: :items, except: [:index, :edit, :new]
   end
 

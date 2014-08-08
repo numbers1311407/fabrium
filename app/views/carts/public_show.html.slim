@@ -2,7 +2,4 @@
   = t(:public_cart_message, mill: resource.mill.name)
   = link_to("Sign up now!", new_user_registration_path(:buyer), class: 'btn btn-primary')
 
-.cart-form-wrapper
-  .cart-form-block
-    .cart-items
-      = render partial: 'cart_items/unclaimed_cart_item', collection: resource.cart_items, cart: resource
+= render 'static'

@@ -1,0 +1,16 @@
+.adr
+  div.street-address
+    = address.shipping_address_1
+  - if address.shipping_address_2.present?
+    div.street-address
+      = address.shipping_address_2
+  span.city
+    = address.city
+  span.region
+    = address.subregion
+  span.postal-code
+    = address.postal_code
+  span.country-name
+    = Carmen::Country.coded(address.country).name
+  span.tel
+    = address.phone.phony_formatted(spaces: '-')

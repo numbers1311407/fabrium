@@ -3,20 +3,25 @@ crumb :root do
 end
 
 crumb :resources do |options|
-  options ||= {}
-  link st(:title, action: :index), options[:parent_path] || collection_path
+  link st(:title, action: :index), collection_path
 end
+
 
 crumb :edit_singleton_resource do
   link st(:title), edit_resource_path(resource)
 end
 
+crumb :resource do |options|
+  link st(:title, options)
+  parent :resources, options
+end
+
 crumb :new_resource do |options|
-  link st(:title), new_resource_path
+  link st(:title, options)
   parent :resources, options
 end
 
 crumb :edit_resource do |options|
-  link st(:title), edit_resource_path(resource)
+  link st(:title, options)
   parent :resources, options
 end

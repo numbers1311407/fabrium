@@ -737,6 +737,8 @@ dt:after {
 p.fake-input {
   height: auto;
   min-height: 38px;
+  background-color: #f9f9f9;
+  border-color: #efefef;
 }
 
 #buyer-email-form {
@@ -805,5 +807,63 @@ fieldset {
   font-size: 18px;
   a.btn {
     margin: 0 15px;
+  }
+}
+
+.radio input {
+  width: auto;
+  height: auto;
+  @include box-shadow(none);
+}
+
+label + .badge {
+  margin-left: 5px;
+  background-color: $brand-danger;
+  vertical-align: text-bottom;
+
+}
+
+.badge-success {
+  background-color: $brand-success !important;
+}
+
+p.line-item {
+  label {
+    margin: 0;
+  }
+  + p.line-item {
+    margin-top: -11px;
+  }
+}
+
+.state-shipped {
+  color: $brand-success;
+}
+.state-refused {
+  color: $brand-danger;
+}
+.state-pending {
+  color: $brand-warning;
+}
+
+.adr {
+  .street-address, .country-name, .tel {
+    display: block;
+  }
+  .city {
+    &:after {
+      content: ','
+    }
+  }
+  .city, .region {
+    margin-right: 5px;
+  }
+}
+
+.shipping {
+  margin: 0 0 20px;
+  h5 {
+    font-weight: bold;
+    margin: 0 0 10px;
   }
 }

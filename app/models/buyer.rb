@@ -27,6 +27,8 @@ class Buyer < ActiveRecord::Base
 
   has_many :carts, -> { exclude_subcarts }
 
+  delegate :email, to: :user
+
   def name
     [first_name, last_name].compact.join(" ")
   end

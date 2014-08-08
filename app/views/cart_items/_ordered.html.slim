@@ -1,0 +1,14 @@
+.cart-item(data-id = cart_item.id)
+  .col-thumb
+    = image_tag(cart_item.fabric_variant.thumb.url)
+  .col-fields
+    p.line-item: label Fabrium #: #{cart_item.fabrium_id}
+    p.line-item: label Item #: #{cart_item.fabric_variant.item_number}
+
+    = fake_input(:notes, cart_item)
+
+    = f.input :sample_yardage, wrapper: :badge_hint, hint: cart_item.request_yardage? ? "Requested" : nil
+
+    / Pending items are set up to ship here as a default
+    - cart_item.state = :shipped if cart_item.pending?
+    = f.input :state, label: false, as: :radio_buttons, collection: [['Ship', 'shipped'], ['Refuse', 'refused']]

@@ -10,7 +10,7 @@ class Cart < ActiveRecord::Base
   validate :buyer_email_must_be_blank_or_buyer, if: :transitioning_from_mill_build_to_buyer_unclaimed?
   attr_accessor :buyer_email_confirmation
 
-  validates :cart_items, presence: true, if: :transitioning_from_buyer_build_to_buyer_pending?
+  validates :cart_items, presence: true, if: :transitioning_from_buyer_build_to_pending?
 
   before_create :generate_public_id
   after_create :generate_name
@@ -164,6 +164,17 @@ class Cart < ActiveRecord::Base
     buyer.blank?
   end
 
+  def subcart?
+    parent_id.present?
+  end
+
+  def siblings
+    return Cart.none unless subcart?
+    scoped = Cart.where(parent_id: parent_id)
+    scoped = scoped.where.not(id: id) if persisted?
+    scoped
+  end
+
   protected
 
   def buyer_email_must_be_blank_or_buyer
@@ -188,6 +199,8 @@ class Cart < ActiveRecord::Base
   def perform_state_update
     return unless state_changed?
 
+    return if @ignore_state_changes
+
     case state_change
     when %w(mill_build buyer_unclaimed)
       transition_mill_build_to_buyer_unclaimed
@@ -200,6 +213,13 @@ class Cart < ActiveRecord::Base
     when %w(ordered closed)
       transition_ordered_to_closed
     end
+  end
+
+  #
+  # Mainly for testing, turn off state watching on the instance
+  #
+  def ignore_state_changes!
+    @ignore_state_changes = true
   end
 
   #
@@ -218,6 +238,9 @@ class Cart < ActiveRecord::Base
     # re-run the state update
     if buyer_user
       self.buyer = buyer_user.meta
+    end
+
+    if buyer.present?
       reset_changed_state :buyer_build
     end
   end
@@ -239,7 +262,11 @@ class Cart < ActiveRecord::Base
   end
 
   def transition_ordered_to_closed
-    # nothing to do here
+    # if this is a subcart and there are no carts in the "open" state,
+    # set the parent to closed
+    if subcart? && siblings.not_state(:closed).any?
+      parent.update(state: :closed)
+    end
   end
 
   def generate_name

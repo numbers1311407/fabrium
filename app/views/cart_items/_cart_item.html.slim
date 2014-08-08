@@ -1,17 +1,29 @@
+- variant = cart_item.fabric_variant
+
 .cart-item(data-id=cart_item.id)
   .col-thumb
     = image_tag(cart_item.fabric_variant.thumb.url)
   .col-fields
-    p
-      label 
-        span Fabrium ##{cart_item.fabrium_id}
+    p.line-item
+      label Fabrium #: #{cart_item.fabrium_id}
+      - if variant.in_stock?
+        span.badge.badge-success In Stock
+    - unless current_user.is_buyer?
+      p.line-item: label Item #: #{variant.item_number}
+    - if current_user.is_buyer? && cart_item.sample_yardage.present?
+      p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
 
-        - if cart_item.fabric_variant.in_stock?
-          span.badge In Stock
 
     - if cart_item.deletable_by?(current_user)
       = link_to cart_cart_item_path(cart, cart_item.fabric_variant_id), class: 'remove btn btn-default', method: :delete, remote: true do
         span Remove
+
+    / if this is a mill show the sample yardage field
+    - if current_user.is_mill?
+      = f.input :sample_yardage
+    / otherwise finally if this is a buyer, show the field to reques the yardage
+    - elsif current_user.is_buyer? && cart_item.sample_yardage.blank?
+      = f.input :request_yardage, label: false, inline_label: true
 
     / Buyer always sees the notes in this form
     - if current_user.is_buyer?
@@ -20,13 +32,4 @@
     / Otherwise show the notes unless this is an initial
     / build (the notes will be blank)
     - elsif !cart.mill_build?
-      .form-group
-        label.control-label
-          = CartItem.human_attribute_name(:notes)
-        p.fake-input.form-control-static.form-control
-          = cart_item.notes
-
-    - if current_user.is_mill?
-      = f.input :sample_yardage
-    - elsif current_user.is_buyer?
-      = f.input :request_yardage, label: false, inline_label: true
+      = fake_input(:notes, cart_item)
