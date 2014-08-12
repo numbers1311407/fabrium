@@ -5,3 +5,4 @@
 //= require ./ng/filters
 //= require ./ng/directives
 //= require ./ng/routes
+//= require ./ng/services

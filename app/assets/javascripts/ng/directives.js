@@ -88,4 +88,89 @@
       }
     }
   });
+
+
+  app.directive('fabricNotesFor', function (Restangular, $timeout) {
+    // autosave every N seconds (saving will happen immediately on modal
+    // close, if a change occurred)
+    var autosave_timeout = 10 * 1000;
+
+    return {
+      restrict: 'A',
+      scope: {
+        fabricNotesFor: '='
+      },
+
+      link: function(scope, element, attrs) {
+        var fabric = scope.fabric = scope.fabricNotesFor;
+        var id = fabric.id;
+        var dirty = false;
+        var transit = false;
+
+        // note updating function
+        var update = scope.updateNote = function () {
+
+          // if the note isn't dirty, or if it's already transit, return
+          if (!dirty || transit) {
+            return;
+          }
+
+          // mark it as in transit
+          transit = true;
+
+          var promise;
+
+          // then make the request based on note's contents
+          if (fabric.note) {
+            var req = Restangular.one("fabric_notes", id);
+            req.note = fabric.note;
+            promise = req.put();
+          } else {
+            promise = Restangular.one("fabric_notes", id).remove();
+          }
+
+          promise.then(function () {
+            dirty = false;
+            transit = false;
+          });
+        }
+
+        // throttled note updater for changes to the text area
+        var throttledUpdate = _.throttle(update, autosave_timeout, {leading: false});
+
+        // As the note changes, set the note as dirty then queue up the 
+        // throttled update.  It will execute after N seconds or whenever
+        // the modal is closed.
+        scope.$watch('fabric.note', function (note, notewas) {
+          if (note !== notewas && !element.attr("disabled")) {
+            dirty = true;
+            throttledUpdate();
+          }
+        });
+
+        // Run update once on destroy.  This will do nothing silently if
+        // the value is unchanged or already in transit.
+        scope.$on("$destroy", update);
+
+        if (undefined == fabric.note) {
+          element.attr("disabled", "disabled");
+          Restangular.one("fabric_notes", id).get().then(
+            // On success, set the note.  Note there's no need to actually
+            // update the cache for this, as it's just an in-memory object cache.  
+            // This could change if the cache is set to use localStorage or 
+            // something else.
+            function (data) { fabric.note = data.note; },
+
+            // Even on failure, set the note as a string.  This will be
+            // cached on the record and prevent repeat lookups for non-existant
+            // notes (which check for `undefined`).
+            function (data) { fabric.note = ""; }
+          ).finally(function () {
+            $timeout(function () { element.removeAttr("disabled"); });
+          });
+        }
+      }
+    };
+  });
+
 })(window);

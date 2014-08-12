@@ -293,8 +293,8 @@
 
         <a class="result-panel fabric-favorite-status" 
           ng-click="current_user.toggleFavorite(item.fabric_id)"
-          ng-attr-title="{{ isFavorite(item.fabric_id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
-          <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[isFavorite(item.fabric_id)]"></i>
+          ng-attr-title="{{ current_user.hasFavorite(item.fabric_id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
+          <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[current_user.hasFavorite(item.fabric_id)]"></i>
         </a>
 
         <img ng-src="{{item.image.thumb}}" ng-click="show(item.fabric_id, item.position)">

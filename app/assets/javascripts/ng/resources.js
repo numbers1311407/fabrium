@@ -1,6 +1,83 @@
 ;(function () {
-  app.run(function (Restangular) {
+  // app.service('currentUser', function (Restangular) {
 
+  //   return {
+  //     get: function () {
+  //       Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
+
+  //         if (!user.isAdmin()) {
+
+  //           // This defies expectation a bit, but the way Restangular works,
+  //           // it does not update existing "models" as you might think.  There
+  //           // may be a way to do this but it was not obvious.  As such the
+  //           // scope's `cart` is created initially (in the case that the user
+  //           // does not have a pending cart available)...
+  //           $scope.cart = Restangular.one("cart");
+
+  //           // ... and then replaces itself via a `get` if the request does 
+  //           // not 404.
+  //           $scope.cart.get().then(function (cart) {
+  //             $scope.cart.variant_ids = cart.variant_ids;
+  //           });
+
+  //           $scope.$watch("cart.size()", function (v) {
+  //             $("a.cart-link .count").text(v);
+  //           });
+  //         }
+
+  //       });
+  //     }
+  //   }
+  // });
+
+  app.service('fabrics', function ($q, DSCacheFactory, Restangular) {
+    DSCacheFactory('fabricCache', {
+        // Items added to this cache expire after 15 minutes.
+        maxAge: 90000,
+        // This cache will clear itself every hour.
+        // cacheFlushInterval: 600000,
+        // Items will be deleted from this cache right when they expire.
+        deleteOnExpire: 'aggressive'
+    });
+
+    var API = {
+      get: function (id) {
+        var promise, cached;
+     
+        if (cached = API.getCached(id)) {
+          var deferred = $q.defer();
+          deferred.resolve(cached);
+          promise = deferred.promise;
+        } else {
+          promise = Restangular.one("fabrics", id).get();
+          promise.then(function (data) {
+            API.put(id, data);
+          });
+        }
+
+        return promise;
+      },
+
+      getCached: function (id) {
+        return DSCacheFactory.get('fabricCache').get(id);
+      },
+
+      put: function (id, data) {
+        return DSCacheFactory.get('fabricCache').put(id, data);
+      },
+
+      update: function (id, data) {
+        var cached = API.getCached(id);
+        if (!cached) return false;
+        angular.extend(cached, data);
+        return API.put(id, cached);
+      }
+    };
+
+    return API;
+  });
+
+  app.run(function (Restangular) {
     Restangular.extendModel("cart", function Cart (model) {
 
       if (!model.variant_ids) { 

@@ -12,7 +12,7 @@
             data-cycle-pager="#adv-custom-pager"
             data-cycle-pager-template="<a href='#'><img src='@@children.0.src@@'></a>"
         >
-          <div ng-repeat="v in resource.variants">
+          <div ng-repeat="v in fabric.variants">
             <img ng-src="{{ v.image.thumb }}" />
           </div>
         </div>
@@ -21,33 +21,33 @@
     </div>
     <div class="fabrics-show-details col-sm-6">
       <dl>
-        <dt>Mill</dt> <dd ng-bind="resource.mill.name | default"></dd>
+        <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd>
         <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd>
-        <dt>Fiber Content</dt> <dd ng-bind="resource.materials | materials | default"></dd>
-        <dt>Weight</dt> <dd ng-bind-html="resource.weight | weight"></dd>
-        <dt>Width</dt> <dd ng-bind="resource.width | width"></dd>
-        <dt>Country of Origin</dt> <dd ng-bind="resource.country.name | default"></dd>
-        <dt>Price</dt> <dd ng-bind="resource.price | price"></dd>
+        <dt>Fiber Content</dt> <dd ng-bind="fabric.materials | materials | default"></dd>
+        <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd>
+        <dt>Width</dt> <dd ng-bind="fabric.width | width"></dd>
+        <dt>Country of Origin</dt> <dd ng-bind="fabric.country.name | default"></dd>
+        <dt>Price</dt> <dd ng-bind="fabric.price | price"></dd>
         <dt>In Stock</dt> <dd ng-bind="variant.in_stock | yesno"></dd>
-        <dt>Category</dt> <dd ng-bind="resource.category.name | default"></dd>
-        <dt>Dye Method</dt> <dd ng-bind="resource.dye_method.name | default"></dd>
-        <dt>Keywords</dt> <dd ng-bind="resource.tags | tags"></dd>
-        <dt>Sample Lead Time</dt> <dd ng-bind="resource.lead_time.sample"></dd>
-        <dt>Bulk Lead Time</dt> <dd ng-bind="resource.lead_time.bulk"></dd>
-        <dt>Sample Minimum M<sup>2</sup></dt> <dd ng-bind="resource.minimum_quality.sample"></dd>
-        <dt>Bulk Minimum M<sup>2</sup></dt> <dd ng-bind="resource.minimum_quality.bulk"></dd>
+        <dt>Category</dt> <dd ng-bind="fabric.category.name | default"></dd>
+        <dt>Dye Method</dt> <dd ng-bind="fabric.dye_method.name | default"></dd>
+        <dt>Keywords</dt> <dd ng-bind="fabric.tags | tags"></dd>
+        <dt>Sample Lead Time</dt> <dd ng-bind="fabric.lead_time.sample"></dd>
+        <dt>Bulk Lead Time</dt> <dd ng-bind="fabric.lead_time.bulk"></dd>
+        <dt>Sample Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.sample"></dd>
+        <dt>Bulk Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.bulk"></dd>
       </dl>
     </div>
   </div>
 
   <div class="row">
     <div class="buttons col-sm-12">
-      <a class="btn btn-default" ng-click="current_user.toggleFavorite(resource.id)">
+      <a class="btn btn-default" ng-click="current_user.toggleFavorite(fabric.id)">
         <i class="fa fa-heart-o"></i>
-        <span ng-bind="isFavorite(resource.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
+        <span ng-bind="current_user.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
-      <a class="btn btn-default" href="{{ resource.links | link:'edit' }}">Edit</a>
-      <a class="btn btn-default" href="#print" ng-click="printModal()">Print</a>
+      <a class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
+      <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
       <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
     </div>
   </div>
@@ -59,7 +59,7 @@
           &mdash;
           <i>These are private and not shared with the mill</i>
         </label>
-        <textarea id="mynotes" class="form-control" rows="3" ng-model="note.note"></textarea>
+        <textarea fabric-notes-for="fabric" id="mynotes" class="form-control" rows="3" ng-model="fabric.note"></textarea>
       </div>
     </div>
   </div>

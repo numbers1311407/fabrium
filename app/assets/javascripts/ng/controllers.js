@@ -1,8 +1,7 @@
 ;(function (root) {
-  var autosave_timeout = 1000 * 10;
 
   app.controller('FabricVariantIndexCtrl', 
-    function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse) {
+    function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics) {
 
       // On load get the current user
       Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
@@ -54,10 +53,6 @@
           $scope.mill_options.values = [];
           $timeout(cache);
         }
-      };
-
-      $scope.isFavorite = function (n) {
-        return !!$scope.current_user.favorites[n];
       };
 
       // this will be populated after the form is parsed (see advancedOptions directive)
@@ -242,19 +237,20 @@
 
       $scope.show = function (id, position) {
 
-        $scope.position = position;
-
         var modalInstance = $modal.open({
           templateUrl: "/templates/fabrics/show",
           controller: "FabricShowCtrl",
           windowClass: "ng-modal",
-          scope: $scope,
+          // scope: $scope,
           resolve: {
-            resource: function () {
-              return Restangular.one("fabrics", id).get();
+            position: function () {
+              return position;
+            },
+            fabric: function () {
+              return fabrics.get(id);
             }
           }
-        })
+        });
       };
 
       if (!_.isEmpty($scope.search)) {
@@ -263,92 +259,35 @@
     }
   );
 
-  app.controller('FabricShowCtrl',
-    function ($scope, $modalInstance, Restangular, resource) {
-      $scope.resource = resource;
+  app.controller('FabricShowCtrl', function ($scope, fabric, position) {
+      $scope.fabric = fabric;
+      $scope.position = position;
+
+      /**
+       * Provide a cycling hook for jQuery Cycle to change the
+       * current fabric variant as the slides change.
+       */
+
+      $scope.onCycleBefore = function (e, API) {
+        $scope.$apply(function () {
+          $scope.position = API.nextSlide;
+        });
+      };
 
       $scope.$watch("position", function (val) {
-        $scope.variant = resource.variants[val];
+        $scope.variant = fabric.variants[val];
       });
 
-      $scope.printModal = function () {
-        var $el = $(".ng-modal .modal-dialog");
+      /**
+       * "Print screen" function
+       * TODO needs work
+       */
+
+      $scope.print = function () {
+        var $el = $(".fabrics-show");
         utils.printElement($el[0]);
         window.print();
       };
-
-      /**
-       * Super kludgy note implementation.
-       *
-       * Could use a refactor!
-       *
-       * The double flag approach of saving & dirty is necessitated by
-       * the throttled execution of the update request itself and then
-       * the time of the request.
-       *
-       * The note should save every X seconds while the modal is opened,
-       * but if the modal closes it needs to save immediately.  If the
-       * modal closes while in the middle of a throttled delay, the throttled
-       * request will not occur because the note is already either saving
-       * or has been cleaned.
-       */
-
-      // note tracks the note itself, it's "dirty" state, and whether
-      // it's currently enroute to save
-      $scope.note = {note: null, dirty: false, saving: false};
-
-      // note updating function
-      var updateNote = function () {
-        // if the note isn't dirty, or if it's already saving, return
-        if (!$scope.note.dirty || $scope.note.saving) {
-          return;
-        }
-        // mark it as saving (or deleting, whatevs)
-        $scope.note.saving = true;
-
-        var note = $scope.note.note, promise;
-
-        // then make the request based on note's contents
-        if (note) {
-          var req = Restangular.one("fabric_notes", resource.id);
-          req.note = note;
-          promise = req.put();
-        } else {
-          promise = Restangular.one("fabric_notes", resource.id).remove();
-        }
-
-        promise.then(function () {
-          $scope.note.dirty = false;
-          $scope.note.saving = false;
-        });
-      }
-
-      // throttled note updater for changes to the text area
-      var throttledUpdate = _.throttle(updateNote, autosave_timeout, {leading: false});
-
-      // Call update immediately on close.  This will only result in
-      // a request if the note has been changed.
-      $modalInstance.result.finally(updateNote);
-
-      // As the note changes, set the note as dirty then queue up the 
-      // throttled update.  It will execute after N seconds or whenever
-      // the modal is closed.
-      $scope.$watch('note.note', function (note, oldnote) {
-        // On the initial server response the note will change from null.
-        // Don't respond to this with a persistence request.
-        if (null !== oldnote) {
-          $scope.note.dirty = true;
-          throttledUpdate(note);
-        }
-      });
-
-      $scope.onCycleBefore = function (e, API) {
-        $scope.position = API.nextSlide;
-      };
-
-      Restangular.one("fabric_notes", resource.id).get().then(function (note) {
-        $scope.note.note = note.note;
-      });
     }
   );
 })(window);

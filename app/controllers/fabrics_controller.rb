@@ -33,7 +33,10 @@ class FabricsController < ResourceController
   def show
     object = resource
     object.increment!(:views_count)
-    show!
+
+    show! do |wants|
+      wants.html { render 'ng/index' }
+    end
   end
 
   protected

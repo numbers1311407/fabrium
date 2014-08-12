@@ -8,7 +8,8 @@
     'minicolors-ng',
     'alerts-ng',
     'selectize-ng',
-    'restangular'
+    'restangular',
+    'angular-data.DSCacheFactory'
   ]);
 
 })(window);

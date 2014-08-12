@@ -17,7 +17,8 @@
     "jcrop": "~0.9.12",
     "restangular": "~1.4.0",
     "jquery-cycle2": "~2.1.5",
-    "jquery-ui-sortable": "*"
+    "jquery-ui-sortable": "*",
+    "angular-cache": "~3.1.0"
   },
   "resolutions": {
     "angular": "1.2.21"
