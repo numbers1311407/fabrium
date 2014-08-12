@@ -275,7 +275,7 @@
         <!-- because for whatever reason, angular select is just painfully broken -->
         <option value="">Sort: Newest First</option>
         <option value="fabrium_id">Sort: Fabrium Number</option>
-        <option ng-if="!current_user.isBuyer()" value="item_number">Sort: Item Number</option>
+        <option ng-if="!currentUser.isBuyer()" value="item_number">Sort: Item Number</option>
       </select>
     </div>
   </div>
@@ -287,21 +287,21 @@
   <ul ng-show="!loading" class="fabric-variant-resultlist">
     <li class="fabric-variant-result" ng-repeat="item in items">
       <div class="fabric-variant-result-inner">
-        <div ng-if="!current_user.isBuyer()" class="result-panel fabric-actions">
+        <div ng-if="!currentUser.isBuyer()" class="result-panel fabric-actions">
           <a target="_self" href="{{ item.links | link:'edit' }}">Edit</a>
         </div>
 
         <a class="result-panel fabric-favorite-status" 
-          ng-click="current_user.toggleFavorite(item.fabric_id)"
-          ng-attr-title="{{ current_user.hasFavorite(item.fabric_id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
-          <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[current_user.hasFavorite(item.fabric_id)]"></i>
+          ng-click="currentUser.toggleFavorite(item.fabric_id)"
+          ng-attr-title="{{ currentUser.hasFavorite(item.fabric_id) ? 'This fabric is one of your favorites.  Click to unfavorite.' : 'Click to add this fabric to your favorites.'}}">
+          <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(item.fabric_id)]"></i>
         </a>
 
         <img ng-src="{{item.image.thumb}}" ng-click="show(item.fabric_id, item.position)">
 
         <div class="resultdetails-outer">
           <table class="resultdetails">
-            <tr ng-if="!current_user.isBuyer()">
+            <tr ng-if="!currentUser.isBuyer()">
               <td>Item #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
             </tr>
             <tr>

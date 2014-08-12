@@ -659,8 +659,6 @@ dt:after {
   height: auto; 
   display: block; 
   border: 1px solid #f0f0f0;
-}
-[cycle] > div {
   display: none;
   &:first-child {
     display: block;
@@ -688,9 +686,9 @@ dt:after {
   }
 }
 
-.cart-wrapper {
+.cart-wrapper, .fabrics-show {
   @media (min-width: $screen-md-min) {
-    width: 800px;
+    max-width: 800px;
     margin: 0 auto;
   }
 }

@@ -13,19 +13,26 @@
         templateUrl: '/templates/fabrics/show',
         controller: 'FabricShowCtrl',
         resolve: {
+          isModal: function () {
+            return false;
+          },
           position: function ($route, $location) {
-            var hash = $location.hash();
-            // eh.
-            return hash.match(/^\d+$/) && hash || 0;
+            return $location.search().v || 0;
           },
           fabric: function ($route, fabrics) {
             return fabrics.get($route.current.params.id);
           }
-        }
+        },
+        reloadOnSearch: false
       })
     ;
 
     $locationProvider.html5Mode(true);
+  });
+
+  // surely not the place for this.
+  app.run(function ($rootScope, $location) {
+    $rootScope.location = $location;
   });
 
 })(window);

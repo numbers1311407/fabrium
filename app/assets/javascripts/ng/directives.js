@@ -69,16 +69,28 @@
 
     return {
       restrict: 'A',
+
       scope: {
-        before: "=onCycleBefore"
+        index: "=",
+        bubble: '=bubbleClickEvents'
       },
+
       link: function (scope, elem, attrs) {
         // timeout to come in after the ng-repeat
         $timeout(function () {
-          $(elem).cycle();
+          $(elem).cycle({
+            startingSlide: scope.index || 0,
+            pagerEventBubble: !!scope.bubble
+          });
 
-          if (scope.before) {
-            $(elem).on("cycle-before", scope.before);
+          if (undefined !== scope.index) {
+            // $(elem).on("cycle-before", function (e, API) {
+            //   scope.index = API.nextSlide;
+            // });
+
+            scope.$watch("index", function (index) {
+              $(elem).cycle("goto", index);
+            });
           }
         });
 
@@ -98,25 +110,25 @@
     return {
       restrict: 'A',
       scope: {
-        fabricNotesFor: '='
+        fabric: '=fabricNotesFor'
       },
 
       link: function(scope, element, attrs) {
-        var fabric = scope.fabric = scope.fabricNotesFor;
+        var fabric = scope.fabric;
         var id = fabric.id;
         var dirty = false;
-        var transit = false;
+        var inTransit = false;
 
         // note updating function
         var update = scope.updateNote = function () {
 
-          // if the note isn't dirty, or if it's already transit, return
-          if (!dirty || transit) {
+          // if the note isn't dirty, or if it's already inTransit, return
+          if (!dirty || inTransit) {
             return;
           }
 
-          // mark it as in transit
-          transit = true;
+          // mark it as in inTransit
+          inTransit = true;
 
           var promise;
 
@@ -131,16 +143,22 @@
 
           promise.then(function () {
             dirty = false;
-            transit = false;
+          });
+
+          promise.finally(function () {
+            inTransit = false;
           });
         }
 
-        // throttled note updater for changes to the text area
-        var throttledUpdate = _.throttle(update, autosave_timeout, {leading: false});
+        // Create a throttled note updater for changes to the text area  Note
+        // that the updater does not fire on the leading call, but only after
+        // the configured timeout.
+        var throttledUpdate = _.throttle(update, autosave_timeout, {
+          leading: false
+        });
 
         // As the note changes, set the note as dirty then queue up the 
-        // throttled update.  It will execute after N seconds or whenever
-        // the modal is closed.
+        // throttled update.
         scope.$watch('fabric.note', function (note, notewas) {
           if (note !== notewas && !element.attr("disabled")) {
             dirty = true;
@@ -152,8 +170,17 @@
         // the value is unchanged or already in transit.
         scope.$on("$destroy", update);
 
+        // Run on blur, again will do nothing if the value is unchanged.
+        element.on("blur", update);
+
+        // If the note is undefined (it will be on a new fabric as the note is
+        // not a property of a fabric alone), then load the note from the server.
+        // After the initial load, this will not happen again until the cache is
+        // cleared.  Note changes will happen immediately with save firing async
+        // but not affecting the note.
         if (undefined == fabric.note) {
           element.attr("disabled", "disabled");
+
           Restangular.one("fabric_notes", id).get().then(
             // On success, set the note.  Note there's no need to actually
             // update the cache for this, as it's just an in-memory object cache.  

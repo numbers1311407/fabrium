@@ -34,9 +34,10 @@ class FabricsController < ResourceController
     object = resource
     object.increment!(:views_count)
 
-    show! do |wants|
-      wants.html { render 'ng/index' }
-    end
+    show!
+    # show! do |wants|
+    #   wants.html { render 'ng/index' }
+    # end
   end
 
   protected

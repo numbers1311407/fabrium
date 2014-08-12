@@ -14,7 +14,7 @@ module FabricVariants
           # add 1 first, as the index defaults to 0
           i = fabric.variant_index + 1
           fabric.update_attribute(:variant_index, i)
-          self.fabrium_id = "#{fabric.id}-#{i}"
+          self.fabrium_id = "%d-%02d" % [fabric.id, i]
         end
       elsif fabrium_id.blank?
         self.fabrium_id = 'pending'

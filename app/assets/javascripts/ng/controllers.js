@@ -4,7 +4,7 @@
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser, currentCart) {
 
       currentUser.get().then(function (user) {
-        $scope.current_user = user;
+        $scope.currentUser = user;
       });
 
       currentCart.get().then(function (cart) {
@@ -13,7 +13,6 @@
           $("a.cart-link .count").text(v);
         });
       });
-
 
       $scope.mill_options = {};
       $scope.mill_cache = {};
@@ -221,13 +220,15 @@
       };
 
       $scope.show = function (id, position) {
-
         var modalInstance = $modal.open({
           templateUrl: "/templates/fabrics/show",
           controller: "FabricShowCtrl",
           windowClass: "ng-modal",
           // scope: $scope,
           resolve: {
+            isModal: function () {
+              return true;
+            },
             position: function () {
               return position;
             },
@@ -244,12 +245,12 @@
     }
   );
 
-  app.controller('FabricShowCtrl', function ($scope, fabric, position, currentUser, currentCart) {
+  app.controller('FabricShowCtrl', function ($scope, $location, isModal, fabric, position, currentUser, currentCart) {
       $scope.fabric = fabric;
-      $scope.position = position;
+      $scope.isModal = isModal;
 
       currentUser.get().then(function (user) {
-        $scope.current_user = user;
+        $scope.currentUser = user;
       });
 
       currentCart.get().then(function (cart) {
@@ -259,20 +260,30 @@
         });
       });
 
+
       /**
        * Provide a cycling hook for jQuery Cycle to change the
        * current fabric variant as the slides change.
        */
 
-      $scope.onCycleBefore = function (e, API) {
-        $scope.$apply(function () {
-          $scope.position = API.nextSlide;
-        });
-      };
-
       $scope.$watch("position", function (val) {
         $scope.variant = fabric.variants[val];
       });
+
+      $scope.setPosition = function (position) {
+        if (/^\d+$/.test(position) && parseInt(position, 0) < fabric.variants.length) {
+          $scope.position = parseInt(position, 0);
+        } else {
+          $scope.position = 0;
+        }
+      };
+
+      $scope.setPosition(position);
+
+      $scope.$on('$routeUpdate', function () {
+        $scope.setPosition($location.search().v);
+      });
+
 
       /**
        * "Print screen" function
@@ -284,6 +295,8 @@
         utils.printElement($el[0]);
         window.print();
       };
+
+
     }
   );
 })(window);

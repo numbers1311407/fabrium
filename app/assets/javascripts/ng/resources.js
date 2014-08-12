@@ -125,6 +125,16 @@
       return model;
     });
 
+
+    Restangular.extendModel("fabrics", function Fabric (model) {
+      model.getVariantUrl = function (position) {
+        var search = position ? "?v="+position : "";
+        return this.getRestangularUrl() + search;
+      };
+
+      return model;
+    });
+
     Restangular.extendModel("users", function User (model) {
       // favorites come down as a list of ids, but lets track them as
       // a hash so they can be easily added/removed and watched by angular

@@ -1,9 +1,16 @@
+- variant = cart_item.fabric_variant
+- fabric = variant.fabric
+
 .cart-item(data-id = cart_item.id)
   .col-thumb
-    = image_tag(cart_item.fabric_variant.thumb.url)
+    = link_to fabric_variant_path(fabric, variant) do
+      = image_tag(variant.thumb.url)
   .col-fields
-    p.line-item: label Fabrium #: #{cart_item.fabrium_id}
-    p.line-item: label Item #: #{cart_item.fabric_variant.item_number}
+    p.line-item
+      label 
+        = link_to fabric_variant_path(fabric, variant) do
+          | Fabrium #: #{cart_item.fabrium_id}
+    p.line-item: label Item #: #{variant.item_number}
 
     = fake_input(:notes, cart_item)
 

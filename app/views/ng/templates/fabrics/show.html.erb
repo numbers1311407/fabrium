@@ -1,22 +1,24 @@
-<div class="modal-body fabrics-show">
+<div class="fabrics-show" ng-class="{'modal-body': isModal}">
   <div class="row">
     <div class="fabrics-show-image col-sm-6">
       <div id="slideshow-1">
         <div id="cycle-1" cycle
-            on-cycle-before="onCycleBefore"
+            index="position"
+            bubble-click-events="!isModal"
             data-cycle-slides="[ng-repeat]"
-            data-starting-slide="{{position}}"
             data-cycle-timeout="0"
             data-cycle-fx="fade"
-            data-cycle-log="false"
+            data-cycle-log=false
             data-cycle-pager="#adv-custom-pager"
-            data-cycle-pager-template="<a href='#'><img src='@@children.0.src@@'></a>"
+            data-cycle-pager-template=""
         >
-          <div ng-repeat="v in fabric.variants">
-            <img ng-src="{{ v.image.thumb }}" />
-          </div>
+          <img ng-src="{{ v.image.thumb }}" ng-repeat="v in fabric.variants" />
         </div>
-        <div id=adv-custom-pager class="center external"></div>
+      </div>
+      <div id="adv-custom-pager" class="center external">
+        <a href={{fabric.getVariantUrl(v.position)}} ng-repeat="v in fabric.variants">
+          <img ng-src="{{ v.image.thumb }}">
+        </a>
       </div>
     </div>
     <div class="fabrics-show-details col-sm-6">
@@ -42,9 +44,9 @@
 
   <div class="row">
     <div class="buttons col-sm-12">
-      <a class="btn btn-default" ng-click="current_user.toggleFavorite(fabric.id)">
+      <a class="btn btn-default" ng-click="currentUser.toggleFavorite(fabric.id)">
         <i class="fa fa-heart-o"></i>
-        <span ng-bind="current_user.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
+        <span ng-bind="currentUser.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
       <a class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
@@ -59,7 +61,7 @@
           &mdash;
           <i>These are private and not shared with the mill</i>
         </label>
-        <textarea fabric-notes-for="fabric" id="mynotes" class="form-control" rows="3" ng-model="fabric.note"></textarea>
+        <textarea options='fabric' fabric-notes-for="fabric" id="mynotes" class="form-control" rows="3" ng-model="fabric.note"></textarea>
       </div>
     </div>
   </div>

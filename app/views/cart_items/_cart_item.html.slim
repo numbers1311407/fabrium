@@ -1,18 +1,21 @@
 - variant = cart_item.fabric_variant
+- fabric = variant.fabric
 
 .cart-item(data-id=cart_item.id)
   .col-thumb
-    = image_tag(cart_item.fabric_variant.thumb.url)
+    = link_to fabric_variant_path(fabric, variant) do
+      = image_tag(cart_item.fabric_variant.thumb.url)
   .col-fields
     p.line-item
-      label Fabrium #: #{cart_item.fabrium_id}
+      label 
+        = link_to fabric_variant_path(fabric, variant) do
+          | Fabrium #: #{cart_item.fabrium_id}
       - if variant.in_stock?
         span.badge.badge-success In Stock
     - unless current_user.is_buyer?
       p.line-item: label Item #: #{variant.item_number}
     - if current_user.is_buyer? && cart_item.sample_yardage.present?
       p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
-
 
     - if cart_item.deletable_by?(current_user)
       = link_to cart_cart_item_path(cart, cart_item.fabric_variant_id), class: 'remove btn btn-default', method: :delete, remote: true do
