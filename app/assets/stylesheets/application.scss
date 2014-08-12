@@ -660,6 +660,13 @@ dt:after {
   display: block; 
   border: 1px solid #f0f0f0;
 }
+[cycle] > div {
+  display: none;
+  &:first-child {
+    display: block;
+  }
+}
+
 #adv-custom-pager {
   margin: 5px 0;
   @include clearfix;

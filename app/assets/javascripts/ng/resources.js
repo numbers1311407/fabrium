@@ -1,34 +1,48 @@
 ;(function () {
-  // app.service('currentUser', function (Restangular) {
 
-  //   return {
-  //     get: function () {
-  //       Restangular.oneUrl("users", "/profile.json").get().then(function (user) {
+  app.service('currentUser', function (Restangular, $q) {
 
-  //         if (!user.isAdmin()) {
+    var object;
 
-  //           // This defies expectation a bit, but the way Restangular works,
-  //           // it does not update existing "models" as you might think.  There
-  //           // may be a way to do this but it was not obvious.  As such the
-  //           // scope's `cart` is created initially (in the case that the user
-  //           // does not have a pending cart available)...
-  //           $scope.cart = Restangular.one("cart");
+    return {
+      get: function () {
+        var promise;
 
-  //           // ... and then replaces itself via a `get` if the request does 
-  //           // not 404.
-  //           $scope.cart.get().then(function (cart) {
-  //             $scope.cart.variant_ids = cart.variant_ids;
-  //           });
+        if (object) {
+          var deferred = $q.defer();
+          deferred.resolve(object);
+          promise = deferred.promise;
+        } else {
+          promise = Restangular.oneUrl("users", "/profile.json").get();
+          promise.then(function (data) { object = data; });
+        }
 
-  //           $scope.$watch("cart.size()", function (v) {
-  //             $("a.cart-link .count").text(v);
-  //           });
-  //         }
+        return promise;
+      }
+    }
+  });
 
-  //       });
-  //     }
-  //   }
-  // });
+
+  app.service('currentCart', function (Restangular, $q) {
+    var object;
+
+    return {
+      get: function (scope) {
+        if ('undefined' !== typeof object) {
+          var deferred = $q.defer();
+          deferred.resolve(object);
+          promise = deferred.promise;
+        } else {
+          promise = Restangular.one("cart").get();
+          promise.then(
+            function (data) { object = data; },
+            function () { object = false; }
+          );
+        }
+        return promise;
+      }
+    }
+  });
 
   app.service('fabrics', function ($q, DSCacheFactory, Restangular) {
     DSCacheFactory('fabricCache', {
@@ -91,7 +105,7 @@
       model.addItem = function (id) {
         if (this.hasItem(id)) { return; }
         this.variant_ids.push(id);
-        this.all("items").post({fabric_variant_id: id});
+        Restangular.one("cart").all("items").post({fabric_variant_id: id});
       };
 
       model.size = function () {
@@ -101,7 +115,7 @@
       model.removeItem = function (id) {
         if (!this.hasItem(id)) { return; }
         this.variant_ids.splice(this.variant_ids.indexOf(id), 1);
-        this.one("items", id).remove();
+        Restangular.one("cart").one("items", id).remove();
       };
 
       model.hasItem = function (id) {
