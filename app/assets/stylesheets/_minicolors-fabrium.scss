@@ -33,6 +33,11 @@ td.color {
   left: 10px;
 }
 
-.minicolors-swatch {
+.minicolors-swatch,
+.minicolors .minicolors-grid,
+.minicolors-slider-saturation .minicolors-grid-inner,
+.minicolors-slider,
+.minicolors-opacity-slider
+{
   background-image: asset_url('jquery.minicolors.png');
 }
