@@ -35,9 +35,6 @@ class FabricsController < ResourceController
     object.increment!(:views_count)
 
     show!
-    # show! do |wants|
-    #   wants.html { render 'ng/index' }
-    # end
   end
 
   protected
@@ -59,5 +56,11 @@ class FabricsController < ResourceController
       includes(:category).
       includes(:mill).
       includes(:dye_method)
+  end
+
+  def begin_of_association_chain
+    if current_user && current_user.is_mill?
+      current_user.meta
+    end
   end
 end
