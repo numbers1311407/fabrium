@@ -1,8 +1,11 @@
+- breadcrumb :edit_profile
+
 #content-body 
   = simple_form_for resource, url: resource_path do |f|
     .form-inputs-row.row
       .form-inputs
         = f.input :password
         = f.input :password_confirmation
+        = f.input :wants_email, label: false, inline_label: true
     .form-actions
       = render 'form_inputs', form: f, f: f

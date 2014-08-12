@@ -1,10 +1,12 @@
 = resource_menu_link(Fabric)
 = resource_menu_link(Cart)
 = resource_menu_link(User)
-= resource_menu_link(Mill)
 = resource_menu_link(Buyer)
-= resource_menu_link(ApprovedDomain)
+= resource_menu_link(Mill)
 = resource_menu_link(Tag)
 = resource_menu_link(Category)
 = resource_menu_link(DyeMethod)
 = resource_menu_link(Material)
+= resource_menu_link(ApprovedDomain)
+- if current_user.is_mill?
+  li= link_to t('st.profiles.actions.blocklist.title'), blocklist_profile_path

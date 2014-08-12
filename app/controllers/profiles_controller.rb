@@ -1,5 +1,5 @@
 class ProfilesController < ResourceController
-  self.layout_name = 'profile'
+  self.layout_name = 'admin'
 
   defaults singleton: true, resource_class: User, route_instance_name: :profile, instance_name: :user
 

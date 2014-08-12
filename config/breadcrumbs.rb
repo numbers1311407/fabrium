@@ -34,3 +34,11 @@ crumb :fabric do
     parent :resource, name: text
   end
 end
+
+crumb :edit_profile do
+  link "Edit Your Profile"
+end
+
+crumb :blocklist do
+  link "Edit Your Approved Domains"
+end
