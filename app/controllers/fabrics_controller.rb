@@ -1,4 +1,5 @@
 class FabricsController < ResourceController
+  custom_actions resource: [:test_item_number]
   add_collection_filter_scope :collection_filter_includes
 
   permit_params [
@@ -35,6 +36,26 @@ class FabricsController < ResourceController
     object.increment!(:views_count)
 
     show!
+  end
+
+  def test_item_number
+    query = resource_params[0]
+    scope = end_of_association_chain.where(query)
+
+    # if `nid` is passed, exclude that id
+    if params[:nid]
+      scope = scope.where.not(id: params[:nid])
+    end
+
+    fabric = scope.first
+
+    res = if !fabric
+      true
+    else
+      "This fabric already exists. #{view_context.link_to "View fabric now.", edit_fabric_url(fabric)}"
+    end
+
+    render(json: res.to_json)
   end
 
   protected

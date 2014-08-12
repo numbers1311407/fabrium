@@ -27,6 +27,8 @@ class Fabric < ActiveRecord::Base
 
   has_many :fabric_notes
 
-  validates :width, numericality: { greater_than: 0 }
+  validates :width, numericality: { greater_than: 0 }, presence: true
   validates :mill, presence: true
+  validates :item_number, presence: true
+  validates :weight, presence: true
 end

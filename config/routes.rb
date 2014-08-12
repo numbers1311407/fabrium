@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   end
 
   resources :fabrics
+
   resources :fabric_variants do
     collection do
       get 'preview', as: :preview
@@ -47,6 +48,7 @@ Rails.application.routes.draw do
   end
 
   scope :data, constraints: { format: :json } do
+    get "test_item_number", to: "fabrics#test_item_number"
     get "country_subregions", to: "carmen#subregions", as: :country_subregions
   end
 

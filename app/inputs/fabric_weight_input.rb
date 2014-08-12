@@ -13,6 +13,8 @@ class FabricWeightInput < SimpleForm::Inputs::Base
     input_html_options[:class] ||= []
     input_html_options[:class].push("form-control")
 
+    input_html_options[:step] = 0.1
+
     out.safe_concat @builder.number_field(:weight, opts.merge(input_html_options))
     out.safe_concat @builder.select(:weight_units, units)
 

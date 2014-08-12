@@ -18,7 +18,8 @@
     "restangular": "~1.4.0",
     "jquery-cycle2": "~2.1.5",
     "jquery-ui-sortable": "*",
-    "angular-cache": "~3.1.0"
+    "angular-cache": "~3.1.0",
+    "jquery-validate": "~1.13.0"
   },
   "resolutions": {
     "angular": "1.2.21"

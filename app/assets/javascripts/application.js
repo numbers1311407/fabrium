@@ -9,6 +9,7 @@
 //= require ./fabrics
 //= require ./fabric_variants
 //= require ./carts
+//= require ./validate
 
 $(function () {
   $(".error-tooltip").each(function () {

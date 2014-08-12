@@ -1,4 +1,55 @@
 $(function () {
+  $("form#fabrics_form").each(function () {
+    var $form = $(this);
+    var $mill_id_input = $form.find("[name='fabric[mill_id]']");
+    var $item_no_input = $form.find("[name='fabric[item_number]']");
+
+    // extract the ID of the form if this is an update, which will be
+    // passed in the query (so we don't fail on changing from and to the
+    // item number already assigned to the form).
+    var id, match;
+    if (match = $form.attr("action").match(/fabrics\/(\d+)$/)) {
+      id = match[1];
+    }
+
+    var getUrl = function (mill_id) {
+      var params = {fabric: {}};
+
+      if ($mill_id_input.length) {
+        params.fabric.mill_id = $mill_id_input.val();
+      }
+
+      if (id) { 
+        params.nid = id; 
+      }
+
+      return "/data/test_item_number.json?" + $.param(params);
+    };
+
+
+    $form.validate({ 
+      rules: {
+        "fabric[item_number]": {
+          remote: getUrl()
+        }
+      }
+    });
+
+    $mill_id_input.change(function (mill_id) {
+      var validator = $form.data('validator');
+
+      // clear the cache of checked item numbers
+      $item_no_input.removeData("previousValue");
+
+      // update the URL used to find unique item numbers with the URL
+      // for the new mill
+      validator.settings.rules["fabric[item_number]"].remote = getUrl();
+
+      // and force revalidation of the item number field
+      validator.element("[name='fabric[item_number]']");
+    });
+  });
+
 
   // On submitting the form, set all the position values to be that of
   // their order in the list.  Sorting the elements simply moves them
