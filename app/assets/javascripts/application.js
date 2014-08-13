@@ -7,6 +7,7 @@
 //= require ./popovers
 //
 //= require ./fabrics
+//= require ./mills
 //= require ./fabric_variants
 //= require ./carts
 //= require ./validate

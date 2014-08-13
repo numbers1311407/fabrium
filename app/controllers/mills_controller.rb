@@ -1,6 +1,9 @@
 class MillsController < ResourceController
   self.default_sort = {name: 'name', dir: 'asc'}
 
+  custom_actions resource: [:toggle_active]
+  authority_actions toggle_active: :activate
+
   has_scope :name do |controller, scope, value|
     scope.attr_like(:name, value)
   end
@@ -27,6 +30,12 @@ class MillsController < ResourceController
     :domain_names,
     :active
   ]
+
+  def toggle_active
+    object = resource
+    object.active = !object.active
+    object.save
+  end
 
   protected
 

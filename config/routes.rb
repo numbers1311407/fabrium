@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   resources :mills do
     member do
       get :edit_blocklist
+      put :toggle_active
     end
   end
 

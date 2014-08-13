@@ -58,7 +58,8 @@ en:
       edit: 'Edit'
       new: 'New %{Resource}'
       show: 'Details'
-      activate: 'Activate'
+      activate: 'Make Active'
+      deactivate: 'Archive'
       resend_invitation: 'Resend Invitation'
     messages:
       confirm_destroy: 'Are you sure?'

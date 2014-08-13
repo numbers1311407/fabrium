@@ -1,6 +1,7 @@
-- index_table_headers do
-  th= sort_link(@q, :name)
-  th= sort_link(@q, :active)
+- if @q
+  - index_table_headers do
+    th= sort_link(@q, :name)
+    th= sort_link(@q, :active)
 
 td= resource.name
-td= humanize_boolean(resource.active)
+td.cell-active= humanize_boolean(resource.active)
