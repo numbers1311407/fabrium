@@ -29,6 +29,6 @@ class Fabric < ActiveRecord::Base
 
   validates :width, numericality: { greater_than: 0 }, presence: true
   validates :mill, presence: true
-  validates :item_number, presence: true
+  validates :item_number, presence: true, uniqueness: { scope: :mill_id }
   validates :weight, presence: true
 end
