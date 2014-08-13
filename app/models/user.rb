@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   after_commit :send_invitation_if_admin, on: :create
 
   before_validation :preset_pending_status, on: :create
+  before_create :set_mill_if_mill_passed
   before_create :set_initial_pending_status
   after_update :on_pending_change, if: :pending_changed?
 
@@ -33,6 +34,17 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true, email: true, uniqueness: true
 
+
+  attr_writer :skip_password
+
+  def skip_password?
+    !!@skip_password
+  end
+
+  # Hack to pass mill in users controller #new
+  attr_accessor :mill
+  validates :mill, presence: true, on: :create, if: :should_validate_mill?
+
   scope :pending, -> { where(pending: true) }
 
   def send_invitation!(from)
@@ -49,6 +61,14 @@ class User < ActiveRecord::Base
 
   def inactive_message 
     pending? && :pending || super
+  end
+
+  def password_required?
+    if new_record?
+      !skip_password?
+    else
+      super
+    end
   end
 
   delegate :name, 
@@ -102,5 +122,21 @@ class User < ActiveRecord::Base
     if is_mill? && meta.new_record?
       self.admin = true
     end
+  end
+
+  def set_mill_if_mill_passed
+    if mill
+      mill_record = Mill.find_by(id: mill)
+      unless mill_record.present?
+        errors.add(:mill, "An error occurred assigning the mill.  A mill must be selected.")
+        return false
+      end
+
+      self.meta = mill_record
+    end
+  end
+
+  def should_validate_mill?
+    !@mill.nil?
   end
 end

@@ -2,7 +2,7 @@ class UserAuthorizer < ApplicationAuthorizer
 
   def creatable_by?(user)
     # only admin mills can create users (for their own mill)
-    user.admin? && user.is_mill? && resource.meta == user.meta
+    user.is_admin? || user.admin? && user.is_mill? && resource.meta == user.meta
   end
 
   # remember this is only to view the admin users, index not to actually

@@ -3,8 +3,6 @@ class CartItemAuthorizer < ApplicationAuthorizer
 
   def deletable_by?(user)
 
-    Rails.logger.error resource.inspect
-
     # admins can remove items always though they shouldn't need to and
     # (and as of yet don't have a cart view)
     retv = user.is_admin? ||

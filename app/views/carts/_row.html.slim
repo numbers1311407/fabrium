@@ -2,9 +2,13 @@
   th= sort_link(@q, :created_at)
   th= sort_link(@q, :name)
   th= sort_link(@q, :creator_type, 'Source')
+  - if current_user.is_admin?
+    th= sort_link(@q, :parent_name, 'Parent Cart')
   th= sort_link(@q, :state)
 
 td= l(resource.created_at, format: :long)
 td= resource.name
 td= humanize_creator_type(resource)
+- if current_user.is_admin?
+  td= resource.parent.present? && link_to('Edit', cart_path(resource.parent)) || 'n/a'
 td= translate_cart_state(resource.state)

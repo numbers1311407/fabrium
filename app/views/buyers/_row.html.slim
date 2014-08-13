@@ -1,0 +1,10 @@
+- index_table_headers do
+  th= sort_link(@q, :user_email)
+  th= sort_link(@q, :first_name)
+  th= sort_link(@q, :last_name)
+  th= sort_link(@q, :company)
+
+td= resource.email
+td= resource.first_name
+td= resource.last_name
+td= resource.company

@@ -19,6 +19,11 @@ en:
           ordered: "Save and Ship Request"
           closed: "Update Request"
 
+  breadcrumbs:
+    fabric: "Fabrics #%{id}"
+    edit_profile: "Edit Your Profile"
+    blocklist: "Edit Your Approved Domains"
+
   scopes:
     all: "All"
     pending: "Pending"
@@ -61,6 +66,8 @@ en:
       empty_cart: 'The hanger request is currently empty'
     carts:
       actions:
+        index:
+          title_with_count: "Hanger Requests (%{count} Requests)"
         pending_cart:
           title: "New Hanger Request"
     profiles:
@@ -217,6 +224,7 @@ en:
       mill:
         domain_filter: Domain Filter Type
         domain_names: Filtered Domains
+        creator: Primary User
       approved_domain:
         name: Domain Name
         entity: Type

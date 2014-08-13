@@ -8,5 +8,6 @@
 = resource_menu_link(DyeMethod)
 = resource_menu_link(Material)
 = resource_menu_link(ApprovedDomain)
+= resource_menu_link(Admin)
 - if current_user.is_mill?
   li= link_to t('st.profiles.actions.blocklist.title'), blocklist_profile_path

@@ -5,7 +5,8 @@ class UsersController < ResourceController
     :email,
     :pending,
     :wants_email,
-    :admin
+    :admin,
+    :mill
   ]
 
   has_scope :mill do |controller, scope, value|
@@ -81,5 +82,11 @@ class UsersController < ResourceController
 
   def collection_filter_exclude_admins(object)
     object.where.not(meta_type: 'Admin')
+  end
+
+  def build_resource
+    @user ||= super.tap do |object|
+      object.skip_password = true
+    end
   end
 end

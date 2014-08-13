@@ -22,6 +22,14 @@ class CartsController < ResourceController
     ]
   ]
 
+  has_scope :buyer do |controller, scope, value|
+    scope.where(buyer_id: value)
+  end
+
+  has_scope :mill do |controller, scope, value|
+    scope.where(mill_id: value)
+  end
+
   has_scope :scope do |controller, scope, value|
     user = controller.current_user
 

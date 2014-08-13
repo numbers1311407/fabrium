@@ -1,4 +1,4 @@
-- if user_signed_in? && current_user.is_admin? && f.object.persisted?
+- if current_user.is_admin? && f.object.persisted?
   .top-actions
     = link_to "View the users for this mill?", users_path(mill: f.object.id)
 

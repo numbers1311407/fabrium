@@ -63,4 +63,36 @@ module ApplicationHelper
 
     content_tag(:div, html, class: 'form-group')
   end
+
+
+  def panel_class(value=nil)
+    @panel_class ||= []
+
+    if value
+      @panel_class << value
+    end
+
+    @panel_class.join(' ')
+  end
+
+
+  def association_select_tag(name, select_options, endpoint)
+    options = {
+      include_blank: true,
+      data: {
+        select: {
+          placeholder: "Type to Search",
+          plugins: {
+            # passing `blank` as false because we're using the clear
+            # selection plugin here (this is a type to search field)
+            route_on_change: {remote: true, blank: false}, 
+            endpoint: {url: endpoint},
+            clear_selection: {}
+          } 
+        }
+      }
+    }
+
+    select_tag name, options_for_select(select_options), options
+  end
 end

@@ -16,9 +16,10 @@
 - unless content_for?(:title)
   - content_for(:title) { title st(:title) }
 
-- breadcrumb :resources
+- if gretel_renderer.send(:breadcrumb_key).blank?
+  - breadcrumb :resources
 
-.panel.panel-default
+.panel.panel-default(class=panel_class)
   .panel-heading.clearfix
     h1.panel-title
       = yield(:title)

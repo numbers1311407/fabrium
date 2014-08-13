@@ -1,0 +1,13 @@
+#buyer-scope-select.scope-select
+  .form-group
+    label(for="buyer_email_filter") Filter by Email
+    = text_field_tag :email, "", class: 'form-control', id: 'buyer_email_filter', placeholder: "Type to Search", data: { query_updater: true }
+  .form-group
+    label(for="buyer_first_name_filter") Filter by First Name
+    = text_field_tag :first_name, "", class: 'form-control', id: 'buyer_first_name_filter', placeholder: "Type to Search", data: { query_updater: true }
+  .form-group
+    label(for="buyer_last_name_filter") Filter by Last Name
+    = text_field_tag :last_name, "", class: 'form-control', id: 'buyer_last_name_filter', placeholder: "Type to Search", data: { query_updater: true }
+  .form-group
+    label(for="buyer_company_filter") Filter by Company
+    = text_field_tag :company, "", class: 'form-control', id: 'buyer_company_filter', placeholder: "Type to Search", data: { query_updater: true }

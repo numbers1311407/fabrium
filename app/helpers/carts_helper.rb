@@ -43,4 +43,24 @@ module CartsHelper
   def carts_scope_select_tag
     scope_select_tag :carts
   end
+
+  def carts_buyer_select_tag
+    name = :buyer
+    collection = Buyer.select(:id, :first_name, :last_name).limit(10).order(:first_name)
+    endpoint = buyers_path(:json)
+    select_options = collection.map {|o| [o.name, o.id] }
+
+    association_select_tag(name, select_options, endpoint)
+  end
+
+  def carts_mill_select_tag
+    name = :mill
+    collection = Mill.select(:id, :name).limit(10).order(:name)
+    endpoint = mills_path(:json)
+    select_options = collection.map {|o| [o.name, o.id] }
+
+    association_select_tag(name, select_options, endpoint)
+  end
 end
+
+

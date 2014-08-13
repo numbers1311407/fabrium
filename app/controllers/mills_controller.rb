@@ -1,6 +1,10 @@
 class MillsController < ResourceController
   self.default_sort = {name: 'name', dir: 'asc'}
 
+  has_scope :name do |controller, scope, value|
+    scope.attr_like(:name, value)
+  end
+
   has_scope :id do |controller, scope, value|
     scope.where(id: value.split(','))
   end
@@ -18,6 +22,7 @@ class MillsController < ResourceController
 
   permit_params [
     :name,
+    :creator_id,
     :domain_filter, 
     :domain_names,
     :active

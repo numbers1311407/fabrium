@@ -26,7 +26,7 @@ crumb :edit_resource do |options|
 end
 
 crumb :fabric do
-  text = "Fabrics ##{resource.id}"
+  text = t(:fabric, id: resource.id, scope: :breadcrumbs)
 
   if !resource.updatable_by?(current_user)
     link text, resource
@@ -36,9 +36,9 @@ crumb :fabric do
 end
 
 crumb :edit_profile do
-  link "Edit Your Profile"
+  link t(:edit_profile, scope: :breadcrumbs)
 end
 
 crumb :blocklist do
-  link "Edit Your Approved Domains"
+  link t(:blocklist, scope: :breadcrumbs)
 end

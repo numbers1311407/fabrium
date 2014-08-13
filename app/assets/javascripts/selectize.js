@@ -72,72 +72,29 @@ $(function () {
       return function () {
         original.apply( this, arguments );
 
-        var route = function (url) {
-          window.location.href = url;
-        }
-
-        if (options.remote && window.history.pushState) {
-          var ajaxGet = function (url) {
-            $.get(url)
-              .then(function () {
-                var args = Array.prototype.slice.apply(arguments);
-                args.unshift('ajax_success');
-                self.trigger.apply(self, args);
-              });
-          }
-
-          $(window).on("popstate", function (e) {
-            var state = e.originalEvent.state;
-            if (state !== null && state.scope)  {
-              ajaxGet(location.href);
-            }
-          });
-
-          route = function (url) {
-            history.pushState({scope: true}, "", url);
-            ajaxGet(url);
-          }
-        }
-
         var name = this.$input.attr("name");
+
         var $blank = this.revertSettings.$children.filter("[value='']");
         var blankValue = "_blank";
 
-        if ($blank.length) {
+        if (options.blank !== false && $blank.length) {
           // if this were more robust it'd make sure the valueField and
           // labelField were correct
           this.addOption({text: $blank.text(), value: blankValue});
           this.getValue() || this.setValue(blankValue);
         }
 
-        this.on('change', function (v) {
-          if (!v) return;
+        // on change, we're going to try to update the query string with
+        // the current key/value and route to that new url.
+        this.on('change', function (value) {
 
-          var param = v != blankValue ? name+'='+v : ''
-            , s = location.search
-            , rx = new RegExp(name+"=\\w+");
+          // if the blank option was not prevented and this is the `blankValue`
+          // then set v to blank before passing it along
+          if (options.blank !== false && value == blankValue) {
+            value = '';
+          }
 
-          // NOTE this original bit was to preserve the query, which
-          // is fine but for the purposes here is not really necessary
-          // as there's typically only going to be one param, besides
-          // `page`, and `page` is probably something that should be
-          // replaced on search query change (otherwise you end up with
-          // empty results when the search is narrowed).
-          //
-          // Anyway, this could be better done using some kind of 
-          // param/deparam plugin that parses and resets search.
-          //
-          // var search = (s) 
-          //   ? s.match(rx)
-          //     ? s.replace(rx, param)
-          //     : param ? s + '&' + param : s
-          //   : param ? '?'+param : '';
-          // if ('?' == search) search = '';
-          var search = param ? '?'+param : '';
-
-          var url = window.location.pathname + search;
-
-          route(url);
+          routing.onChange(self.$input, name, value);
         });
       }
     })();

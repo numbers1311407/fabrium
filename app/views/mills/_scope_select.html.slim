@@ -1,5 +1,7 @@
 #mill-scope-select.scope-select
-  form.form-inline
-    .form-group
-      label.sr-only(for="mill_scope_select") Filter
-      = mills_scope_select_tag
+  .form-group
+    label(for="mill_name_filter") Filter by Name
+    = text_field_tag :name, "", class: 'form-control', id: 'mill_name_filter', placeholder: "Type to Search", data: { query_updater: true }
+  .form-group
+    label(for="mill_scope_select") Filter by Status
+    = mills_scope_select_tag

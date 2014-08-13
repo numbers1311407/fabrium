@@ -1,8 +1,8 @@
 fieldset
   legend Application Details
-  .row
-    .col-sm-12
-      - if user_signed_in? && current_user.is_admin?
+  - if current_user.is_admin?
+    .row
+      .col-sm-12
         = f.input :active, label: false, inline_label: true
   .row
     .col-sm-6

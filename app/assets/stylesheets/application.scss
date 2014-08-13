@@ -243,7 +243,10 @@ body .form-group-range {
   .panel-title {
     line-height: 34px;
     font-size: 20px;
-    @media (min-width: $screen-md-min) {
+  }
+
+  @media (min-width: $screen-md-min) {
+    .panel-title {
       float: left;
     }
   }
@@ -263,21 +266,44 @@ body .form-group-range {
     padding-right: 0;
   }
 
-  .btn-group, .scope-select {
+  .scope-select {
+    padding-top: 10px;
+    clear: both;
+
+    .form-group {
+      width: 180px;
+      float: left;
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+
+    .selectize-control {
+      width: 100%;
+    }
+    .selectize-input {
+      height: 36px;
+    }
+    select {
+      display: none;
+      width: 100%;
+    }
+  }
+
+  .btn-group {
+    .form-group {
+      width: 100%;
+    }
+  }
+
+  .btn-group {
     margin: 10px 0 0;
+
     &, .selectize-input {
       height: 36px;
     }
 
     .form-group {
-      width: 100%;
-    }
-    .selectize-control {
-      width: 100%;
-    }
-    select {
-      display: none;
-      width: 100%;
+      margin-bottom: 0;
     }
 
     @media (min-width: $screen-md-min) {
@@ -756,10 +782,6 @@ span + span.badge {
 
 [data-toggle]:focus {
   outline: none;
-}
-
-.scope-select {
-  width: 200px;
 }
 
 .form-inline .form-group {

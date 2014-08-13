@@ -1,4 +1,11 @@
 - content_for(:header_buttons) do
   = render 'scope_select'
 
+- title st(:title)
+
+- panel_class "panel-wide"
+
+- content_for(:title) do
+  = title st(:title_with_count, count: collection.total_count)
+
 = render template: 'application/index'

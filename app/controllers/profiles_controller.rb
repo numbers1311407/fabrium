@@ -28,7 +28,6 @@ class ProfilesController < ResourceController
   end
 
   def after_commit_redirect_path
-    Rails.logger.error(request.referer)
     case request.referer
     when /blocklist$/ then blocklist_resource_path
     else edit_resource_path

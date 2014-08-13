@@ -1,5 +1,5 @@
 class AdminsController < ResourceController
-  before_filter :build_user, only: :new
+  before_filter :build_user, only: [:new, :create]
 
   add_collection_filter_scope :collection_filter_scope_joins_user
 
@@ -12,7 +12,9 @@ class AdminsController < ResourceController
   protected
 
   def build_user
-    build_resource.build_user
+    object = build_resource
+    object.build_user unless object.user
+    object.user.skip_password = true
   end
 
   def update_resource(object, attributes)
