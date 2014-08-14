@@ -1,6 +1,8 @@
 class CarmenController < ApplicationController
   respond_to :json
 
+  skip_before_filter :authenticate_user!
+
   def subregions
     if params[:country] && country = Carmen::Country.coded(params[:country])
       subregions = country.subregions
