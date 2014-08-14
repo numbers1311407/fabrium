@@ -116,7 +116,7 @@ fieldset.nested-resources
     = f.simple_fields_for :references do |ff|
       .nested-resource.reference(data-id = ff.object.id)
         = render 'mill_references/form_fields', f: ff
-    - n = resource.references.build
+    - n = f.object.references.build
     = f.fields_for :references, n, child_index: "__INDEX__" do |ff|
         script(type="html/template")
           .nested-resource.reference(data-id = "__ID__")
@@ -129,7 +129,7 @@ fieldset.nested-resources
     = f.simple_fields_for :contacts do |ff|
       .nested-resource.contact(data-id = ff.object.id)
         = render 'mill_contacts/form_fields', f: ff
-    - n = resource.contacts.build
+    - n = f.object.contacts.build
     = f.fields_for :contacts, n, child_index: "__INDEX__" do |ff|
         script(type="html/template")
           .nested-resource.contact(data-id = "__ID__")
@@ -142,7 +142,7 @@ fieldset.nested-resources
     = f.simple_fields_for :agents do |ff|
       .nested-resource.agent(data-id = ff.object.id)
         = render 'mill_agents/form_fields', f: ff
-    - n = resource.agents.build
+    - n = f.object.agents.build
     = f.fields_for :agents, n, child_index: "__INDEX__" do |ff|
         script(type="html/template")
           .nested-resource.agent
