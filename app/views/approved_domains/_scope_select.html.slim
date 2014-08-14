@@ -1,0 +1,4 @@
+.scope-select
+  .form-group
+    label(for="approved_domain_entity_filter") Filter by Type
+    = select_tag :entity, options_for_select([["All", ""],["Mill", "mill"],["Buyer", "buyer"]]), class: 'form-control', id: 'approved_domain_entity_filter', data: {select: {plugins: {route_on_change: {}}}}
