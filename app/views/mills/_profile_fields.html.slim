@@ -80,7 +80,7 @@ fieldset
   legend Color and Testing
   .row
     .col-sm-6
-      = f.input :automatic_lab_dipping, as: :select, prompt: true
+      = f.input :automatic_lab_dipping, as: :select, value_method: :last, prompt: true
     .col-sm-6
       = f.input :spectrophotometer, as: :select, prompt: true
   .row

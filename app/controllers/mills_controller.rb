@@ -1,8 +1,6 @@
 class MillsController < ResourceController
   self.default_sort = {name: 'name', dir: 'asc'}
 
-  before_filter :build_nested_associations, only: :edit
-
   permit_params Mill::PERMISSABLE_PARAMS
 
   custom_actions resource: [:toggle_active]
@@ -36,12 +34,17 @@ class MillsController < ResourceController
 
   protected
 
+  def after_commit_redirect_path
+    if current_user.is_admin?
+      collection_path
+    else
+      edit_resource_path
+    end
+  end
+
   helper_method :scope_options
 
   def scope_options
     %w(active inactive)
-  end
-
-  def build_nested_associations
   end
 end

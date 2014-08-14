@@ -351,6 +351,10 @@ select[data-select],
   }
 }
 
+h2 {
+  margin-bottom: 25px;
+}
+
 .navbar-toggle {
   line-height: $navbar-height;
   border: none;
@@ -918,3 +922,5 @@ label {
     cursor: default;
   }
 }
+
+

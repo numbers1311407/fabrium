@@ -1,7 +1,4 @@
 class BuyersController < ResourceController
-  # TODO there is no buyers.new, is there?  Look into this.
-  # before_filter :build_user, only: :new
-
   permit_params Buyer::PERMISSABLE_PARAMS + [
     user_attributes: [
       :id,
@@ -40,8 +37,11 @@ class BuyersController < ResourceController
     object.includes(:user)
   end
 
-  # def build_user
-  #   object = build_resource
-  #   object.build_user
-  # end
+  def after_commit_redirect_path
+    if current_user.is_admin?
+      collection_path
+    else
+      edit_resource_path
+    end
+  end
 end

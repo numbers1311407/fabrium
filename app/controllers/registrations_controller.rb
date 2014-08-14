@@ -50,16 +50,16 @@ class RegistrationsController < Devise::RegistrationsController
       :email, 
       :password, 
       :password_confirmation, 
+      :current_password,
       :wants_email, 
       :meta_type
     ]
 
-    devise_parameter_sanitizer.for(:sign_up) do |u| 
-      permits = [{meta_attributes: permitted_meta_attributes}]
-      permits.concat(user_attributes)
+    permits = [{meta_attributes: permitted_meta_attributes}]
+    permits.concat(user_attributes)
 
-      u.permit(permits)
-    end
+    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(permits) }
+    devise_parameter_sanitizer.for(:account_update) {|u| u.permit(permits) }
   end
 
   def attach_public_cart

@@ -33,10 +33,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :profile do
-    get :blocklist
-  end
-
   resources :users do
     member do 
       put :activate

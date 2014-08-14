@@ -56,6 +56,8 @@ en:
       back: 'Back'
       destroy: 'Delete'
       edit: 'Edit'
+      edit_mill: 'Edit Mill Details'
+      edit_buyer: 'Edit Buyer Details'
       new: 'New %{Resource}'
       show: 'Details'
       activate: 'Make Active'
@@ -77,6 +79,14 @@ en:
           title: "Edit Your Profile"
         blocklist:
           title: 'Edit Approved Domains'
+    mills:
+      actions:
+        edit:
+          title: "Edit Mill Details"
+    buyers:
+      actions:
+        edit:
+          title: "Edit Buyer Details"
     actions:
       show:
         title: '%{name}'

@@ -39,6 +39,22 @@ crumb :edit_profile do
   link t(:edit_profile, scope: :breadcrumbs)
 end
 
+crumb :edit_mill do |options|
+  link st(:title, options)
+
+  if current_user.is_admin?
+    parent :resources, options
+  end
+end
+
+crumb :edit_buyer do |options|
+  link st(:title, options)
+
+  if current_user.is_admin?
+    parent :resources, options
+  end
+end
+
 crumb :blocklist do
   link t(:blocklist, scope: :breadcrumbs)
 end

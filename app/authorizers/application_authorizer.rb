@@ -12,6 +12,7 @@ class ApplicationAuthorizer < Authority::Authorizer
     # considered forbidden.
     # false
 
+    # user.is_admin?
     user.persisted?
   end
 end

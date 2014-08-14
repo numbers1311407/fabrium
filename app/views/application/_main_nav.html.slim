@@ -1,3 +1,8 @@
+- if current_user.is_mill?
+  li= link_to st('links.edit_mill'), edit_mill_path(current_user.meta)
+- if current_user.is_buyer?
+  li= link_to st('links.edit_buyer'), edit_buyer_path(current_user.meta)
+
 = resource_menu_link(Fabric)
 = resource_menu_link(Cart)
 = resource_menu_link(User)
@@ -9,5 +14,3 @@
 = resource_menu_link(Material)
 = resource_menu_link(ApprovedDomain)
 = resource_menu_link(Admin)
-- if current_user.is_mill?
-  li= link_to t('st.profiles.actions.blocklist.title'), blocklist_profile_path
