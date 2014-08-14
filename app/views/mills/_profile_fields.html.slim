@@ -1,5 +1,150 @@
 fieldset
-  legend Mill Details
+  legend Profile
   .row
     .col-sm-6
       = f.input :name
+    .col-sm-6
+      = f.input :phone
+  .row
+    .col-sm-6
+      = f.input :shipping_address_1
+    .col-sm-6
+      = f.input :shipping_address_2
+  .row
+    .col-sm-6
+      = f.input :city
+    .col-sm-6
+      = f.input :postal_code
+  .row
+    .col-sm-6
+      = f.input :country do
+        = f.country_select :country, {priority: %w(US CA), object: f.object, prompt: true}, {id: "country_select", data: {select: {plugins: {country_select: {subregion_select: '#subregion_select'}}}}}
+        javascript:
+          var country_options = JSON.parse("#{j subregions_json(f.object.country || 'US').html_safe}");
+    .col-sm-6
+      = f.input :subregion, input_html: { id: "subregion_select" }
+  .row
+    .col-sm-4
+      = f.input :product_type
+    .col-sm-4
+      = f.input :year_established
+    .col-sm-4
+      = f.input :number_of_employees
+  .row
+    .col-sm-6
+      = f.input :major_markets
+    .col-sm-6
+      = f.input :major_customers
+
+fieldset
+  legend Production
+  .row
+    .col-sm-6
+      = f.input :sample_lead_time, as: :select, collection: weeks_select_options, input_html: { data: { select: {} }}
+    .col-sm-6
+      = f.input :bulk_lead_time, as: :select, collection: weeks_select_options, input_html: { data: { select: {} }}
+  .row
+    .col-sm-6
+      = f.input :sample_minimum_quality
+    .col-sm-6
+      = f.input :bulk_minimum_quality
+
+fieldset
+  legend Collection
+  .row
+    .col-sm-6
+      = f.input :seasonal, as: :select, prompt: true
+    .col-sm-6
+      = f.input :seasonal_count
+  .row
+    .col-sm-6
+      = f.input :designs_per_season
+    .col-sm-6
+      = f.input :designs_in_archive
+
+fieldset
+  legend Operations
+  .form-horizontal
+    = f.input :spinning_monthly_capacity, wrapper: :horizontal_form
+    = f.input :weaving_knitting_monthly_capacity, wrapper: :horizontal_form
+    = f.input :dying_monthly_capacity, wrapper: :horizontal_form
+    = f.input :finishing_monthly_capacity, wrapper: :horizontal_form
+    = f.input :printing_monthly_capacity, wrapper: :horizontal_form
+  .row
+    .col-sm-6
+      = f.input :printing_methods
+    .col-sm-6
+      = f.input :printing_max_colors
+
+fieldset
+  legend Color and Testing
+  .row
+    .col-sm-6
+      = f.input :automatic_lab_dipping, as: :select, prompt: true
+    .col-sm-6
+      = f.input :spectrophotometer, as: :select, prompt: true
+  .row
+    .col-sm-6
+      = f.input :light_box, as: :select, prompt: true
+    .col-sm-6
+      = f.input :internal_lab, as: :select, prompt: true
+  .row
+    .col-sm-6
+      = f.input :light_sources, as: :select, prompt: true
+    .col-sm-6
+      = f.input :testing_capabilities
+
+fieldset
+  legend Quality Control
+  .row
+    .col-sm-6
+      = f.input :inspection_stages
+    .col-sm-6
+      = f.input :inspection_system
+
+fieldset
+  legend Fabric Exhibitions
+  .row
+    .col-sm-6
+      = f.input :years_attending_premiere_vision
+    .col-sm-6
+      = f.input :years_attending_texworld
+
+fieldset.nested-resources
+  legend References
+  .references.nested-resource-list
+    = f.simple_fields_for :references do |ff|
+      .nested-resource.reference(data-id = ff.object.id)
+        = render 'mill_references/form_fields', f: ff
+    - n = resource.references.build
+    = f.fields_for :references, n, child_index: "__INDEX__" do |ff|
+        script(type="html/template")
+          .nested-resource.reference(data-id = "__ID__")
+            = render 'mill_references/form_fields', f: ff
+  a.add-nested-resource.btn.btn-default(href="#") Add Reference
+
+fieldset.nested-resources
+  legend Mill Contacts
+  .contacts.nested-resource-list
+    = f.simple_fields_for :contacts do |ff|
+      .nested-resource.contact(data-id = ff.object.id)
+        = render 'mill_contacts/form_fields', f: ff
+    - n = resource.contacts.build
+    = f.fields_for :contacts, n, child_index: "__INDEX__" do |ff|
+        script(type="html/template")
+          .nested-resource.contact(data-id = "__ID__")
+            = render 'mill_contacts/form_fields', f: ff
+  a.add-nested-resource.btn.btn-default(href="#") Add Mill Contact
+
+fieldset.nested-resources
+  legend Agents
+  .agents.nested-resource-list
+    = f.simple_fields_for :agents do |ff|
+      .nested-resource.agent(data-id = ff.object.id)
+        = render 'mill_agents/form_fields', f: ff
+    - n = resource.agents.build
+    = f.fields_for :agents, n, child_index: "__INDEX__" do |ff|
+        script(type="html/template")
+          .nested-resource.agent
+            = render 'mill_agents/form_fields', f: ff
+  a.add-nested-resource.btn.btn-default(href="#") Add Agent

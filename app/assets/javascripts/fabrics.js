@@ -129,7 +129,6 @@ $(function () {
         render(data);
       }
     });
-
   });
 
   //

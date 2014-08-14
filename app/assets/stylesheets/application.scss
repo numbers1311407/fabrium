@@ -894,3 +894,27 @@ p.line-item {
     margin: 0 0 10px;
   }
 }
+
+.nested-resource {
+  $padding: 10px;
+  margin-bottom: $padding;
+  border-radius: 10px;
+  padding: $padding;
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  position: relative;
+
+  a.remove-nested-resource {
+    position: absolute;
+    top: $padding;
+    right: $padding;
+    z-index: 1000;
+  }
+}
+
+label {
+  abbr[title], abbr[data-original-title] { 
+    border-bottom: 0;
+    cursor: default;
+  }
+}

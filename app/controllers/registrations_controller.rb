@@ -40,29 +40,9 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def permitted_meta_attributes 
-    attributes = {
-      buyer: [
-        :first_name,
-        :last_name,
-        :company,
-        :position,
-        :phone,
-        :shipping_address_1,
-        :shipping_address_2,
-        :city,
-        :postal_code,
-        :country,
-        :subregion
-      ],
-
-      mill: [
-        :name
-      ]
-    }
-
     # TODO separate these, the trick is determining the meta type.  Not
     # too much of a trick probably, but more than I care to do right now.
-    attributes[:buyer].concat attributes[:mill]
+    [ Buyer::PERMISSABLE_PARAMS, Mill::PERMISSABLE_PARAMS ].flatten.uniq
   end
 
   def configure_permitted_parameters

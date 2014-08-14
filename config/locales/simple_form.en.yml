@@ -10,6 +10,12 @@ en:
       # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
+
+    placeholders:
+      mill:
+        major_markets: "Enter like: USA 50%, Europe 50%"
+        major_customers: "Enter like: Ann Taylor, DKNY, Calvin Klein"
+
     # Examples
     # labels:
     #   defaults:

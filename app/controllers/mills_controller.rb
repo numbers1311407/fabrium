@@ -1,6 +1,10 @@
 class MillsController < ResourceController
   self.default_sort = {name: 'name', dir: 'asc'}
 
+  before_filter :build_nested_associations, only: :edit
+
+  permit_params Mill::PERMISSABLE_PARAMS
+
   custom_actions resource: [:toggle_active]
   authority_actions toggle_active: :activate
 
@@ -23,13 +27,6 @@ class MillsController < ResourceController
     scope
   end
 
-  permit_params [
-    :name,
-    :creator_id,
-    :domain_filter, 
-    :domain_names,
-    :active
-  ]
 
   def toggle_active
     object = resource
@@ -43,5 +40,8 @@ class MillsController < ResourceController
 
   def scope_options
     %w(active inactive)
+  end
+
+  def build_nested_associations
   end
 end

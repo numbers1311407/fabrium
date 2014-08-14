@@ -108,14 +108,14 @@ en:
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
       improbable_phone: "Must be a complete phone number"
-      inclusion: "%{attribute} must be included in the list"
+      inclusion: "You must select an option for this field"
       taken: "%{attribute} has already been taken."
       exclusion: "%{attribute} is reserved"
       invalid: "%{attribute} is not valid"
       confirmation: "Must match %{attribute}"
       accepted: "%{attribute} must be accepted"
       empty: "%{attribute} can't be empty"
-      blank: "%{attribute} can't be blank"
+      blank: "This field cannot be blank"
       present: "%{attribute} can't be blank"
       too_long:
         one: "Too long (maximum is 1 character)"
@@ -223,9 +223,40 @@ en:
         tags: Keywords
         views_count: Viewed
       mill:
+        active: Mill is active?
+        automatic_lab_dipping: Automatic Lab Dipping?
+        bulk_lead_time: Bulk Lead Time
+        bulk_minimum_quality: Bulk Min. Quality
+        creator: Primary User
+        designs_in_archive: Designs In Archive
+        designs_per_season: Designs Per Season
         domain_filter: Domain Filter Type
         domain_names: Filtered Domains
-        creator: Primary User
+        dying_monthly_capacity: Dying - Monthly Capacity
+        finishing_monthly_capacity: Finishing - Monthly Capacity
+        inspection_stages: Inspection Stages
+        inspection_system: Inspection System
+        internal_lab: Internal Lab?
+        light_box: Light Box?
+        light_sources: Light Sources?
+        printing_max_colors: Printing - Max Colors
+        printing_methods: Printing - Methods
+        printing_monthly_capacity: Printing - Monthly Capacity
+        sample_lead_time: Sample Lead Time
+        sample_minimum_quality: Sample Min. Quality
+        seasonal: Seasonal?
+        seasonal_count: How many times per year?
+        spectrophotometer: Spectrophotometer?
+        spinning_monthly_capacity: Spinning - Monthly Capacity
+        testing_capabilities: Testing Capabilities
+        weaving_knitting_monthly_capacity: Weaving/Knitting - Monthly Capacity
+        years_attending_premiere_vision: Years Attending Premiere Vision
+        years_attending_texworld: Years Attending Texworld
+        year_established: Year Established
+        number_of_employees: Number of Employees
+        major_markets: Major Markets
+        product_type: Product Type
+        postal_code: Postal Code
       approved_domain:
         name: Domain Name
         entity: Type

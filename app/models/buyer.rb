@@ -1,6 +1,20 @@
 class Buyer < ActiveRecord::Base
   include Authority::Abilities
 
+  PERMISSABLE_PARAMS = [
+    :first_name,
+    :last_name,
+    :company,
+    :position,
+    :phone,
+    :shipping_address_1,
+    :shipping_address_2,
+    :city,
+    :postal_code,
+    :country,
+    :subregion
+  ]
+
   has_one :user, as: :meta, dependent: :destroy
 
   accepts_nested_attributes_for :user

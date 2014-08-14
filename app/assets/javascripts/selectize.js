@@ -32,7 +32,8 @@ $(function () {
           }
         } else {
           if (subapi) {
-            subapi.setOptions(v);
+            subapi.clearOptions();
+            subapi.addOption(v);
           } else {
             subselect.selectize(_.extend({options: v}, subselect_options));
             subapi = subselect[0].selectize;
@@ -135,7 +136,7 @@ $(function () {
         setup.apply(this, arguments);
 
         var $parent = api.$input.parent();
-        var $container = $parent.find("[data-property-assignments]");
+        var $container = $parent.find(".property-assignments");
         var tmpl = _.template($parent.find("script").text());
         var n = $container.find(".property-assignment").length;
 
@@ -145,6 +146,7 @@ $(function () {
 
           if ($destroy.length) {
             $destroy.val(1);
+            // this part is for materials, I think, the summation
             $el.find('[type=number]').val(0);
             $el.addClass("inactive");
             $el.hide();

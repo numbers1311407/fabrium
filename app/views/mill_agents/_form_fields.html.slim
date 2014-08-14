@@ -1,0 +1,14 @@
+a.remove-nested-resource(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") Remove
+- if f.object.persisted?
+  .hidden
+    = f.hidden_field :_destroy, value: 0
+.row
+  .col-sm-3
+    = f.input :contact
+  .col-sm-3
+    = f.input :email
+  .col-sm-3
+    = f.input :phone
+  .col-sm-3
+    = f.input :country do
+      = f.country_select :country, {priority: %w(US CA), object: f.object, prompt: true}, class: 'form-control'

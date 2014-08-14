@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140808175356) do
+ActiveRecord::Schema.define(version: 20140814145559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,14 +191,82 @@ ActiveRecord::Schema.define(version: 20140808175356) do
     t.datetime "updated_at"
   end
 
+  create_table "mill_agents", force: true do |t|
+    t.integer  "mill_id"
+    t.string   "contact",    default: ""
+    t.string   "email",      default: ""
+    t.string   "phone",      default: ""
+    t.string   "country",    default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mill_contacts", force: true do |t|
+    t.integer  "mill_id"
+    t.string   "kind",       default: ""
+    t.string   "name",       default: ""
+    t.string   "email",      default: ""
+    t.string   "phone",      default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mill_references", force: true do |t|
+    t.integer  "mill_id"
+    t.string   "name",       default: ""
+    t.string   "email",      default: ""
+    t.string   "phone",      default: ""
+    t.string   "company",    default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "mills", force: true do |t|
     t.integer  "creator_id"
     t.string   "name"
-    t.boolean  "active",        default: false
+    t.boolean  "active",                            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "domains",       default: [],    array: true
-    t.integer  "domain_filter", default: 0
+    t.text     "domains",                           default: [],    array: true
+    t.integer  "domain_filter",                     default: 0
+    t.string   "shipping_address_1"
+    t.string   "shipping_address_2"
+    t.string   "city"
+    t.string   "subregion"
+    t.string   "country"
+    t.string   "phone"
+    t.string   "postal_code"
+    t.string   "product_type"
+    t.string   "monthly_total_capacity"
+    t.string   "year_established"
+    t.string   "number_of_employees"
+    t.string   "major_markets"
+    t.string   "major_customers"
+    t.integer  "sample_minimum_quality",            default: 0
+    t.integer  "bulk_minimum_quality",              default: 0
+    t.integer  "sample_lead_time",                  default: 0
+    t.integer  "bulk_lead_time",                    default: 0
+    t.boolean  "seasonal",                          default: false
+    t.integer  "seasonal_count",                    default: 0
+    t.integer  "designs_per_season",                default: 0
+    t.integer  "designs_in_archive",                default: 0
+    t.integer  "spinning_monthly_capacity",         default: 0
+    t.integer  "weaving_knitting_monthly_capacity", default: 0
+    t.integer  "dying_monthly_capacity",            default: 0
+    t.integer  "finishing_monthly_capacity",        default: 0
+    t.integer  "printing_monthly_capacity",         default: 0
+    t.integer  "printing_methods",                  default: 0
+    t.integer  "printing_max_colors",               default: 0
+    t.boolean  "automatic_lab_dipping",             default: false
+    t.boolean  "spectrophotometer",                 default: false
+    t.boolean  "light_box",                         default: false
+    t.boolean  "internal_lab",                      default: false
+    t.boolean  "light_sources",                     default: false
+    t.string   "testing_capabilities"
+    t.string   "inspection_stages"
+    t.string   "inspection_system"
+    t.integer  "years_attending_premiere_vision"
+    t.integer  "years_attending_texworld"
   end
 
   add_index "mills", ["domains"], name: "index_mills_on_domains", using: :gin

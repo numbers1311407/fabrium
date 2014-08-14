@@ -177,3 +177,45 @@ $.deparam = function (keyValue) {
   });
   return obj;
 }
+
+
+$(function () {
+
+  //
+  // This code makes use of a trick in the form html which outputs a
+  // freshly built nested resource as a template within a `<script>` tag 
+  // which replaces instances of the nested resource index with `__INDEX__`,
+  // making it easy to swap in an incrementing index counter and append
+  // nested resource items to the form.
+  //
+  $("fieldset.nested-resources").each(function () {
+    var $container = $(this);
+    var $list = $container.find(".nested-resource-list");
+    var rawTmpl = $container.find("script").html();
+
+    // Start the index after the current length and count up.  This
+    // number is really fairly arbitrary I think, it just has to result
+    // in a unique name.
+    var i = $list.length;
+
+    $container.on("click", "a.add-nested-resource", function (e) {
+      e.preventDefault();
+      var $el = $("<div></div>").html(
+        rawTmpl.replace(/__INDEX__/g, i++)
+      );
+      $list.append($el.html());
+    });
+
+    $container.on("click", "a.remove-nested-resource", function (e) {
+      var $resource = $(this).closest(".nested-resource");
+      var $destroyInput = $resource.find("[name$='[_destroy]']");
+
+      if ($destroyInput.length) {
+        $destroyInput.val(1);
+        $resource.hide();
+      } else {
+        $resource.remove();
+      }
+    });
+  });
+});

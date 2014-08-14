@@ -1,0 +1,13 @@
+a.remove-nested-resource(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove") Remove
+- if f.object.persisted?
+  .hidden
+    = f.hidden_field :_destroy, value: 0
+.row
+  .col-sm-3
+    = f.input :name
+  .col-sm-3
+    = f.input :email
+  .col-sm-3
+    = f.input :company
+  .col-sm-3
+    = f.input :phone
