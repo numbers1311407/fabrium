@@ -53,10 +53,6 @@ Rails.application.routes.draw do
     get "country_subregions", to: "carmen#subregions", as: :country_subregions
   end
 
-  # simple editable redirect for the first controller hit by /lists,
-  # which is a menu item with a subnav
-  get "/lists", to: redirect("/tags")
-
   resources :admins
   resources :approved_domains
   resources :tags
