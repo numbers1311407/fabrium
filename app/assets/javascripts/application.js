@@ -66,10 +66,7 @@ $(function () {
   });
 
 
-  $(".scope-select").on("routing:success", function (event, html) {
-    // wrap the HTML in case it's not
-    // html = "<div class='wrap'>"+html+"</div>";
-
+  $(".scope-select").routing("scope_select", function (html) {
     var $res = $(html).find("#collection-results");
 
     if ($res.length) {
@@ -86,10 +83,20 @@ $(function () {
 
   var routing = window.routing = {};
 
+  var callbacks = {};
+
+  // default the `get` to simply change location, for fallback where
+  // pushState is not available
   routing.get = function (url) {
     window.location.href = url;
+
+    // return an empty promise like object, just to avoids any errors
+    // while the page is being navigated from
+    return { then: function(){} };
   }
 
+  // onChange could have a better name.  Basically call this with an
+  // element, it's name, and new value after the element's value changes.
   routing.onChange = function ($el, name, value) {
     // "deparam" the current search into an object
     var search = $.deparam(location.search.substr(1));
@@ -117,29 +124,59 @@ $(function () {
     var url = window.location.pathname;
     if (search) { url += "?" + search; }
 
-    // ... then route to it!
-    routing.get(url).then(function () {
-      var args = Array.prototype.slice.apply(arguments);
-      args.unshift("routing:success");
-      $el.trigger.apply($el, args);
-    });
+    // Note that onChange doesn't really *do* anything.  It just determines
+    // the new search URL and passes it up the DOM.  It must be caught by 
+    // an element calling the `routing` plugin to have any effect.
+    $el.trigger("routing:triggered", url);
   };
 
-  // if pushState capable, set routing up up to use pushState, otherwise
-  // it will just change the href.
+  // if pushState is available, set up the ajax
   if (window.history.pushState) {
+
+    // Get becomes ajax and returns a promise
     routing.get = function (url) {
-      history.pushState({routing: true}, "", url);
-      return $.get(url);
+      return $.ajax({
+        url: url,
+        method: 'get',
+        cache: false
+      });
     }
 
+    // On popstate, we're going to look for the routing property
+    // on the state param and use the key stored there to look up a callback,
+    // which we'll pass to `get`.
     $(window).on("popstate.routing", function (e) {
       var state = e.originalEvent.state;
-      if (state !== null && state.routing)  {
-        routing.get(location.href);
+
+      if (state !== null && state.routing && callbacks[state.routing])  {
+        routing.get(location.href).then(callbacks[state.routing]);
       }
     });
   }
+
+  // 
+  $.fn.routing = function (event_name, fn) {
+    var $el = $(this);
+
+    var cb = function () {
+      fn.apply($el, arguments);
+    };
+
+    callbacks[event_name] = cb;
+
+    $el.on("routing:triggered", function (e, url) {
+      // Replace state first if there is no state, otherwise when we
+      // back up to the the first pushState `get` won't fire.  Not sure
+      // how to get around this any other way besides reloading the page
+      // on popstate if history.state is not present.
+      if (!history.state) {
+        history.replaceState({routing: event_name}, "", window.location.href);
+      }
+
+      history.pushState({routing: event_name}, "", url);
+      routing.get(url).then(cb);
+    });
+  };
 })();
 
 
