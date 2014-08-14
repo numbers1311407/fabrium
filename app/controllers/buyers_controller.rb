@@ -2,7 +2,7 @@ class BuyersController < ResourceController
   # TODO there is no buyers.new, is there?  Look into this.
   # before_filter :build_user, only: :new
 
-  permit_params Buyer:PERMISSABLE_PARAMS + [
+  permit_params Buyer::PERMISSABLE_PARAMS + [
     user_attributes: [
       :id,
       :email,
