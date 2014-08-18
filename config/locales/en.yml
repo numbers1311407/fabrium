@@ -65,6 +65,8 @@ en:
       show: 'Details'
       activate: 'Make Active'
       deactivate: 'Archive'
+      archive: 'Archive Fabric'
+      unarchive: 'Restore Fabric'
       resend_invitation: 'Resend Invitation'
       search: 'Search'
     messages:

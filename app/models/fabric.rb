@@ -24,6 +24,7 @@ class Fabric < ActiveRecord::Base
   scope :sample_minimum_quality, ->(val) { where(arel_table[:sample_minimum_quality].lteq(val)) }
   scope :country, ->(val) { where(country: val) }
   scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
+  scope :archived, ->(val=true) { where(archived: val) }
 
   has_many :fabric_notes
 

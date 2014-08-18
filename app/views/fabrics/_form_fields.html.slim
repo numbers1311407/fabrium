@@ -3,6 +3,8 @@
 
 = f.input :item_number
 
+= f.input :archived, label: false, inline_label: true, hint: "Archived fabrics will not be displayed in buyer search results"
+
 .form-group.property_select.materials
   = f.label :materials
   select#fabric_tags(placeholder=t("placeholders.materials") data-select={plugins: {multiple_properties: {}}}.to_json )

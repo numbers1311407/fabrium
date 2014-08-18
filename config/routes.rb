@@ -16,7 +16,11 @@ Rails.application.routes.draw do
     get '/accounts/profile', to: 'registrations#profile', constraints: {format: 'json'}
   end
 
-  resources :fabrics
+  resources :fabrics do
+    member do
+      put :toggle_archived
+    end
+  end
 
   resources :fabric_variants do
     collection do

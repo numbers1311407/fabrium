@@ -1,0 +1,14 @@
+- if current_user.can_update?(resource)
+  - msg = st(resource.archived? ? "links.unarchive" : "links.archive")
+  - cssClass = resource.archived? ? "fa-circle-o" : "fa-circle"
+  = link_to toggle_archived_resource_path(resource), class: 'btn btn-sm btn-default', remote: true, method: :put do
+    i.fa(class=cssClass title=msg)
+    span= msg
+- if current_user.can_update?(resource)
+  = link_to edit_resource_path(resource), class: 'btn btn-sm btn-default' do
+    i.fa.fa-edit(title=st('links.edit'))
+    span= st('links.edit')
+- if current_user.can_delete?(resource)
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, data: { confirm: st('messages.confirm_destroy') } do
+    i.fa.fa-trash-o(title=st('links.destroy'))
+    span= st('links.destroy')

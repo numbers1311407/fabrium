@@ -25,7 +25,6 @@ class MillsController < ResourceController
     scope
   end
 
-
   def toggle_active
     object = resource
     object.active = !object.active

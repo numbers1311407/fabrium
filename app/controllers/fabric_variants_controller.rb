@@ -10,6 +10,9 @@ class FabricVariantsController < ResourceController
   # item number / fabrium id
   add_collection_filter_scope :collection_filter_primary_variant
 
+  # Do not search archived fabrics
+  add_collection_filter_scope :collection_filter_archived
+
   # always includes
   add_collection_filter_scope :collection_filter_includes
 
@@ -193,5 +196,9 @@ class FabricVariantsController < ResourceController
     end
 
     object
+  end
+
+  def collection_filter_archived(object)
+    object.archived(false)
   end
 end

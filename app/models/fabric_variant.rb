@@ -48,6 +48,7 @@ class FabricVariant < ActiveRecord::Base
   scope :sample_lead_time, ->(val) { joins(:fabric).merge(Fabric.bulk_lead_time(val)) }
   scope :sample_minimum_quality, ->(val) { joins(:fabric).merge(Fabric.bulk_minimum_quality(val)) }
   scope :favorites, ->(val) { joins(:fabric).merge(Fabric.favorites(val)) }
+  scope :archived, ->(val) { joins(:fabric).merge(Fabric.archived(val)) }
 
   scope :in_stock, ->(val=true) { where(in_stock: val) }
 

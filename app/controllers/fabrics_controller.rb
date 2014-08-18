@@ -1,6 +1,7 @@
 class FabricsController < ResourceController
-  custom_actions resource: [:test_item_number]
+  custom_actions resource: [:test_item_number, :toggle_archived]
   add_collection_filter_scope :collection_filter_includes
+  authority_actions toggle_archived: :update
 
   permit_params [
     :bulk_lead_time, 
@@ -36,6 +37,12 @@ class FabricsController < ResourceController
     object.increment!(:views_count)
 
     show!
+  end
+
+  def toggle_archived
+    object = resource
+    object.archived = !object.archived
+    object.save
   end
 
   def test_item_number
