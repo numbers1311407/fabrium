@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     #redirect the normal signup to buyer
     get '/accounts/signup', to: redirect('/accounts/signup/buyer')
+    get '/accounts/profile', to: 'registrations#profile', constraints: {format: 'json'}
   end
 
   resources :fabrics

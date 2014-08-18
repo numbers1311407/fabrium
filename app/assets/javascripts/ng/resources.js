@@ -13,7 +13,7 @@
           deferred.resolve(object);
           promise = deferred.promise;
         } else {
-          promise = Restangular.oneUrl("users", "/profile.json").get();
+          promise = Restangular.oneUrl("users", "/accounts/profile.json").get();
           promise.then(function (data) { object = data; });
         }
 
