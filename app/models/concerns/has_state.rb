@@ -64,5 +64,13 @@ module HasState
       other_step = @model.states[other] || -1
       step <=> other_step
     end
+
+    def any?(*array)
+      [*array].map(&:to_s).member?(self)
+    end
+
+    def not?(*array)
+      !any?(*array)
+    end
   end
 end
