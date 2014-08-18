@@ -18,6 +18,9 @@ en:
           buyer_build: "Submit Request"
           ordered: "Save and Ship Request"
           closed: "Update Request"
+      user:
+        create: "Add Mill User"
+        update: "Save User"
 
   breadcrumbs:
     fabric: "Fabrics #%{id}"
@@ -63,6 +66,7 @@ en:
       activate: 'Make Active'
       deactivate: 'Archive'
       resend_invitation: 'Resend Invitation'
+      search: 'Search'
     messages:
       confirm_destroy: 'Are you sure?'
       no_results: 'No %{collection} were found'

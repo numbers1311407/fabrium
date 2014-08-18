@@ -9,6 +9,7 @@
       ul.nav.navbar-nav.navbar-right
         li.text
           span Welcome #{current_user.email}!
+        li= link_to st('links.search'), root_path
         li.dropdown
           = link_to("/lists", data: {toggle: "dropdown"}) do
             span Manage
