@@ -48,8 +48,10 @@ class ProcessOrderJob
       increments[key] ||= 0
       increments[key] += 1
     end
+    Rails.logger.error increments
+
     increments.each do |key, value|
-      Fabric.update_counter key, orders_count: value
+      Fabric.update_counters key, orders_count: value
     end
   end
 end
