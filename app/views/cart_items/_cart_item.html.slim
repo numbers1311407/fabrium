@@ -3,12 +3,12 @@
 
 .cart-item(data-id=cart_item.id)
   .col-thumb
-    = link_to fabric_variant_path(fabric, variant) do
+    = link_to fabric_path_with_variant(fabric, variant) do
       = image_tag(cart_item.fabric_variant.thumb.url)
   .col-fields
     p.line-item
       label 
-        = link_to fabric_variant_path(fabric, variant) do
+        = link_to fabric_path_with_variant(fabric, variant) do
           | Fabrium #: #{cart_item.fabrium_id}
       - if variant.in_stock?
         span.badge.badge-success In Stock
