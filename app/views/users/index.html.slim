@@ -4,6 +4,13 @@
         = link_to new_resource_path, class: 'btn btn-primary' do
           i.fa.fa-plus
           span= st('links.new')
-    = render 'scope_select'
+    - unless current_user.is_mill?
+      = render 'scope_select'
+
+- content_for(:title) do 
+  - key = current_user.is_mill? ? :mill_user_title : :title
+  = title st(key)
+
+- breadcrumb :users
 
 = render template: "application/index"

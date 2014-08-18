@@ -2,15 +2,17 @@
   th= sort_link(@q, :email)
   th= sort_link(@q, :admin)
   th= sort_link(@q, :pending)
-  th= sort_link(@q, :meta_type)
+  - unless current_user.is_mill?
+    th= sort_link(@q, :meta_type)
 
 td= resource.email
 td= resource.admin? ? "Yes" : "No"
 td.resource-pending(data={yes: "Yes", no: "No"})= resource.pending? ? "Yes" : "No"
-td
-  = resource.meta_type.humanize
-  - if resource.meta.present?
-    - if resource.is_mill?
-      |  - #{link_to resource.meta_name, edit_mill_path(resource.meta)}
-    - if resource.is_buyer?
-      |  - #{link_to resource.meta_name, edit_buyer_path(resource.meta)}
+- unless current_user.is_mill?
+  td
+    = resource.meta_type.humanize
+    - if resource.meta.present?
+      - if resource.is_mill?
+        |  - #{link_to resource.meta_name, edit_mill_path(resource.meta)}
+      - if resource.is_buyer?
+        |  - #{link_to resource.meta_name, edit_buyer_path(resource.meta)}

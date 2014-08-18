@@ -5,7 +5,7 @@
 
 = resource_menu_link(Fabric)
 = resource_menu_link(Cart)
-= resource_menu_link(User)
+= resource_menu_link(User, text: t(current_user.is_mill? ? "st.users.actions.index.mill_user_title" : "st.users.actions.index.title") )
 = resource_menu_link(Buyer)
 = resource_menu_link(Mill)
 = resource_menu_link(Tag)

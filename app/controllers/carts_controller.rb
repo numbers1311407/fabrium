@@ -150,6 +150,16 @@ class CartsController < ResourceController
   end
 
 
+  # for mills/buyers, auth for index read on a new pending cart
+  def auth_resource
+    if current_user.is_mill? || current_user.is_buyer?
+      current_user.meta.pending_carts.new
+    else
+      super
+    end
+  end
+
+
   # Before update, "bump" the state of the cart.  This is how the cart
   # progresses from state to state via the control.  While the cart items
   # are edited separately at multiple stages, the cart itself is only

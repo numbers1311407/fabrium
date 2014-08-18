@@ -1,0 +1,2 @@
+class FavoriteAuthorizer < BelongsToUserAuthorizer
+end

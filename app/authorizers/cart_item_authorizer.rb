@@ -1,8 +1,19 @@
 # Other authorizers should subclass this one
 class CartItemAuthorizer < ApplicationAuthorizer
 
-  def deletable_by?(user)
+  def creatable_by?(user)
+    operable_by?(user)
+  end
 
+  def readable_by?(user)
+    operable_by?(user)
+  end
+
+  def updatable_by?(user)
+    operable_by?(user)
+  end
+
+  def deletable_by?(user)
     # admins can remove items always though they shouldn't need to and
     # (and as of yet don't have a cart view)
     retv = user.is_admin? ||
@@ -17,6 +28,12 @@ class CartItemAuthorizer < ApplicationAuthorizer
   end
 
   protected
+
+  def operable_by?(user)
+    user.is_admin? ||
+    (user.is_buyer? && cart.buyer == user.meta) ||
+    (user.is_mill? && cart.mill == user.meta)
+  end
 
   def cart
     resource.cart

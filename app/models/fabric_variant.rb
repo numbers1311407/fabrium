@@ -10,6 +10,11 @@ class FabricVariant < ActiveRecord::Base
   belongs_to :fabric
   belongs_to :mill
 
+  # In the case that fabric is deleted, be sure its cart items are removed
+  # from any as of yet unsubmitted carts.  Once a fabric has been ordered
+  # it should not be able to be deleted.
+  has_many :cart_items, dependent: :delete_all
+
   before_save :denormalize_columns
 
   # WARN while it would make sense to validate that a fabric variant has

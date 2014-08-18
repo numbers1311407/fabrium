@@ -8,7 +8,7 @@ class MillAuthorizer < ApplicationAuthorizer
   end
 
   def updatable_by?(user)
-    admin_or_mill_admin?(user)
+    admin_or_mill_user?(user)
   end
 
   def deletable_by?(user)

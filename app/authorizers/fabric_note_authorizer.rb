@@ -1,0 +1,2 @@
+class FabricNoteAuthorizer < BelongsToUserAuthorizer
+end

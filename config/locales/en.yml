@@ -93,6 +93,11 @@ en:
       actions:
         edit:
           title: "Edit Buyer Details"
+    users:
+      actions:
+        index:
+          title: 'Users'
+          mill_user_title: 'Mill Users'
     actions:
       show:
         title: '%{name}'
