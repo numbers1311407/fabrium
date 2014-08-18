@@ -11,7 +11,7 @@ class Fabric < ActiveRecord::Base
   include Fabrics::Weight
   include Fabrics::Mill
 
-  has_many :favorites
+  has_many :favorites, dependent: :delete_all
   has_many :favoriting_users, through: :favorites, source: :user
 
   # the Fabric's "Fabrium ID" is just the actual ID, but this has the same
