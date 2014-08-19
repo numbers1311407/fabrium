@@ -1,18 +1,21 @@
 ;(function (root) {
 
   app.controller('FabricVariantIndexCtrl', 
-    function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser, currentCart) {
+    function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser) {
 
       currentUser.get().then(function (user) {
         $scope.currentUser = user;
-      });
 
-      currentCart.get().then(function (cart) {
-        $scope.cart = cart;
-        $scope.$watch("cart.size()", function (v) {
-          $("a.cart-link .count").text(v);
+        if (user) user.getCart().then(function (cart) {
+          if (!cart) return;
+
+          $scope.cart = cart;
+          $scope.$watch("cart.size()", function (v) {
+            $("a.cart-link .count").text(v);
+          });
         });
       });
+
 
       $scope.mill_options = {};
       $scope.mill_cache = {};

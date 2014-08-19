@@ -22,28 +22,6 @@
     }
   });
 
-
-  app.service('currentCart', function (Restangular, $q) {
-    var object;
-
-    return {
-      get: function (scope) {
-        if ('undefined' !== typeof object) {
-          var deferred = $q.defer();
-          deferred.resolve(object);
-          promise = deferred.promise;
-        } else {
-          promise = Restangular.one("cart").get();
-          promise.then(
-            function (data) { object = data; },
-            function () { object = false; }
-          );
-        }
-        return promise;
-      }
-    }
-  });
-
   app.service('fabrics', function ($q, DSCacheFactory, Restangular) {
     DSCacheFactory('fabricCache', {
         // Items added to this cache expire after 15 minutes.
@@ -91,7 +69,8 @@
     return API;
   });
 
-  app.run(function (Restangular) {
+  app.run(function ($q, Restangular) {
+
     Restangular.extendModel("cart", function Cart (model) {
 
       if (!model.variant_ids) { 
@@ -136,6 +115,26 @@
     });
 
     Restangular.extendModel("users", function User (model) {
+
+      model.getCart = (function () {
+        var cart;
+
+        return function () {
+          if (model.isAdmin() || 'undefined' !== typeof cart) {
+            var deferred = $q.defer();
+            deferred.resolve(cart || null);
+            promise = deferred.promise;
+          } else {
+            promise = Restangular.one("cart").get();
+            promise.then(
+              function (data) { cart = data; },
+              function () { cart = false; }
+            );
+          }
+          return promise;
+        }
+      })();
+
       // favorites come down as a list of ids, but lets track them as
       // a hash so they can be easily added/removed and watched by angular
       model.favorites = {};
