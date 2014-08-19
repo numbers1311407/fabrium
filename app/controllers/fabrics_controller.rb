@@ -4,6 +4,7 @@ class FabricsController < ResourceController
   authority_actions toggle_archived: :update
 
   permit_params [
+    :archived,
     :bulk_lead_time, 
     :bulk_minimum_quality, 
     :category_id, 
@@ -37,6 +38,12 @@ class FabricsController < ResourceController
     object.increment!(:views_count)
 
     show!
+  end
+
+  def create
+    session[:last_created_fabric_params] = params[:fabric].slice(:mill_id)
+
+    create!
   end
 
   def toggle_archived
@@ -89,6 +96,33 @@ class FabricsController < ResourceController
   def begin_of_association_chain
     if current_user && current_user.is_mill?
       current_user.meta
+    end
+  end
+
+  def build_resource
+    @fabric ||= super.tap do |fabric|
+      if current_user.is_mill?
+        mill = current_user.meta
+
+        fabric.country = fabric.country.presence || mill.country
+
+        if fabric.sample_lead_time.zero? 
+          fabric.sample_lead_time = mill.sample_lead_time
+        end
+        if fabric.bulk_lead_time.zero?
+          fabric.bulk_lead_time = mill.bulk_lead_time
+        end
+        if fabric.sample_minimum_quality.zero?
+          fabric.sample_minimum_quality = mill.sample_minimum_quality
+        end
+        if fabric.bulk_minimum_quality.zero?
+          fabric.bulk_minimum_quality = mill.bulk_minimum_quality
+        end
+      end
+
+      if last_params = session[:last_created_fabric_params]
+        fabric.mill_id = last_params['mill_id']
+      end
     end
   end
 end

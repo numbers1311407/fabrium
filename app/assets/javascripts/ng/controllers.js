@@ -248,21 +248,22 @@
     }
   );
 
-  app.controller('FabricShowCtrl', function ($scope, $location, isModal, fabric, position, currentUser, currentCart) {
+  app.controller('FabricShowCtrl', function ($scope, $location, isModal, fabric, position, currentUser) {
       $scope.fabric = fabric;
       $scope.isModal = isModal;
 
       currentUser.get().then(function (user) {
         $scope.currentUser = user;
-      });
 
-      currentCart.get().then(function (cart) {
-        $scope.cart = cart;
-        $scope.$watch("cart.size()", function (v) {
-          $("a.cart-link .count").text(v);
+        if (user) user.getCart().then(function (cart) {
+          if (!cart) return;
+
+          $scope.cart = cart;
+          $scope.$watch("cart.size()", function (v) {
+            $("a.cart-link .count").text(v);
+          });
         });
       });
-
 
       /**
        * Provide a cycling hook for jQuery Cycle to change the

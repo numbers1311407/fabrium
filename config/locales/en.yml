@@ -114,7 +114,7 @@ en:
         title: 'Edit %{Resource}'
 
   placeholders:
-    materials: "Add a material, then configure the percentage..."
+    materials: "Add a fiber, then configure the content percentage..."
     tags: "Type to search keyword tags..."
   labels:
     total_material_percentage: 'Total Fiber %'
@@ -234,9 +234,11 @@ en:
       dye_method: Dye Method
       fabric_variant: Fabric Variant
       tag: Keyword
+      material: Fiber Content
 
     attributes:
       fabric:
+        materials: Fiber Content
         bulk_lead_time: Bulk Lead Time
         bulk_minimum_quality: Bulk Min. Quality
         dye_method: Dye Method
@@ -248,7 +250,9 @@ en:
         sample_minimum_quality: Sample Min. Quality
         tags: Keywords
         views_count: Viewed
+        country: Country of Origin
       mill:
+        name: Mill Name
         active: Mill is active?
         automatic_lab_dipping: Automatic Lab Dipping?
         bulk_lead_time: Bulk Lead Time
@@ -283,6 +287,10 @@ en:
         major_markets: Major Markets
         product_type: Product Type
         postal_code: Postal Code
+      mill_contact:
+        kind: Job Title
+      mill_agent:
+        contact: Name
       approved_domain:
         name: Domain Name
         entity: Type

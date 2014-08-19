@@ -7,7 +7,7 @@ module Fabrics::Prices
     validates :price_us_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_us_max }
     validates :price_eu_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_eu_max }
 
-    before_save :cast_price_ranges_to_db
+    before_validation :cast_price_ranges_to_db
   end
 
   def price_us_min=(v)

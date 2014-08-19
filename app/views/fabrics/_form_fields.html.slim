@@ -39,7 +39,8 @@
 
 = f.input :weight, as: :fabric_weight
 
-= f.input :country, as: :country_select
+= f.input :country do
+  = f.country_select :country, {priority: %w(US CA), object: f.object, prompt: true}, id: "country_select", class: 'form-control'
 
 .form-group.price_range
   = f.label :price
@@ -82,6 +83,6 @@
 = f.association :dye_method, as: :select, collection: DyeMethod.all.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: dye_methods_path(:json)}}}}}
 
 / some oddness here as tags is not an association
-= f.input :tag_ids, label: resource_label(:tags), as: :select, collection: f.object.tag_records, input_html: {multiple: true, placeholder: t('placeholders.tags'), data: {select: {plugins: {endpoint: {url: tags_path(:json) }}}}}
+= f.input :tag_ids, label: resource_label(:tags), as: :select, collection: f.object.tag_records, hint: :translate, input_html: {multiple: true, placeholder: t('placeholders.tags'), data: {select: {plugins: {endpoint: {url: tags_path(:json) }}}}}
 
 

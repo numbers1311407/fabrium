@@ -18,6 +18,9 @@ en:
       meta:
         major_markets: "Enter like: USA 50%, Europe 50%"
         major_customers: "Enter like: Ann Taylor, DKNY, Calvin Klein"
+    hints:
+      fabric:
+        tag_ids: "Contact admin@fabrium.com to suggest additional keywords"
 
     # Examples
     # labels:
