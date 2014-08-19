@@ -1,10 +1,14 @@
-- index_table_headers do
-  th= sort_link(@q, :user_email)
-  th= sort_link(@q, :first_name)
-  th= sort_link(@q, :last_name)
-  th= sort_link(@q, :company)
+- if @q
+  - index_table_headers do
+    th= sort_link(@q, :user_email)
+    th= sort_link(@q, :first_name)
+    th= sort_link(@q, :last_name)
+    th= sort_link(@q, :company)
+    th= sort_link(@q, :user_pending)
 
-td= resource.email
+td= resource.user_email
 td= resource.first_name
 td= resource.last_name
 td= resource.company
+td.resource-pending(data={user: resource.user_id, yes: "Yes", no: "No"})
+  = resource.user_pending? ? "Yes" : "No"

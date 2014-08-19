@@ -55,11 +55,6 @@ crumb :edit_buyer do |options|
   end
 end
 
-crumb :users do |options|
-  key = current_user.is_mill? ? :mill_user_title : :title
-  link st(key, options)
-end
-
 crumb :blocklist do
   link t(:blocklist, scope: :breadcrumbs)
 end

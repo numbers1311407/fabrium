@@ -9,6 +9,14 @@ class BuyersController < ResourceController
     ]
   ]
 
+  has_scope :scope do |controller, scope, value|
+    case value
+    when 'pending' then scope = scope.pending
+    end
+
+    scope
+  end
+
   has_scope :name do |controller, scope, value|
     scope.attrs_like([:first_name, :last_name], value)
   end
@@ -32,6 +40,11 @@ class BuyersController < ResourceController
   add_collection_filter_scope :collection_filter_includes
 
   protected
+
+  def scope_options
+    scopes = %w(pending)
+  end
+  helper_method :scope_options
 
   def collection_filter_includes(object)
     object.includes(:user)

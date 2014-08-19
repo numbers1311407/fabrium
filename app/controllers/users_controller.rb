@@ -16,9 +16,9 @@ class UsersController < ResourceController
   has_scope :scope do |controller, scope, value|
     case value
     when 'pending' then scope = scope.pending
-    when 'mill'    then scope = scope.mills
-    when 'buyer'   then scope = scope.buyers
-    when 'admin'   then scope = scope.admins
+    # when 'mill'    then scope = scope.mills
+    # when 'buyer'   then scope = scope.buyers
+    # when 'admin'   then scope = scope.admins
     end
 
     scope
@@ -27,9 +27,11 @@ class UsersController < ResourceController
   # eager load the metas
   add_collection_filter_scope :collection_filter_include_meta
 
-  # Admin users are managed elsewhere.  This HTML index is mostly here
-  # for approving pending users.
-  add_collection_filter_scope :collection_filter_exclude_admins
+  # Only mill users are managed here.  Buyer and admin users are now
+  # managed with their meta record.
+  add_collection_filter_scope :collection_filter_only_mills
+
+  add_collection_filter_scope :collection_filter_sort_by_mills
 
   custom_actions resource: [:activate], collection: [:domains]
 
@@ -62,6 +64,9 @@ class UsersController < ResourceController
 
   protected
 
+  def scope_options
+    scopes = %w(pending)
+  end
   helper_method :scope_options
 
   # non admins are scoped to their users (mills, basically, as buyers
@@ -72,16 +77,32 @@ class UsersController < ResourceController
     end
   end
 
-  def scope_options
-    scopes = %w(pending mill buyer)
-  end
-
   def collection_filter_include_meta(object)
-    object.includes(:meta)
+    object.
+      includes(:meta).
+      joins("JOIN mills ON mills.id = users.meta_id").
+      references(:mills)
   end
 
-  def collection_filter_exclude_admins(object)
-    object.where.not(meta_type: 'Admin')
+  def collection_filter_only_mills(object)
+    object.mills
+  end
+
+  # Ransack (which is probably overkill as it's really used only for sorting)
+  # will not sort on the fake mill association.  And it's simpler to just sort
+  # after the fact than to try to figure out how to make it do so.
+  #
+  def collection_filter_sort_by_mills(object)
+    # Ransack simply ignores the sort param if it doesn't determine it to be
+    # "ransortable", so we'll just look at the param and apply an order to
+    # the relation directly if it's "mill"
+    if params[:q] && sort = params[:q][:s] 
+      if sort =~ /mill (asc|desc)/
+        object = object.order("mills.name #{$1}")
+      end
+    end
+
+    object
   end
 
   def build_resource

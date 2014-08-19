@@ -20,7 +20,7 @@ en:
           closed: "Update Request"
       user:
         create: "Add Mill User"
-        update: "Save User"
+        update: "Save Mill User"
 
   breadcrumbs:
     fabric: "Fabrics #%{id}"
@@ -94,10 +94,15 @@ en:
         edit:
           title: "Edit Buyer Details"
     users:
+      links:
+        new: 'New Mill User'
       actions:
+        edit: 
+          title: 'Edit Mill User'
+        new: 
+          title: 'New Mill User'
         index:
-          title: 'Users'
-          mill_user_title: 'Mill Users'
+          title: 'Mill Users'
     actions:
       show:
         title: '%{name}'

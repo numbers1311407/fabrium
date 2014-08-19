@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   attr_accessor :mill
   validates :mill, presence: true, on: :create, if: :should_validate_mill?
 
-  scope :pending, -> { where(pending: true) }
+  scope :pending, ->(val=true) { where(pending: !!val) }
 
   def send_invitation!(from)
     InviteUserJob.new.async.perform(id, from.id)
@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
 
     # If we're the mill's creator, ensure that it is activated along
     # with us.
-    if is_mill? && meta.creator == self
+    if is_mill? && meta.present? && meta.creator == self
       meta.update(active: true)
     end
   end

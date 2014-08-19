@@ -1,0 +1,12 @@
+- if resource.user_pending? && current_user.can_activate?(resource.user)
+  = link_to activate_user_path(resource.user), class: 'btn btn-sm btn-default', remote: true, method: :put do
+    i.fa.fa-thumbs-up(title=st('links.activate'))
+    span= st('links.activate')
+- if current_user.can_update?(resource)
+  = link_to edit_resource_path(resource), class: 'btn btn-sm btn-default' do
+    i.fa.fa-edit(title=st('links.edit'))
+    span= st('links.edit')
+- if current_user.can_delete?(resource)
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, data: { confirm: st('messages.confirm_destroy') } do
+    i.fa.fa-trash-o(title=st('links.destroy'))
+    span= st('links.destroy')

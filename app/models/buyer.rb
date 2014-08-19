@@ -41,7 +41,9 @@ class Buyer < ActiveRecord::Base
 
   has_many :carts, -> { exclude_subcarts }
 
-  delegate :email, to: :user, allow_nil: true
+  scope :pending, ->(val=true) { joins(:user).merge(User.pending(val)) }
+
+  delegate :id, :email, :pending?, to: :user, allow_nil: true, prefix: true
 
   def name
     [first_name, last_name].compact.join(" ")

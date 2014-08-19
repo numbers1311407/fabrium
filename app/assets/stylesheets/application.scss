@@ -267,13 +267,12 @@ body .form-group-range {
   }
 
   .scope-select {
-    padding-top: 10px;
+    @include make-row;
     clear: both;
+    padding-top: 10px;
 
     .form-group {
-      width: 180px;
-      float: left;
-      margin-right: 10px;
+      @include make-sm-column(2);
       margin-bottom: 0;
     }
 
