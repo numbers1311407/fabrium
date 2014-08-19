@@ -15,6 +15,9 @@ en:
       mill:
         major_markets: "Enter like: USA 50%, Europe 50%"
         major_customers: "Enter like: Ann Taylor, DKNY, Calvin Klein"
+      meta:
+        major_markets: "Enter like: USA 50%, Europe 50%"
+        major_customers: "Enter like: Ann Taylor, DKNY, Calvin Klein"
 
     # Examples
     # labels:
