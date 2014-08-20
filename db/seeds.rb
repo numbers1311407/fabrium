@@ -1,14 +1,18 @@
-User.create(meta: Admin.create!, email: "foo@bar.com", password: "asdfasdf", password_confirmation: "asdfasdf", confirmed_at: Time.now.utc)
+# User.create(meta: Admin.create!, email: "foo@bar.com", password: "asdfasdf", password_confirmation: "asdfasdf", confirmed_at: Time.now.utc)
 
-cats = Category.create(name: 'CAT1'), Category.create(name: 'CAT2')
-tags = Tag.create(name: 'TAG1'), Tag.create(name: 'TAG2'), Tag.create(name: 'TAG3'), Tag.create(name: 'TAG4')
-mills = Mill.create(name: 'MILL1'), Mill.create(name: 'MILL2'), Mill.create(name: 'MILL3')
+# cats = Category.create(name: 'CAT1'), Category.create(name: 'CAT2')
+# tags = Tag.create(name: 'TAG1'), Tag.create(name: 'TAG2'), Tag.create(name: 'TAG3'), Tag.create(name: 'TAG4')
+# mills = Mill.create(name: 'MILL1'), Mill.create(name: 'MILL2'), Mill.create(name: 'MILL3')
+
+cats = Category.all.to_a
+tags = Tag.all.to_a
+mills = Mill.all.to_a
 
 files = Dir.glob("seeds/**/**.jpg") 
 
 uploader = Dragonfly.app
 
-Dir["../fabrics/*"].each do |path|
+Dir["./seeds/*"].each do |path|
   cat = cats[rand cats.length]
   mill = mills[rand mills.length]
   tag = tags.slice(*[rand(tags.length), rand(tags.length)].sort).map(&:name)
