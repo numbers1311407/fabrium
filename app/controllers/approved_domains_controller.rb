@@ -1,6 +1,7 @@
 class ApprovedDomainsController < ResourceController
   self.default_sort = {name: 'name', dir: 'asc'}
-  permit_params :name
+
+  permit_params :name, :entity
 
   has_scope :entity do |controller, scope, value|
     case value

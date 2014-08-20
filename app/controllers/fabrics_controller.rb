@@ -43,7 +43,9 @@ class FabricsController < ResourceController
   def create
     session[:last_created_fabric_params] = params[:fabric].slice(:mill_id)
 
-    create!
+    # `super` rather than `create!` because of the redirect path changes in
+    # ResourceController
+    super
   end
 
   def toggle_archived
