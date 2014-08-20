@@ -4,6 +4,7 @@
     $(document).on('mouseover', 'a[rel~=popover]:not(.popover-initialized)', function (e) {
       var $popover = $(this);
 
+
       $popover.popover({
         trigger: 'hover',
         html: true,

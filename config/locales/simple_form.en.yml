@@ -18,9 +18,18 @@ en:
       meta:
         major_markets: "Enter like: USA 50%, Europe 50%"
         major_customers: "Enter like: Ann Taylor, DKNY, Calvin Klein"
+      buyer:
+        preferred_mills: "Type to Search Mills"
+        blocked_mills: "Type to Search Mills"
+
+
     hints:
       fabric:
         tag_ids: "Contact admin@fabrium.com to suggest additional keywords"
+      buyer:
+        preferred_mills: 'Your default "preferred" mills by which you can filter search results'
+        blocked_mills: 'Your default "blocked" mills by which you can filter search results'
+
 
     # Examples
     # labels:

@@ -96,13 +96,13 @@
               <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
                 <div class="form-link">
                   <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
-                    Load my preferred mills
+                    Load my preferred mills 
                   </a>
                   <a rel="popover">
                     <i class="fa fa-question-circle" ></i>
                   </a>
                   <div class="hidden-content">
-                    You can manage your preferred mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                    You can manage your preferred mills list by editing your buyer details.
                   </div>
                 </div>
               <% end %>
@@ -122,13 +122,13 @@
               <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
                 <div class="form-link">
                   <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
-                    Load my blocked mills
+                    Load my blocked mills 
                   </a>
                   <a rel="popover">
                     <i class="fa fa-question-circle" ></i>
                   </a>
                   <div class="hidden-content">
-                    You can manage your blocked mills list by editing <a target="_self" href="/profile/edit">your profile</a>
+                    You can manage your blocked mills list by editing your buyer details.
                   </div>
                 </div>
               <% end %>
