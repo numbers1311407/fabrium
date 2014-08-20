@@ -110,4 +110,9 @@ class UsersController < ResourceController
       object.skip_password = true
     end
   end
+
+  def create_resource(object)
+    object.invited_by = current_user
+    object.save
+  end
 end

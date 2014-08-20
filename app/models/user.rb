@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :fabric_notes
   before_validation :clean_password_fields
 
-  after_commit :send_invitation_if_admin, on: :create
+  after_commit :send_invitation_if_invited, on: :create
 
   before_validation :preset_pending_status, on: :create
   before_create :set_mill_if_mill_passed
@@ -71,8 +71,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  delegate :name, 
-    to: :meta, prefix: true, allow_nil: true
+  delegate :name, to: :meta, prefix: true, allow_nil: true
 
   protected
 
@@ -86,13 +85,16 @@ class User < ActiveRecord::Base
   end
 
   def set_initial_pending_status
-    self.pending = if is_buyer?
-      !ApprovedDomain.for_buyer.exists?(name: self.domain)
-    elsif is_mill?
-      !ApprovedDomain.for_mill.exists?(name: self.domain)
-    else
-      false
-    end
+
+    self.pending = 
+      # invited users are never pending
+      if is_admin? || invited_by.present?
+        false
+      elsif is_buyer?
+        !ApprovedDomain.for_buyer.exists?(name: self.domain)
+      elsif is_mill?
+        !ApprovedDomain.for_mill.exists?(name: self.domain)
+      end
 
     # If this user is pending, it doesn't need to be later confirmed,
     # as the admin will be confirming them and sending the email that
@@ -114,8 +116,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def send_invitation_if_admin
-    send_invitation!(self.invited_by) if self.invited_by && is_admin?
+  def send_invitation_if_invited
+    send_invitation!(self.invited_by) if self.invited_by
   end
 
   def set_as_admin_if_attached_to_new_mill
