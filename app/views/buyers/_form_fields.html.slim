@@ -2,4 +2,5 @@
   .top-actions
     = link_to "Edit the user for this buyer?", edit_user_path(f.object.user)
 
+= render 'buyers/application_fields', f: f
 = render 'buyers/profile_fields', f: f

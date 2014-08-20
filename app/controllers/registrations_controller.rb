@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   before_filter :handle_meta_param, only: [:new]
-  before_action :configure_permitted_parameters
+  before_action :configure_permitted_parameters, only: [:update, :create]
 
   include Roar::Rails::ControllerAdditions
   represents :json, User
@@ -75,9 +75,11 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def permitted_meta_attributes 
-    # TODO separate these, the trick is determining the meta type.  Not
-    # too much of a trick probably, but more than I care to do right now.
-    [ Buyer::PERMISSABLE_PARAMS, Mill::PERMISSABLE_PARAMS ].flatten.uniq
+    case params[resource_name] && params[resource_name]["meta_type"]
+    when 'Buyer' then Buyer::PERMISSABLE_PARAMS
+    when 'Mill' then Mill::PERMISSABLE_PARAMS
+    else []
+    end
   end
 
   def configure_permitted_parameters
@@ -90,11 +92,14 @@ class RegistrationsController < Devise::RegistrationsController
       :meta_type
     ]
 
-    permits = [{meta_attributes: permitted_meta_attributes}]
-    permits.concat(user_attributes)
+    permits = [user_attributes]
 
-    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(permits) }
-    devise_parameter_sanitizer.for(:account_update) {|u| u.permit(permits) }
+    if 'create' == params[:action]
+      permits << {meta_attributes: permitted_meta_attributes}
+      devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(permits) }
+    else
+      devise_parameter_sanitizer.for(:account_update) {|u| u.permit(permits) }
+    end
   end
 
   # 

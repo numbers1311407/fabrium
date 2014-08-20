@@ -12,7 +12,9 @@ class Buyer < ActiveRecord::Base
     :city,
     :postal_code,
     :country,
-    :subregion
+    :subregion,
+    preferred_mill_ids: [],
+    blocked_mill_ids: []
   ]
 
   has_one :user, as: :meta, dependent: :destroy

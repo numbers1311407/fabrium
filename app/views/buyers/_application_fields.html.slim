@@ -1,0 +1,7 @@
+fieldset
+  legend Application Settings
+  .row
+    .col-sm-6
+      = f.association :preferred_mills, as: :select, input_html: {data: {select: {plugins: {endpoint: {url: mills_url(:json) }}}}}
+    .col-sm-6
+      = f.association :blocked_mills, as: :select, input_html: {data: {select: {plugins: {endpoint: {url: mills_url(:json) }}}}}
