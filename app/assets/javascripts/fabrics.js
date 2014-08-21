@@ -1,8 +1,9 @@
 $(function () {
   $("form#fabrics_form").each(function () {
     var $form = $(this);
-    var $mill_id_input = $form.find("[name='fabric[mill_id]']");
-    var $item_no_input = $form.find("[name='fabric[item_number]']");
+    var select = $form.find("[name='fabric[mill_id]']")[0].selectize;
+
+    // var $item_no_input = $form.find("[name='fabric[item_number]']");
 
     // extract the ID of the form if this is an update, which will be
     // passed in the query (so we don't fail on changing from and to the
@@ -15,8 +16,8 @@ $(function () {
     var getUrl = function (mill_id) {
       var params = {fabric: {}};
 
-      if ($mill_id_input.length) {
-        params.fabric.mill_id = $mill_id_input.val();
+      if (mill_id) {
+        params.fabric.mill_id = mill_id;
       }
 
       if (id) { 
@@ -27,29 +28,35 @@ $(function () {
     };
 
 
-    $form.validate({ 
-      rules: {
-        "fabric[item_number]": {
-          remote: getUrl()
-        }
-      }
-    });
+    var validateForm = function (mill_id) {
+      $form.removeData('validator');
 
-    $mill_id_input.change(function (mill_id) {
-      var validator = $form.data('validator');
+      $form.validate({ 
+        rules: { "fabric[item_number]": { remote: getUrl(mill_id) } }
+      });
+    }
 
-      // clear the cache of checked item numbers
-      $item_no_input.removeData("previousValue");
+    validateForm();
 
-      // update the URL used to find unique item numbers with the URL
-      // for the new mill
-      validator.settings.rules["fabric[item_number]"].remote = getUrl();
+    select.on("change", function (mill_id) {
+      validateForm(mill_id);
 
-      // and force revalidation of the item number field
-      validator.element("[name='fabric[item_number]']");
+      $("#form-inner").setLoading();
+
+      var xhr = $.ajax({
+        url: "/fabrics/new",
+        data: {fabric: {mill_id: mill_id}}
+      })
+      .then(function (result) {
+        var $result = $(result);
+        $("#form-inner").html($result.find("#form-inner").html());
+        utils.runReadyCallbacks();
+      });
     });
   });
+});
 
+utils.ready(function () {
 
   // On submitting the form, set all the position values to be that of
   // their order in the list.  Sorting the elements simply moves them
@@ -140,6 +147,9 @@ $(function () {
     var $input = $("input", this),
       $select = $("select", this),
       data = $input.data();
+    
+    // on new forms this will be empty
+    if (_.isEmpty(data)) { return; }
 
     $select.on("change", function () {
       $input.val(data[$select.val()]);

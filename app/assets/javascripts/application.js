@@ -12,6 +12,16 @@
 //= require ./carts
 //= require ./validate
 
+// Super silly plugin just to keep the same loading message throughout.
+// Not conflated with `load` or anything, just sets HTML.
+$.fn.setLoading = (function () {
+  var loadingTmpl = '<div><span style="margin-right: 5px">Loading</span><i class="fa fa-refresh fa-spin"></i></div>';
+
+  return function () {
+    $(this).html(loadingTmpl);
+  };
+})();
+
 $(function () {
   $(".error-tooltip").each(function () {
     var $tt = $(this);

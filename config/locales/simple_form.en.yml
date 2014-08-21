@@ -10,7 +10,9 @@ en:
       # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
-
+    labels:
+      fabric:
+        mill: "Select your mill"
     placeholders:
       mill:
         major_markets: "Enter like: USA 50%, Europe 50%"
@@ -21,11 +23,10 @@ en:
       buyer:
         preferred_mills: "Type to Search Mills"
         blocked_mills: "Type to Search Mills"
-
-
     hints:
       fabric:
         tag_ids: "Contact admin@fabrium.com to suggest additional keywords"
+        mill: "Choosing a mill will populate a new fabric form for that mill"
       buyer:
         preferred_mills: 'Your default "preferred" mills by which you can filter search results'
         blocked_mills: 'Your default "blocked" mills by which you can filter search results'

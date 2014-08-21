@@ -1,0 +1,7 @@
+.form-inputs-row.row
+  .form-inputs
+    = render 'form_fields', form: f, f: f
+  .form-inputs
+    = render 'nested_fabric_variants', form: f, f: f
+.form-actions
+  = render 'form_inputs', form: f, f: f

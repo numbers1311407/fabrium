@@ -1,7 +1,6 @@
 .form-group.fabric_variants
-  .panel.panel-default
-    .panel-heading
-      = f.label :fabric_variants
+  .panel-default
+    = f.label :fabric_variants
     script(type="html/template")
       | <tr class="fabric-variant" data-id="<%= obj.id %>">
           <td class="thumb">
@@ -32,7 +31,7 @@
             <% } %>
           </td>
         </tr>
-    .table-responsive
+    .table-responsive.table-bordered
       table.table.fabric-variants
         thead
           tr
@@ -63,6 +62,7 @@
                   i.fa.fa-trash-o
                 = vf.hidden_field :position
             = vf.hidden_field :_destroy, value: 0, id: "destroy_fabric_variant_#{variant.id}"
-
-    .panel-footer
-      = link_to "Add Variant", new_fabric_variant_path, class: "btn btn-default", rel: "modal"
+        tfoot
+          tr
+            td colspan=42
+              = link_to "Add Variant", new_fabric_variant_path, class: "btn btn-default", rel: "modal"

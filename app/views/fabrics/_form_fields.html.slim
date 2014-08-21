@@ -1,6 +1,3 @@
-- if current_user.is_admin?
-  = f.association :mill, collection: Mill.all.order(name: :asc).limit(20), input_html: {data: {select: {plugins: {endpoint: {url: mills_path(:json)}}} }}
-
 = f.input :item_number
 
 = f.input :archived, label: false, inline_label: true, hint: "Archived fabrics will not be displayed in buyer search results"
@@ -84,5 +81,3 @@
 
 / some oddness here as tags is not an association
 = f.input :tag_ids, label: resource_label(:tags), as: :select, collection: f.object.tag_records, hint: :translate, input_html: {multiple: true, placeholder: t('placeholders.tags'), data: {select: {plugins: {endpoint: {url: tags_path(:json) }}}}}
-
-

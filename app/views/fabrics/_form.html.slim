@@ -1,9 +1,13 @@
 - args = respond_to?(:parent) ? [parent, resource] : resource
 = simple_form_for args, html: {id: "fabrics_form"} do |f|
-  .form-inputs-row.row
-    .form-inputs
-      = render 'form_fields', form: f, f: f
-    .form-inputs
-      = render 'nested_fabric_variants', form: f, f: f
-  .form-actions
-    = render 'form_inputs', form: f, f: f
+
+  - if resource.new_record? && current_user.is_admin?
+    .form-inputs-row.row
+      .form-inputs
+        = f.association :mill, hint: :translate, collection: Mill.all.order(name: :asc).limit(20), input_html: {id: 'fabric_mill_select', data: {select: {plugins: {endpoint: {url: mills_path(:json)}}} }}
+
+    hr
+
+  #form-inner
+    - if f.object.mill.present?
+      = render 'full_form', f: f

@@ -1,11 +1,12 @@
-$(function () {
-  $("[data-select]").each(function () {
-    var $el = $(this), options = $el.data('select');
-    $el.selectize(options);
-  });
-});
-
 ;(function () {
+
+  utils.ready(function () {
+    $("[data-select]").each(function () {
+      var $el = $(this), options = $el.data('select');
+      $el.selectize(options);
+    });
+  });
+
   Selectize.define('country_select', function (options) {
     var api = this;
 
