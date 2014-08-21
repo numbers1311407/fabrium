@@ -2,20 +2,27 @@
   body { padding: 0; margin: 0; }
 </style>
 
-<%= form_tag preview_fabric_variants_path, multipart: true, id: "image_preview_form", class: 'form-inline' do %>
-  <%= file_field_tag :image %>
-<% end %>
+<div id="formwrapper">
+  <%= form_tag preview_fabric_variants_path, multipart: true, id: "image_preview_form", class: 'form-inline' do %>
+    <%= file_field_tag :image %>
+  <% end %>
+</div>
  
 <script>
+  var pwin = window.parent, pdoc = pwin.document;
+
+  pwin.$("#loading-message").html('');
+
   //automatically submit the form
   document.getElementById("image").onchange = function() {
-    document.getElementById("image_preview_form").submit();
+    var form = document.getElementById("image_preview_form");
+    form.submit();
+    document.getElementById("formwrapper").removeChild(form);
+    pwin.$("#loading-message").setLoading();
   };
   
   <% if @image %>
-
   // if an image was uploaded, replace the relevant parts of the parent form
-  var pwin = window.parent, pdoc = pwin.document;
   pdoc.getElementById("fabric_variant_image_crop").value = null;
   pdoc.getElementById("fabric_variant_retained_image").value = "<%= @retained_image %>";
   pwin.$("#fabric_variant_color").minicolors('value', "<%= @colors[0] %>");

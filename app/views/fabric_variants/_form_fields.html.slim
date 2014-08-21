@@ -8,6 +8,7 @@
   = f.label :image
   = f.hidden_field :image_name
   .fabric-variant-image-form
+    #loading-message
     iframe(width="600" height="50" frameborder="0" src=preview_fabric_variants_path)
 
   = f.error :image_name, class: 'error'
