@@ -47,6 +47,9 @@ class FabricsController < ResourceController
   end
 
   def create
+    if current_user.is_admin?
+      session[:last_created_fabric_mill] = params[:fabric][:mill_id]
+    end
 
     # `super` rather than `create!` because of the redirect path changes in
     # ResourceController
@@ -108,6 +111,13 @@ class FabricsController < ResourceController
 
   def build_resource
     @fabric ||= super.tap do |fabric|
+
+      if current_user.is_admin? && fabric.mill.blank? && session[:last_created_fabric_mill]
+        fabric.mill_id = session[:last_created_fabric_mill]
+
+        Rails.logger.error session[:last_created_fabric_mill]
+      end
+
       if mill = fabric.mill
 
         fabric.country = fabric.country.presence || mill.country
