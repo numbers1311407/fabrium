@@ -918,6 +918,7 @@ label {
 }
 
 [data-rulered] {
+  display: block;
   position: relative;
   overflow: hidden;
   .overlay {
