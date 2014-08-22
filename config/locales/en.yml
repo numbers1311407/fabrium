@@ -124,7 +124,7 @@ en:
     my_carts: 'My Carts'
   messages:
     crop_warning: "Your image must be exactly %{size}x%{size}px.  It must be cropped before it will appear in search results."
-    variant_persistence: "Note that changes to variants will not be persisted until this fabric is saved"
+    variant_persistence: "Note that changes to color ways will not be persisted until this fabric is saved"
 
   errors:
     # The default format to use in full error messages.
@@ -232,7 +232,7 @@ en:
       approved_domain: Approved Domain
       cart: Hanger Request 
       dye_method: Dye Method
-      fabric_variant: Fabric Variant
+      fabric_variant: Color Way
       tag: Keyword
       material: Fiber Content
 
@@ -242,7 +242,7 @@ en:
         bulk_lead_time: Bulk Lead Time
         bulk_minimum_quality: Bulk Min. Quality
         dye_method: Dye Method
-        fabric_variants: Variants
+        fabric_variants: Color Ways
         favorites_count: Favorited
         id: Fabrium ID
         orders_count: Ordered
