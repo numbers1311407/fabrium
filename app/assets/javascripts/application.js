@@ -35,7 +35,6 @@ $(function () {
       , width = $el.data("rulered");
 
     if (!$el.hasClass("ruler-inited")) {
-
       $el.addClass("ruler-inited");
 
       utils.getCrop(rulerImg, width, width, function (uri) {

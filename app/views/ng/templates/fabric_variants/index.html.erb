@@ -297,8 +297,8 @@
           <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(item.fabric_id)]"></i>
         </a>
 
-        <div data-rulered={{item.image.width}}>
-          <a class="fabric-variant-result-link" href="{{item.links | link:'self'}}" ng-click="show(item.fabric_id, item.position)">
+        <div data-rulered={{item.image.width}} ng-click="show(item.fabric_id, item.position)">
+          <a class="fabric-variant-result-link" href="{{item.links | link:'self'}}">
             <img ng-src="{{item.image.thumb}}">
           </a>
         </div>
