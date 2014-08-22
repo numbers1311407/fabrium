@@ -36,7 +36,7 @@
             var deleted = 0;
 
             angular.forEach(scope.advanced_fields, function (field) {
-              if (scope.search[field]) {
+              if ('undefined' !== typeof scope.search[field]) {
                 delete scope.search[field];
                 deleted++;
               }

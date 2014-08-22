@@ -1,11 +1,16 @@
 - if @q
   - index_table_headers do
+    - if current_user.is_admin?
+      th= sort_link(@q, :mill_name)
     th= sort_link(@q, :item_number)
     th= sort_link(@q, :id)
     th= sort_link(@q, :views_count)
     th= sort_link(@q, :favorites_count)
     th= sort_link(@q, :orders_count)
 
+- if current_user.is_admin?
+  th
+    = link_to resource.mill.name, edit_mill_path(resource.mill)
 td= resource.item_number
 td= resource.id
 td.count= resource.views_count

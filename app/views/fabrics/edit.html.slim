@@ -1,0 +1,11 @@
+- breadcrumb :edit_resource
+
+.page-header
+  #content-title
+    h1
+      = title st(:title)
+    h4
+      = "Mill: #{resource.mill.name}"
+
+#content-body
+  = render 'form'
