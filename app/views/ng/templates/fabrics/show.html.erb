@@ -12,12 +12,14 @@
             data-cycle-pager="#adv-custom-pager"
             data-cycle-pager-template=""
         >
-          <img ng-src="{{ v.image.thumb }}" ng-repeat="v in fabric.variants" />
+          <div data-rulered={{v.image.width}} ng-repeat="v in fabric.variants">
+            <img ng-src="{{ v.image.full }}" />
+          </div>
         </div>
       </div>
       <div id="adv-custom-pager" class="center external">
         <a href={{fabric.getVariantUrl(v.position)}} ng-repeat="v in fabric.variants">
-          <img ng-src="{{ v.image.thumb }}">
+          <img ng-src="{{ v.image.tiny }}">
         </a>
       </div>
     </div>

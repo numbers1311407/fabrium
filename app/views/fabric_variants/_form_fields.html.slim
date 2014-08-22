@@ -19,7 +19,7 @@
     a.btn.btn-warning#crop_cancel_action(style="display: none;")
       = t('labels.crop_cancel')
 
-  #crops(style="width:#{FabricVariant::IMAGE_SIZE}px;height:#{FabricVariant::IMAGE_SIZE}px;")
+  #crops(style="#{thumb_url.blank? ? "display:none;" : ""}width:#{FabricVariant::THUMB_SIZE}px; height:#{FabricVariant::THUMB_SIZE}px;")
     = image_tag(thumb_url, id: "cropped")
     = image_tag(image_url, id: "preview", class: 'fabric_image', style: "display: none;") 
   #full_image(style="display: none")

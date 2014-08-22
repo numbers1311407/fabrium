@@ -114,8 +114,6 @@ class FabricsController < ResourceController
 
       if current_user.is_admin? && fabric.mill.blank? && session[:last_created_fabric_mill]
         fabric.mill_id = session[:last_created_fabric_mill]
-
-        Rails.logger.error session[:last_created_fabric_mill]
       end
 
       if mill = fabric.mill

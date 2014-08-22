@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818205214) do
+ActiveRecord::Schema.define(version: 20140821224247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,8 +124,8 @@ ActiveRecord::Schema.define(version: 20140818205214) do
     t.string   "image_uid"
     t.string   "image_name"
     t.string   "image_crop"
-    t.string   "image_width"
-    t.string   "image_height"
+    t.integer  "image_width"
+    t.integer  "image_height"
     t.boolean  "in_stock",     default: false
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -2,7 +2,7 @@ module FabricVariants
   module Image
     extend ActiveSupport::Concern
 
-    IMAGE_SIZE = 200
+    THUMB_SIZE = 250
 
     included do
       dragonfly_accessor :image
@@ -12,24 +12,62 @@ module FabricVariants
     end
 
     def perfect_size?
-      image_stored? && (image_width == IMAGE_SIZE && image_height == IMAGE_SIZE)
+      image_stored? && (image_width == THUMB_SIZE && image_height == THUMB_SIZE)
     end
 
-    def thumb
+    def crop
       if image_crop.present?
-        resize, crop = image_crop.split(';')
-        image.thumb(resize).thumb(crop)
+        geometry = "%dx%d+%d+%d" % [
+          image_crop[:w].round,
+          image_crop[:w].round,
+          image_crop[:x].round,
+          image_crop[:y].round
+        ]
+
+        image.thumb(geometry)
       else 
         image
       end
     end
 
+    def thumb
+      crop.thumb("250x250") if image_stored?
+    end
+
+    def thumb_tiny
+      crop.thumb("30x30") if image_stored?
+    end
+
     def thumb_path
-      image_stored? ? thumb.url : nil
+      thumb.url if image_stored?
+    end
+
+    def thumb_tiny_path
+      thumb_tiny.url if image_stored?
+    end
+
+    def crop_path
+      crop.url if image_stored?
+    end
+
+    def crop_width
+      image_crop ? image_crop[:w] : 0
+    end
+
+    def crop_height
+      image_crop ? image_crop[:w] : 0
     end
 
     def image_path
-      image_stored? ? image.url : nil
+      image.url if image_stored?
+    end
+
+    def image_crop
+      parsed = JSON.parse read_attribute(:image_crop)
+      parsed.each {|k, v| parsed[k] = v.round }
+      ActiveSupport::HashWithIndifferentAccess.new(parsed)
+    rescue
+      nil
     end
 
     def dominant_colors

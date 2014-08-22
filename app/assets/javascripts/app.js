@@ -3,6 +3,25 @@
 
   var callbacks = [];
 
+  utils.getCrop = (function () {
+
+    return function (src, w, h, cb) {
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('2d');
+      var imageObj = new Image();
+
+      canvas.width = w;
+      canvas.height = h;
+
+      imageObj.onload = function() {
+        context.drawImage(imageObj, 0, 0, w, h, 0, 0, canvas.width, canvas.height);
+        cb(canvas.toDataURL());
+      };
+
+      imageObj.src = src;
+    };
+  })();
+
   utils.ready = function (fn) {
     callbacks.push(fn);
   };

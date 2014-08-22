@@ -676,7 +676,6 @@ dt:after {
 /**
  * Cycle2 code for the fabric show modal
  */
-#cycle-1 div { width:100%; }
 #cycle-2 .cycle-slide { border: 3px solid #fff; }
 #cycle-2 .cycle-slide-active { border: 3px solid #004; }
 
@@ -712,13 +711,6 @@ dt:after {
     width: 30px;
     height: 30px;
     border: 1px solid #f0f0f0;
-  }
-}
-
-.cart-wrapper, .fabrics-show {
-  @media (min-width: $screen-md-min) {
-    max-width: 800px;
-    margin: 0 auto;
   }
 }
 
@@ -922,4 +914,12 @@ label {
   }
 }
 
-
+[data-rulered] {
+  position: relative;
+  overflow: hidden;
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

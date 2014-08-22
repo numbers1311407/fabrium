@@ -4,7 +4,7 @@
 
 <div id="formwrapper">
   <%= form_tag preview_fabric_variants_path, multipart: true, id: "image_preview_form", class: 'form-inline' do %>
-    <%= file_field_tag :image %>
+    <%= file_field_tag :image, accept: "image/*" %>
   <% end %>
 </div>
  
@@ -27,8 +27,12 @@
   pdoc.getElementById("fabric_variant_retained_image").value = "<%= @retained_image %>";
   pwin.$("#fabric_variant_color").minicolors('value', "<%= @colors[0] %>");
   var imgs = pdoc.getElementsByClassName("fabric_image");
-  for (var i=0; i<imgs.length; i++) { imgs[i].src = "<%= @image.url  %>"; }
+  for (var i=0; i<imgs.length; i++) { 
+    imgs[i].src = "<%= @image.url  %>"; 
+    imgs[i].onload = function () {
+      (--i == 0) && pwin.crop.open();
+    };
+  }
 
-  pwin.crop.open();
   <% end %>
 </script>

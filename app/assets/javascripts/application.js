@@ -22,7 +22,32 @@ $.fn.setLoading = (function () {
   };
 })();
 
+
+
+
 $(function () {
+
+  var rulerImg = $("meta[name=ruler]").attr("content");
+
+  $(document).on("mouseover mouseout", "[data-rulered]", function (e) {
+
+    var $el = $(this)
+      , width = $el.data("rulered");
+
+    if (!$el.hasClass("ruler-inited")) {
+
+      $el.addClass("ruler-inited");
+
+      utils.getCrop(rulerImg, width, width, function (uri) {
+        var img = new Image();
+        img.src = uri;
+        $('<div class="overlay" />').append(img).appendTo($el);
+      });
+    }
+
+    $(".overlay", this).toggle(e.type == 'mouseover');
+  });
+
   $(".error-tooltip").each(function () {
     var $tt = $(this);
 

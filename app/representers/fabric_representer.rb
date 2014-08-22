@@ -72,7 +72,11 @@ module FabricRepresenter
     property :position
 
     nested :image do
-      # property :image_path, as: :full
+      property :crop_width, as: :width
+      property :crop_height, as: :height
+
+      property :thumb_tiny_path, as: :tiny
+      property :crop_path, as: :full
       property :thumb_path, as: :thumb
     end
   end

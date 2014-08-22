@@ -1,8 +1,7 @@
 ;(function () {
 
-  var cw = <%= FabricVariant::IMAGE_SIZE %>;
-  var ch = <%= FabricVariant::IMAGE_SIZE %>;
-  var geometry = "{0}x{1}%;{2}x{3}+{4}+{5}";
+  var cw = <%= FabricVariant::THUMB_SIZE %>;
+  var ch = <%= FabricVariant::THUMB_SIZE %>;
 
   // The api is exposed so the image preview iframe can control it
   var api = window.crop = {};
@@ -10,7 +9,9 @@
   function init () {
     var jcrop_api, initial_crop, initial_image_src;
     var $crop_field = $("#fabric_variant_image_crop");
+    var $scale_field = $("#fabric_variant_scale");
     var initial_crop = $crop_field.val();
+    var initial_scale = $scale_field.val();
     var crop_labels = $("#crop_actions").data("labels");
     var initial_image_src = $(".fabric_image").attr("src");
     var initial_image_color = $("#fabric_variant_color").minicolors("value");
@@ -31,18 +32,8 @@
         marginTop: '-' + oy + 'px'
       });
 
-      // Note that the crop is positioned at 0, 0 always, currently, but
-      // this geometry should take care of it moving if necessary
-      var crop_str = geometry.format(
-        Math.round(rx * 100), 
-        Math.round(ry * 100), 
-        cw, 
-        ch, 
-        Math.round(rx * coords.x), 
-        Math.round(ry * coords.y)
-      );
-
-      $crop_field.val(crop_str);
+      $scale_field.val(rx);
+      $crop_field.val(JSON.stringify(coords));
     }
 
     var destroyJcrop = function () {
@@ -74,6 +65,8 @@
           //allowMove: false,
           allowSelect: false,
           setSelect: [0, 0, cw, ch],
+          minSize: [140, 140],
+          maxSize: [650, 650],
           aspectRatio: 1,
           boxWidth: $(".fabric_variant_image_crop").width()
         }, function () {
@@ -85,7 +78,7 @@
         $("#crop_cancel_action").toggle(showCancel());
         $("#full_image").show();
         $("#crop_actions").toggle(isUploaded());
-      }, 100);
+      }, 0);
     }
 
 
@@ -105,6 +98,7 @@
 
     api.cancel = function () {
       $crop_field.val(initial_crop);
+      $scale_field.val(initial_scale);
       $("#fabric_variant_retained_image").val('');
       $(".fabric_image").attr("src", initial_image_src);
       $("#fabric_variant_color").minicolors("value", initial_image_color);

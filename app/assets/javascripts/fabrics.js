@@ -1,9 +1,11 @@
 $(function () {
   $("form#fabrics_form").each(function () {
     var $form = $(this);
-    var select = $form.find("[name='fabric[mill_id]']")[0].selectize;
+    var el = $form.find("[name='fabric[mill_id]']")[0];
 
-    // var $item_no_input = $form.find("[name='fabric[item_number]']");
+    if (!el || !el.selectize) { return; }
+
+    var select = el.selectize;
 
     // extract the ID of the form if this is an update, which will be
     // passed in the query (so we don't fail on changing from and to the

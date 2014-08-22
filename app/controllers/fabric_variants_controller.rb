@@ -123,7 +123,10 @@ class FabricVariantsController < ResourceController
     :color, 
     :image_crop, 
     :item_number, 
-    :in_stock
+    :in_stock,
+    :scale,
+    :image_height,
+    :image_width
   ]
 
   # Renders the "preview" IFRAME form within the fabric variants upload
@@ -134,21 +137,33 @@ class FabricVariantsController < ResourceController
   def preview
     if params[:image].present?
       app = Dragonfly.app
-      uid = app.store(params[:image].tempfile)
+      image = params[:image]
+      content = Dragonfly::Content.new(app, image)
+      uid = app.store(content)
       @image = app.fetch(uid)
-      attrs = {uid: uid}
-
-      if @image
-        attrs.merge!({ name: params[:image].original_filename })
-        @retained_image = Dragonfly::Serializer.json_b64_encode(attrs)
-        @colors = Miro::DominantColors.new(params[:image].tempfile).to_hex
-      end
+      attrs = {uid: uid, name: image.original_filename, width: @image.width, height: @image.height}
+      @retained_image = Dragonfly::Serializer.json_b64_encode(attrs)
+      @colors = Miro::DominantColors.new(params[:image].tempfile).to_hex
     end
 
     render layout: false
   end
 
   protected
+
+  def build_resource
+    @fabric_variant = super.tap do |variant|
+      if variant.retained_image
+        begin
+          retained_attrs = Dragonfly::Serializer.json_b64_decode(variant.retained_image)
+          variant.image_width = retained_attrs['width']
+          variant.image_height = retained_attrs['height']
+        rescue Dragonfly::Serializer::BadString => e
+          Dragonfly.warn("couldn't update attachment with serialized retained_#{attribute} string #{string.inspect}")
+        end
+      end
+    end
+  end
 
   # redirect back to our parent after commit (this is typically a non-
   # issue since the fabric variants are managed on the parent fabric, not
