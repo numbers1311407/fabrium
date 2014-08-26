@@ -55,186 +55,226 @@
           </div>
         </fieldset>
 
-        <a href="#" ng-click="advanced = !advanced">
-          <i class="fa fa-search-plus"></i>
-          Toggle Advanced Options
-        </a>
-
-        <hr>
-
-        <fieldset class="advanced-options" ng-show="advanced">
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Search</button>
+        <div class="advanced-options">
+          <div class="advanced-options-configure">
+            <a ng-click="ao_show = !ao_show">
+              <i class="fa fa-search-plus"></i> Configure Advanced Options
+            </a>
           </div>
 
           <hr>
 
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="search.favorites" ng-true-value="1"> Limit search to favorites
-            </label>
-          </div>
+          <fieldset style="margin-bottom: 0">
 
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="search.in_stock" ng-true-value="1"> Limit search to in stock fabrics
-            </label>
-          </div>
-
-          <% unless current_user.is_mill? %>
-            <div class="row form-row-mills">
-              <div class="form-group">
-                <label>Limit to these Mills</label>
-                <input
-                  selectize="selectize.mills" 
-                  ng-model="search.mills" 
-                  class="form-control" 
-                  placeholder="Type to search mills by name..."
-                  options="mill_options"
-                >
+            <fieldset id="ao_favorites" class="advanced-option">
+              <legend>Favorites</legend>
+              <div class="row">
+                <div class="checkbox form-group">
+                  <label>
+                    <input type="checkbox" ng-model="search.favorites" ng-true-value="1"> Limit search to favorites
+                  </label>
+                </div>
               </div>
-              <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
-                <div class="form-link">
-                  <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
-                    Load my preferred mills 
-                  </a>
-                  <a rel="popover">
-                    <i class="fa fa-question-circle" ></i>
-                  </a>
-                  <div class="hidden-content">
-                    You can manage your preferred mills list by editing your buyer details.
+            </fieldset>
+
+            <fieldset id="ao_in_stock" class="advanced-option">
+              <legend>In Stock</legend>
+              <div class="row">
+                <div class="checkbox form-group">
+                  <label>
+                    <input type="checkbox" ng-model="search.in_stock" ng-true-value="1"> Limit search to in stock fabrics
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <% unless current_user.is_mill? %>
+              <fieldset id="ao_select_mills" class="advanced-option">
+                <legend>Select Mills</legend>
+                <div class="row form-row-mills">
+                  <div class="form-group">
+                    <label>Limit to these Mills</label>
+                    <input
+                      selectize="selectize.mills" 
+                      ng-model="search.mills" 
+                      class="form-control" 
+                      placeholder="Type to search mills by name..."
+                      options="mill_options"
+                    >
                   </div>
+                  <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
+                    <div class="form-link">
+                      <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
+                        Load my preferred mills 
+                      </a>
+                      <a rel="popover">
+                        <i class="fa fa-question-circle" ></i>
+                      </a>
+                      <div class="hidden-content">
+                        You can manage your preferred mills list by editing your buyer details.
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
-              <% end %>
-            </div>
+              </fieldset>
 
-            <div class="row form-row-not_mills">
-              <div class="form-group">
-                <label>Exclude these Mills</label>
-                <input
-                  selectize="selectize.mills" 
-                  ng-model="search.not_mills" 
-                  class="form-control" 
-                  placeholder="Type to search mills by name..."
-                  options="mill_options"
-                >
-              </div>
-              <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
-                <div class="form-link">
-                  <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
-                    Load my blocked mills 
-                  </a>
-                  <a rel="popover">
-                    <i class="fa fa-question-circle" ></i>
-                  </a>
-                  <div class="hidden-content">
-                    You can manage your blocked mills list by editing your buyer details.
+              <fieldset id="ao_exclude_mills" class="advanced-option">
+                <legend>Exclude Mils</legend>
+                <div class="row form-row-not_mills">
+                  <div class="form-group">
+                    <label>Exclude these Mills</label>
+                    <input
+                      selectize="selectize.mills" 
+                      ng-model="search.not_mills" 
+                      class="form-control" 
+                      placeholder="Type to search mills by name..."
+                      options="mill_options"
+                    >
                   </div>
+                  <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
+                    <div class="form-link">
+                      <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
+                        Load my blocked mills 
+                      </a>
+                      <a rel="popover">
+                        <i class="fa fa-question-circle" ></i>
+                      </a>
+                      <div class="hidden-content">
+                        You can manage your blocked mills list by editing your buyer details.
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
-
-          <div class="row form-row-dye_method">
-            <div class="form-group">
-              <label>Dye Method</label>
-              <select
-                selectize="selectize.dye_method" 
-                ng-model="search.dye_method" 
-                class="form-control" 
-                placeholder="Select..."
-              >
-                <%= select_options_for_dye_method %>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group">
-              <label>Fabrium #</label>
-              <div class="input-group">
-                <div class="input-group-addon">#</div>
-                <input class="form-control" type="text" ng-model="search.fid">
-              </div>
-            </div>
-            <% unless current_user.is_buyer? %>
-              <div class="form-group">
-                <label>Item #</label>
-                <div class="input-group">
-                  <div class="input-group-addon">#</div>
-                  <input class="form-control" type="text" ng-model="search.item_number">
-                </div>
-              </div>
+              </fieldset>
             <% end %>
-          </div>
 
-          <div class="row">
-            <div class="form-group">
-              <label>Country</label>
-              <select class="form-control" selectize="selectize.country" ng-model="search.country">
-                <%= options_for_select(CountrySelectInput::OPTIONS) %>
-              </select>
-            </div>
-          </div>
+            <fieldset id="ao_dye_method" class="advanced-option">
+              <legend>Dye Method</legend>
+              <div class="row form-row-dye_method">
+                <div class="form-group">
+                  <label>Dye Method</label>
+                  <select
+                    selectize="selectize.dye_method" 
+                    ng-model="search.dye_method" 
+                    class="form-control" 
+                    placeholder="Select..."
+                  >
+                    <%= select_options_for_dye_method %>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
 
-          <div class="row">
-            <div class="form-group form-group-range">
-              <label>Price</label>
-              <input type="number" ng-model="search.price_min" class="form-control" placeholder="Any" min=0 step="any">
-              <span>to</span>
-              <input type="number" ng-model="search.price_max" class="form-control" placeholder="Any" min=0 step="any">
-              <select class="form-group-range-units" ng-model="search.price_units">
-                <option value="">$</option>
-                <option value="eu">&#8364;</option>
-              </select>
-            </div>
-          </div>
+            <fieldset id="ao_fabrium_number" class="advanced-option">
+              <legend>Fabrium #</legend>
+              <div class="row">
+                <div class="form-group">
+                  <label>Fabrium #</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">#</div>
+                    <input class="form-control" type="text" ng-model="search.fid">
+                  </div>
+                </div>
+              </div>
+            </fieldset>
 
-          <div class="row">
-            <div class="form-group">
-              <label>Sample Lead Time less than</label>
-              <select
-                selectize="selectize.weeks"
-                ng-model="search.sample_lead_time"
-                placeholder="Select..."
-              >
-                <%= options_for_select(weeks_select_options) %>
-              </select>
-            </div>
+            <% unless current_user.is_buyer? %>
+              <fieldset id="ao_item_number" class="advanced-option">
+                <legend>Item #</legend>
+                <div class="row">
+                  <div class="form-group">
+                    <label>Item #</label>
+                    <div class="input-group">
+                      <div class="input-group-addon">#</div>
+                      <input class="form-control" type="text" ng-model="search.item_number">
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            <% end %>
 
-            <div class="form-group">
-              <label>Bulk Lead Time less than</label>
-              <select
-                selectize="selectize.weeks"
-                ng-model="search.bulk_lead_time"
-                placeholder="Select..."
-              >
-                <%= options_for_select(weeks_select_options) %>
-              </select>
-            </div>
-          </div>
+            <fieldset id="ao_country" class="advanced-option">
+              <legend>Country</legend>
+              <div class="row">
+                <div class="form-group">
+                  <label>Country</label>
+                  <select class="form-control" selectize="selectize.country" ng-model="search.country">
+                    <%= options_for_select(CountrySelectInput::OPTIONS) %>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
 
-          <div class="row">
-            <div class="form-group">
-              <label>Sample Minimum Quality less than</label>
-              <input type="number" class="form-control" ng-model="search.sample_min" step=1 min=0>
-            </div>
-            <div class="form-group">
-              <label>Bulk Minimum Quality less than</label>
-              <input type="number" class="form-control" ng-model="search.bulk_min" step=1 min=0>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="form-group form-group-color">
-              <label>Color</label>
-              <input minicolors ng-model="search.color" class="form-control" placeholder="Choose a color...">
-            </div>
-          </div>
+            <fieldset id="ao_price" class="advanced-option">
+              <legend>Price</legend>
+              <div class="row">
+                <div class="form-group form-group-range">
+                  <label>Price</label>
+                  <input type="number" ng-model="search.price_min" class="form-control" placeholder="Any" min=0 step="any">
+                  <span>to</span>
+                  <input type="number" ng-model="search.price_max" class="form-control" placeholder="Any" min=0 step="any">
+                  <select class="form-group-range-units" ng-model="search.price_units">
+                    <option value="">$</option>
+                    <option value="eu">&#8364;</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
 
-          <hr class="no-botmargin">
+            <fieldset id="ao_lead_times" class="advanced-option">
+              <legend>Lead Times</legend>
+              <div class="row">
+                <div class="form-group">
+                  <label>Sample Lead Time less than</label>
+                  <select
+                    selectize="selectize.weeks"
+                    ng-model="search.sample_lead_time"
+                    placeholder="Select..."
+                  >
+                    <%= options_for_select(weeks_select_options) %>
+                  </select>
+                </div>
 
-        </fieldset>
+                <div class="form-group">
+                  <label>Bulk Lead Time less than</label>
+                  <select
+                    selectize="selectize.weeks"
+                    ng-model="search.bulk_lead_time"
+                    placeholder="Select..."
+                  >
+                    <%= options_for_select(weeks_select_options) %>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+
+            <fieldset id="ao_minimum_quality" class="advanced-option">
+              <legend>Minimum Quality</legend>
+              <div class="row">
+                <div class="form-group">
+                  <label>Sample Minimum Quality less than</label>
+                  <input type="number" class="form-control" ng-model="search.sample_min" step=1 min=0>
+                </div>
+                <div class="form-group">
+                  <label>Bulk Minimum Quality less than</label>
+                  <input type="number" class="form-control" ng-model="search.bulk_min" step=1 min=0>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset id="ao_color" class="advanced-option">
+              <legend>Color</legend>
+              <div class="row">
+                <div class="form-group form-group-color">
+                  <label>Color</label>
+                  <input minicolors ng-model="search.color" class="form-control" placeholder="Choose a color...">
+                </div>
+              </div>
+            </fieldset>
+          </fieldset>
+        </div>
 
         <div class="form-actions search-footer">
           <button ng-show="!searchHidden" type="submit" class="btn btn-primary">Search</button>

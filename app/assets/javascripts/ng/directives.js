@@ -11,45 +11,87 @@
    * in the advanced field container with an `ngModel`.  This may need to
    * change if other fields inside the container need to track a model.
    */
-  app.directive('advancedOptions', [function() {
+  app.directive('advancedOptions', function($compile, $timeout) {
     return {
       restrict : 'C', 
-      link : function(scope, element, attrs) {
-        // Set up the "advanced fields".  Currently all fields with an ngModel
-        // attriubte,  this may have to become more sophisticated if the form 
-        // inputs require it
-        scope.advanced_fields = _.map(element.find("[ng-model]"), function (el) {
-          return $(el).attr("ng-model").replace("search.", "");
+      compile : function (tElement, tAttrs, transclude) {
+
+        var tmpl = '<div class="advanced-options-panel" ng-show="ao_show"><ul>';
+
+        var map = {}, revmap = {};
+
+        tElement.find(".advanced-option").each(function () {
+          var $el = $(this)
+            , id = $el.attr("id")
+            , name = id.replace(/ao_/, "")
+            , option = "ao." + name
+            , label = $el.find("> legend").text()
+
+          map[name] = $el.find("[ng-model^='search.']").map(function () {
+            return $(this).attr("ng-model").replace("search.", "");
+          }).get();
+
+          _.each(map[name], function (option) { 
+            revmap[option] = name; 
+          });
+
+          tmpl += '<li class="checkbox"><label><input type="checkbox" ng-model="'+option+'" />'+label+'</label></li>';
+          $el.attr("ng-show", option);
         });
+
+        tmpl += "</ul></div>";
+
+        tElement.find(".advanced-options-configure").after(tmpl);
+
+        return function (scope, element, attrs, transclude) { 
+
+          var ao = scope.ao = {};
+
+          _.each(scope.search, function (val, option) {
+            if (revmap[option]) {
+              ao[revmap[option]] = true;
+            }
+          });
+
+          scope.$watch("ao_show", function (value) {
+            if (value) return;
+
+            if (!value) {
+              var deleted = 0;
+
+              angular.forEach(scope.ao, function (value, options) {
+
+                if (!value) {
+                  _.each(map[options], function (option) {
+                    delete scope.search[option];
+                  });
+
+                  deleted++;
+                }
+              });
+
+              if (deleted) {
+                scope.updateSearch();
+              }
+            }
+          });
+        }
+      },
+
+      // link: function(scope, element, attrs) {
+
+        // var ao = scope.ao = {};
 
         // Set the initial value for the `advanced` var depending on if
         // the initial query includes an advanced param
-        scope.advanced = !!_.detect(scope.advanced_fields, function (field) {
-          return !!scope.search[field];
-        });
+
 
         // when toggling the advanced fields off, loop over the advanced
         // params to see if any were included in the query, and if found,
         // update the search.
-        scope.$watch("advanced", function (value) {
-          if (!value) {
-            var deleted = 0;
-
-            angular.forEach(scope.advanced_fields, function (field) {
-              if ('undefined' !== typeof scope.search[field]) {
-                delete scope.search[field];
-                deleted++;
-              }
-            });
-
-            if (deleted) {
-              scope.updateSearch();
-            }
-          }
-        });
-      }
+      // }
     };
-  }])
+  });
 
   app.directive('a', function() {
     return {

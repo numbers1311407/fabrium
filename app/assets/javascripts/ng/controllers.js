@@ -42,8 +42,6 @@
         }
       };
 
-      // this will be populated after the form is parsed (see advancedOptions directive)
-      $scope.advanced_fields = [];
 
       $scope.parseSearch = function (search) {
         search || (search = $scope.search);

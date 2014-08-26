@@ -470,7 +470,39 @@ hr.no-botmargin {
   margin-bottom: 0;
 }
 
+.advanced-options-panel {
+  position: absolute;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  width: 200px;
+  background-color: #fff;
+  z-index: 1000;
+  margin-top: 10px;
+  padding: 10px;
+  ul, li {
+    list-style: none none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
 #fabric-variants-index {
+
+  .advanced-options {
+    fieldset {
+      margin: 0 0 15px;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .checkbox {
+      margin-top: 0;
+    }
+  }
+
   .panel {
     .panel-body {
       padding-bottom: 0;
@@ -478,7 +510,9 @@ hr.no-botmargin {
   }
 
   .search-footer {
-    margin: 18px 0;
+    margin: 0 0 18px;
+    // This is in place for the animating search options (not enabled)
+    // margin: 18px 0;
   }
 
   legend {
@@ -797,7 +831,7 @@ span + span.badge {
 }
 
 fieldset {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .has-error .selectize-input {
