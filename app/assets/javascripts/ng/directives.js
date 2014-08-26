@@ -16,7 +16,7 @@
       restrict : 'C', 
       compile : function (tElement, tAttrs, transclude) {
 
-        var tmpl = '<div class="advanced-options-panel" ng-show="ao_show"><ul>';
+        var tmpl = '<div ng-show="ao_show" ng-click="ao_show = false" id="screen"></div><div class="advanced-options-panel" ng-show="ao_show"><ul>';
 
         var map = {}, revmap = {};
 

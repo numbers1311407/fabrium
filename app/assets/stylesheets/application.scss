@@ -470,6 +470,22 @@ hr.no-botmargin {
   margin-bottom: 0;
 }
 
+.advanced-options-configure a {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+#screen {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.15);
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
 .advanced-options-panel {
   position: absolute;
   border: 1px solid #aaa;

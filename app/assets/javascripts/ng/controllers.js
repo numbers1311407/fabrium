@@ -153,10 +153,12 @@
         }
       };
 
+      $scope.lastSearch = {};
+
       $scope.shouldForceSubmit = function () {
         $scope.parseSearch();
-        return !$scope.lastSearch || 
-          angular.equals($scope.lastSearch, $scope.search);
+
+        return angular.equals($scope.lastSearch, $scope.search);
       };
 
       $scope.$on('$routeUpdate', function () {
