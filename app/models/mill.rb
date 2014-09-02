@@ -79,6 +79,9 @@ class Mill < ActiveRecord::Base
 
   # fabrics the mill creates
   has_many :fabrics
+  # fabric variants of those fabrics 
+  # (denormalized, belongs to both fabric and that fabric's mill)
+  has_many :fabric_variants
 
   # carts for a mill include carts which they've created for buyers, 
   # and "subcarts" which are copies of buyer created carts that are

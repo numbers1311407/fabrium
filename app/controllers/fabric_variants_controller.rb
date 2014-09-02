@@ -190,6 +190,10 @@ class FabricVariantsController < ResourceController
     object.includes(:fabric)
   end
 
+  def begin_of_association_chain
+    current_user.meta if current_user.is_mill?
+  end
+
   def collection_filter_roles(object)
     case current_user.meta_type.human
 
@@ -198,8 +202,10 @@ class FabricVariantsController < ResourceController
       object = object.active_mills
 
     # mills only see their own fabrics
-    when 'mill'
-      object = object.mills(current_user.meta.id)
+    # NOTE Changed, now handled by the `begin_of_association_chain`
+    # when 'mill'
+    #   object = object.mills(current_user.meta.id)
+
     end
 
     object
