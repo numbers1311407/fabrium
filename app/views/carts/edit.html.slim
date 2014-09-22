@@ -6,9 +6,9 @@
     = render "form"
 
   / afterwards, show the "order" form if the user is a mill
-  - elsif current_user.is_mill?
-    = render "order_form"
+  - elsif current_user.is_buyer?
+    = render "static"
 
   / otherwise the static view (for admins and buyers)
   - else
-    = render "static"
+    = render "order_form"
