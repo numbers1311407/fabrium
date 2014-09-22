@@ -74,6 +74,8 @@ en:
       no_results: 'No %{collection} were found'
       empty_cart: 'The hanger request is currently empty'
     carts:
+      links:
+        edit: 'View & Edit'
       actions:
         index:
           title_with_count: "Hanger Requests (%{count} Requests)"
