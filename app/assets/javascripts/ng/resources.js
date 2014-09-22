@@ -111,6 +111,12 @@
         return this.getRestangularUrl() + search;
       };
 
+      model.isFree = function () {
+        return _.all(model.price, function (v, k) {
+          return parseFloat(v.max) == 0;
+        });
+      };
+
       return model;
     });
 

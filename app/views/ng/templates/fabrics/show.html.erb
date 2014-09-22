@@ -31,13 +31,13 @@
         <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd>
         <dt>Width</dt> <dd ng-bind="fabric.width | width"></dd>
         <dt>Country of Origin</dt> <dd ng-bind="fabric.country.name | default"></dd>
-        <dt>Price</dt> <dd ng-bind="fabric.price | price"></dd>
+        <span ng-hide="fabric.isFree()"><dt>Price</dt> <dd ng-bind="fabric.price | price"></dd></span>
         <dt>In Stock</dt> <dd ng-bind="variant.in_stock | yesno"></dd>
         <dt>Category</dt> <dd ng-bind="fabric.category.name | default"></dd>
         <dt>Dye Method</dt> <dd ng-bind="fabric.dye_method.name | default"></dd>
         <dt>Keywords</dt> <dd ng-bind="fabric.tags | tags"></dd>
-        <dt>Sample Lead Time</dt> <dd ng-bind="fabric.lead_time.sample"></dd>
-        <dt>Bulk Lead Time</dt> <dd ng-bind="fabric.lead_time.bulk"></dd>
+        <dt>Sample Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.sample}} Weeks"></dd> 
+        <dt>Bulk Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.bulk}} Weeks"></dd>
         <dt>Sample Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.sample"></dd>
         <dt>Bulk Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.bulk"></dd>
       </dl>
@@ -46,8 +46,8 @@
 
   <div class="row">
     <div class="buttons col-sm-12">
-      <a class="btn btn-default" ng-click="currentUser.toggleFavorite(fabric.id)">
-        <i class="fa fa-heart-o"></i>
+      <a class="btn btn-default fabric-favorite-status" ng-click="currentUser.toggleFavorite(fabric.id)">
+        <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(fabric.id)]"></i>
         <span ng-bind="currentUser.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
       <a class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>

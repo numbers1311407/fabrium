@@ -100,12 +100,14 @@
           , min = parseFloat(v.min).toFixed(2)
           , max = parseFloat(v.max).toFixed(2);
 
-        return min == max
+        return '0.00' === max
+          ? ""
+          : min === max
           ? "{0}{1}".format(cur, min)
           : "{0}{1} {2} {0}{3}".format(cur, min, to, max)
       });
 
-      return out.join(delim);
+      return _.compact(out).join(delim);
     }
   });
 
