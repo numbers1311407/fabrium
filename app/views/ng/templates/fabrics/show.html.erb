@@ -28,6 +28,7 @@
     <div class="fabrics-show-details col-sm-5">
       <dl>
         <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd><br>
+        <span ng-if="!currentUser.isBuyer()"><dt>Item #</dt> <dd ng-bind="variant.item_number"></dd><br></span>
         <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd><br>
         <dt>Fiber Content</dt> <dd ng-bind="fabric.materials | materials | default"></dd><br>
         <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd><br>
@@ -54,7 +55,7 @@
       </a>
       <a ng-if="!currentUser.isBuyer()" class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
-      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
+      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="handleRequestClick(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Fabric In Cart - View Cart' : 'Add Fabric To Cart'"></a>
     </div>
   </div>
   <div class="row">

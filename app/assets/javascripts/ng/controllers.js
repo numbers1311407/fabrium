@@ -42,7 +42,6 @@
         }
       };
 
-
       $scope.parseSearch = function (search) {
         search || (search = $scope.search);
 
@@ -287,6 +286,14 @@
       $scope.$on('$routeUpdate', function () {
         $scope.setPosition($location.search().v);
       });
+
+      $scope.handleRequestClick = function (id) {
+        if ($scope.cart.hasItem(id)) {
+          location.href = "/cart";
+        } else {
+          $scope.cart.toggleItem(id);
+        }
+      };
 
 
       /**
