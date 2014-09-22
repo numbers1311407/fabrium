@@ -2,11 +2,12 @@
 
 = f.input :archived, label: false, inline_label: true, hint: "Archived fabrics will not be displayed in buyer search results"
 
-.form-group.property_select.materials
-  = f.label :materials
+.form-group.property_select.materials(class = (f.object.errors[:materials].any? ? "has-error" : ""))
+  = f.label :materials, class: 'control-label'
   select#fabric_tags(placeholder=t("placeholders.materials") data-select={plugins: {multiple_properties: {}}}.to_json )
     option(value="")
     = options_from_collection_for_select(Material.order(name: :asc), :id, :name)
+  = f.error :materials
   script(type="html/template")
     | <div class="property-assignment" data-id="<%= id %>">
         <%= name %>

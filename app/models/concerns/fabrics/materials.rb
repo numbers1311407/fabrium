@@ -14,6 +14,8 @@ module Fabrics
       scope :material, ->(id) { 
         joins(:materials).where(material_assignments: {material_id: id})
       }
+
+      validates_presence_of :materials
     end
 
     protected
