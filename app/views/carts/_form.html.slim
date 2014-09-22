@@ -18,5 +18,6 @@
             = f.input :buyer_email
             = f.input :buyer_email_confirmation
 
-      .form-actions
-        = f.submit cart_button_label(resource), class: 'btn btn-primary'
+      - unless current_user.is_admin?
+        .form-actions
+          = f.submit cart_button_label(resource), class: 'btn btn-primary'

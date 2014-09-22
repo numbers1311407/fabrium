@@ -22,16 +22,10 @@ class Cart < ActiveRecord::Base
     # Mill can edit items or remove cart
     :mill_build,
 
-    # TODO I think we're missing a state here where the buyer hasn't yet
-    # claimed the cart.  It's TBD how this happens though:
-    #
-    # - Does the mill build process CREATE a buyer with the given email?
-    # - Is the prospective buyer redirected to create an account when he/she
-    #   submits the form?  If that's the case, what if their email is not
-    #   accepted and they end up in a pending queue?
-    #
-    # - I think the latter is probably the case:
-    # 1. Buyer follows email to site.
+    # Mill submitted to buyer but buyer has not yet "claimed" the cart, associating
+    # it to a buyer record.  This happens only happens when the "buyer email" the
+    # cart is submitted to does not yet belong to a buyer.  The step is skipped
+    # otherwise.
     :buyer_unclaimed,
 
     # In the hands of the buyer, awaiting edit/submit
