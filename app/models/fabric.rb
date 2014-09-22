@@ -32,4 +32,6 @@ class Fabric < ActiveRecord::Base
   validates :mill, presence: true
   validates :item_number, presence: true, uniqueness: { scope: :mill_id }
   validates :weight, presence: true
+  validates :bulk_minimum_quality, numericality: { greater_than_or_equal_to: 0 }
+  validates :sample_minimum_quality, numericality: { greater_than_or_equal_to: 0 }
 end
