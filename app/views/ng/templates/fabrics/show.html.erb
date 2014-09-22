@@ -57,7 +57,12 @@
       </a>
       <a ng-if="!currentUser.isBuyer()" class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
-      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="handleRequestClick(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Fabric In Cart - View Cart' : 'Add Fabric To Cart'"></a>
+      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="handleRequestClick(variant.id)" href="#request">
+        <span ng-if="cart.hasItem(variant.id) && currentUser.isBuyer()">Fabric In Cart - View Cart</span>
+        <span ng-if="cart.hasItem(variant.id) && currentUser.isMill()">Item Selected - View Cart</span>
+        <span ng-if="!cart.hasItem(variant.id) && currentUser.isBuyer()">Add Fabric To Cart</span>
+        <span ng-if="!cart.hasItem(variant.id) && currentUser.isMill()">Select Item</span>
+      </a>
     </div>
   </div>
   <div class="row">

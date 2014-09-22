@@ -2,6 +2,9 @@
 
 - is_empty = resource.cart_items.empty?
 
+- if current_user.is_mill?
+  h2 Selections to Send
+
 .cart-form-wrapper
   = simple_form_for resource do |f|
     .cart-empty-block class=(is_empty ? nil : "hidden")
