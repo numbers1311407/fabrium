@@ -39,7 +39,11 @@
           $el.attr("ng-show", option);
         });
 
-        tmpl += "</ul></div>";
+        tmpl += "</ul>";
+
+        tmpl += '<br/><button class="btn btn-primary" ng-click="ao_show=false">Close</button>';
+
+        tmpl += "</div>";
 
         tElement.find(".advanced-options-configure").after(tmpl);
 
@@ -76,20 +80,7 @@
             }
           });
         }
-      },
-
-      // link: function(scope, element, attrs) {
-
-        // var ao = scope.ao = {};
-
-        // Set the initial value for the `advanced` var depending on if
-        // the initial query includes an advanced param
-
-
-        // when toggling the advanced fields off, loop over the advanced
-        // params to see if any were included in the query, and if found,
-        // update the search.
-      // }
+      }
     };
   });
 
