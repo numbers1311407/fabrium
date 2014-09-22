@@ -40,6 +40,7 @@ class FabricVariant < ActiveRecord::Base
   # Merged scopes
   #
   scope :weight, ->(*args) { joins(:fabric).merge(Fabric.weight(*args)) }
+  scope :price, ->(*args) { joins(:fabric).merge(Fabric.price(*args)) }
   scope :category, ->(val) { joins(:fabric).merge(Fabric.category(val)) }
   scope :material, ->(val) { joins(:fabric).merge(Fabric.material(val)) }
   scope :dye_method, ->(val) { joins(:fabric).merge(Fabric.dye_method(val)) }

@@ -3,11 +3,19 @@ require 'active_support/concern'
 module Fabrics::Prices
   extend ActiveSupport::Concern
 
+  PRICE_UNITS = %w(us eu)
+
   included do
     validates :price_us_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_us_max }
     validates :price_eu_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_eu_max }
 
     before_validation :cast_price_ranges_to_db
+
+    scope :price, ->(v, units=nil) {
+      conditions = {}
+      conditions[parse_units_column(units)] = v
+      where.overlaps(conditions)
+    }
   end
 
   def price_us_min=(v)
@@ -50,6 +58,23 @@ module Fabrics::Prices
 
   def pricing_type=(v)
     @pricing_type = v.to_i
+  end
+
+  module ClassMethods
+    def default_price_units
+      PRICE_UNITS[0]
+    end
+
+    def parse_units_column(v)
+      units = if v.blank?
+        default_price_units
+      else
+        found = PRICE_UNITS.detect {|unit| unit == v.downcase }
+        found || default_price_units
+      end
+
+      "price_#{units}"
+    end
   end
 
 

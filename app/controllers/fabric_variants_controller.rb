@@ -51,11 +51,11 @@ class FabricVariantsController < ResourceController
 
   has_scope :price_range_or_min, as: :price_min do |controller, scope, value|
     max = controller.params[:price_max] || Float::INFINITY
-    scope.weight (value.to_f)..(max.to_f), controller.params[:price_units]
+    scope.price (value.to_f)..(max.to_f), controller.params[:price_units]
   end
 
-  has_scope :price_max, as: :price_min do |controller, scope, value|
-    scope.weight -Float::INFINITY..(value.to_f), controller.params[:price_units]
+  has_scope :price_max, if: 'params[:price_min].blank?' do |controller, scope, value|
+    scope.price -Float::INFINITY..(value.to_f), controller.params[:price_units]
   end
 
   has_scope :in_stock
@@ -112,7 +112,6 @@ class FabricVariantsController < ResourceController
   has_scope :fabrium_id, as: :fid
   has_scope :item_number
   has_scope :material
-  has_scope :price
   has_scope :sample_lead_time
   has_scope :sample_minimum_quality, as: :sample_min
   has_scope :tags
