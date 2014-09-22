@@ -1,6 +1,6 @@
 <div class="fabrics-show" ng-class="{'modal-body': isModal}">
   <div class="row">
-    <div class="fabrics-show-image col-sm-6">
+    <div class="fabrics-show-image col-sm-7">
       <div id="slideshow-1">
         <div id="cycle-1" cycle
             index="position"
@@ -11,6 +11,8 @@
             data-cycle-log=false
             data-cycle-pager="#adv-custom-pager"
             data-cycle-pager-template=""
+            data-cycle-center-horz=true
+            data-cycle-center-vert=true
         >
           <div data-rulered={{v.image.width}} ng-repeat="v in fabric.variants">
             <img ng-src="{{ v.image.full }}" />
@@ -23,22 +25,22 @@
         </a>
       </div>
     </div>
-    <div class="fabrics-show-details col-sm-6">
+    <div class="fabrics-show-details col-sm-5">
       <dl>
-        <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd>
-        <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd>
-        <dt>Fiber Content</dt> <dd ng-bind="fabric.materials | materials | default"></dd>
-        <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd>
-        <dt>Width</dt> <dd ng-bind="fabric.width | width"></dd>
-        <dt>Country of Origin</dt> <dd ng-bind="fabric.country.name | default"></dd>
-        <span ng-hide="fabric.isFree()"><dt>Price</dt> <dd ng-bind="fabric.price | price"></dd></span>
-        <dt>In Stock</dt> <dd ng-bind="variant.in_stock | yesno"></dd>
-        <dt>Category</dt> <dd ng-bind="fabric.category.name | default"></dd>
-        <dt>Dye Method</dt> <dd ng-bind="fabric.dye_method.name | default"></dd>
-        <dt>Keywords</dt> <dd ng-bind="fabric.tags | tags"></dd>
-        <dt>Sample Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.sample}} Weeks"></dd> 
-        <dt>Bulk Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.bulk}} Weeks"></dd>
-        <dt>Sample Minimum</dt> <dd ng-bind-template="{{fabric.minimum_quality.sample}} Square Meters"></dd>
+        <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd><br>
+        <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd><br>
+        <dt>Fiber Content</dt> <dd ng-bind="fabric.materials | materials | default"></dd><br>
+        <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd><br>
+        <dt>Width</dt> <dd ng-bind="fabric.width | width"></dd><br>
+        <dt>Country of Origin</dt> <dd ng-bind="fabric.country.name | default"></dd><br>
+        <span ng-hide="fabric.isFree()"><dt>Price</dt> <dd ng-bind="fabric.price | price"></dd></span><br>
+        <dt>In Stock</dt> <dd ng-bind="variant.in_stock | yesno"></dd><br>
+        <dt>Category</dt> <dd ng-bind="fabric.category.name | default"></dd><br>
+        <dt>Dye Method</dt> <dd ng-bind="fabric.dye_method.name | default"></dd><br>
+        <dt>Keywords</dt> <dd ng-bind="fabric.tags | tags"></dd><br>
+        <dt>Sample Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.sample}} Weeks"></dd><br>
+        <dt>Bulk Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.bulk}} Weeks"></dd><br>
+        <dt>Sample Minimum</dt> <dd ng-bind-template="{{fabric.minimum_quality.sample}} Square Meters"></dd><br>
         <dt>Bulk Minimum</dt> <dd ng-bind-template="{{fabric.minimum_quality.bulk}} Square Meters"></dd>
       </dl>
     </div>

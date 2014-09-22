@@ -10,6 +10,13 @@
         li.text
           span Welcome #{current_user.email}!
         li= link_to st('links.search'), root_path
+        - unless current_user.is_admin?
+          li
+            a.cart-link href=pending_cart_path
+              i.fa.fa-shopping-cart
+              span My Cart
+              span.count-outer
+                |  (<span class="count">#{pending_cart_size}</span>)
         li.dropdown
           = link_to("/lists", data: {toggle: "dropdown"}) do
             span Manage
@@ -23,13 +30,6 @@
               | Other
               span.caret
           ul.dropdown-menu
-            - unless current_user.is_admin?
-              li
-                a.cart-link href=pending_cart_path
-                  i.fa.fa-shopping-cart
-                  span My Cart
-                  span.count-outer
-                    |  (<span class="count">#{pending_cart_size}</span>)
             li
               = link_to edit_user_registration_path do
                 i.fa.fa-user
