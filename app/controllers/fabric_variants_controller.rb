@@ -65,18 +65,19 @@ class FabricVariantsController < ResourceController
   end
 
   has_scope :mills do |controller, scope, value|
-    is_default = 'default' == value
     user = controller.current_user
 
     # mill users ignore the scope, they only see their own fabrics
     if user.is_mill?
       scope
 
+    # NOTE this was removed
+    #
     # buyers get the special "preferred" param which scopes off
     # their preferred mills list
-    elsif user.is_buyer? && 'preferred' == value 
-      preferred = user.meta.preferred_mills
-      preferred.present? ? scope.mills(preferred) : scope
+    # elsif user.is_buyer? && 'preferred' == value 
+    #   preferred = user.meta.preferred_mills
+    #   preferred.present? ? scope.mills(preferred) : scope
 
     # otherwise scope to the value
     else
