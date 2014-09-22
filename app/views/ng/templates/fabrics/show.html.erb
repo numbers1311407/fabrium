@@ -50,7 +50,7 @@
         <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(fabric.id)]"></i>
         <span ng-bind="currentUser.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
-      <a class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
+      <a ng-if="!currentUser.isBuyer()" class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
       <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="cart.toggleItem(variant.id)" href="#request" ng-bind="cart.hasItem(variant.id) ? 'Request Pending' : 'Request Hanger'"></a>
     </div>
