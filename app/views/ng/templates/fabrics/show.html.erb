@@ -38,8 +38,8 @@
         <dt>Keywords</dt> <dd ng-bind="fabric.tags | tags"></dd>
         <dt>Sample Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.sample}} Weeks"></dd> 
         <dt>Bulk Lead Time</dt> <dd ng-bind-template="{{fabric.lead_time.bulk}} Weeks"></dd>
-        <dt>Sample Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.sample"></dd>
-        <dt>Bulk Minimum M<sup>2</sup></dt> <dd ng-bind="fabric.minimum_quality.bulk"></dd>
+        <dt>Sample Minimum</dt> <dd ng-bind-template="{{fabric.minimum_quality.sample}} Square Meters"></dd>
+        <dt>Bulk Minimum</dt> <dd ng-bind-template="{{fabric.minimum_quality.bulk}} Square Meters"></dd>
       </dl>
     </div>
   </div>
