@@ -1,15 +1,16 @@
-.cart-header
-  p.line-item
-    label 
-      | Status: 
-      = translate_cart_state(resource.state)
-
-  - if resource.tracking_number.present?
+- if resource.state > "pending"
+  .cart-header
     p.line-item
-      label
-        = resource_label :tracking_number
-        |: 
-        = resource.tracking_number
+      label 
+        | Status: 
+        = translate_cart_state(resource.state)
+
+    - if resource.tracking_number.present?
+      p.line-item
+        label
+          = resource_label :tracking_number
+          |: 
+          = resource.tracking_number
 
 .cart-items
   = render partial: 'cart_items/static', collection: resource.cart_items, as: :cart_item
