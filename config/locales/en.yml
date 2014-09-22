@@ -126,7 +126,7 @@ en:
     my_carts: 'My Carts'
   messages:
     crop_warning: "Your image must be exactly %{size}x%{size}px.  It must be cropped before it will appear in search results."
-    variant_persistence: "Note that changes to color ways will not be persisted until this fabric is saved"
+    variant_persistence: 'Note that changes to color ways will not be committed until you click the "save" button above or below'
 
   errors:
     # The default format to use in full error messages.

@@ -32,6 +32,8 @@ class FabricsController < ResourceController
 
   before_filter :build_nested_associations, only: [:new, :edit]
 
+  after_filter :set_last_committed_mill, only: [:update, :create]
+
   # increment view count on show
   def show
     object = resource
@@ -44,16 +46,6 @@ class FabricsController < ResourceController
     new! do |wants|
       wants.html { render layout: !request.xhr? }
     end
-  end
-
-  def create
-    if current_user.is_admin?
-      session[:last_created_fabric_mill] = params[:fabric][:mill_id]
-    end
-
-    # `super` rather than `create!` because of the redirect path changes in
-    # ResourceController
-    super
   end
 
   def toggle_archived
@@ -84,8 +76,14 @@ class FabricsController < ResourceController
 
   protected
 
+  def set_last_committed_mill
+    if resource.persisted? && current_user.is_admin?
+      session[:last_created_fabric_mill] = resource.mill_id
+    end
+  end
+
   def after_commit_redirect_path
-    params[:commit_and_redirect] ? new_resource_path : collection_path
+    params[:commit_and_redirect] ? new_resource_path : edit_resource_path 
   end
 
   def build_nested_associations
