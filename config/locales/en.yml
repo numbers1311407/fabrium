@@ -1,7 +1,7 @@
 en:
   site_title: "Fabrium"
 
-  public_cart_message: "The fabric mill %{mill} has built a hanger request for you.  Sign up to edit and submit it!"
+  public_cart_message: '"%{mill}" created a portfolio of selections for you. Sign up to view, edit and request hangers.'
 
   boolean:
     yes: "Yes"
@@ -14,7 +14,7 @@ en:
       submit: "Save %{model}"
       cart:
         states:
-          mill_build: "Send Request to Buyer"
+          mill_build: "Send Selections to Buyer"
           buyer_build: "Submit Request"
           ordered: "Save and Ship Request"
           closed: "Update Request"
