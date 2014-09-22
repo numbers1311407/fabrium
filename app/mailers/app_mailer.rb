@@ -6,7 +6,7 @@ class AppMailer < ActionMailer::Base
     @mill = cart.creator
 
     @cart_url = cart.public? ? public_cart_url(cart.public_id) : cart_url(cart)
-    mail(to: cart.buyer_email, subject: "A fabric hanger cart has been created for you by #{@mill.name}")
+    mail(to: cart.buyer_email, subject: "A portfolio of selections has been created for you by \"#{@mill.name}\"")
   end
 
   def user_activated(user_id)
