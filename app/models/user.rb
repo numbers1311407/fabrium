@@ -99,7 +99,10 @@ class User < ActiveRecord::Base
     # If this user is pending, it doesn't need to be later confirmed,
     # as the admin will be confirming them and sending the email that
     # way.
-    if pending?
+    #
+    # If the user is invited, they do not need confirmation.  Only users
+    # created through registration should be confirmed.
+    if invited_by.present? || pending?
       self.skip_confirmation!
     end
 
