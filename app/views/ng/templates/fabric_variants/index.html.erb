@@ -344,7 +344,10 @@
         <div class="resultdetails-outer">
           <table class="resultdetails">
             <tr ng-if="!currentUser.isBuyer()">
-              <td>Item #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
+              <td>Item #</td><td class="resultdetails-data">{{item.fabric_item_number | default}}</td>
+            </tr>
+            <tr ng-if="!currentUser.isBuyer()">
+              <td>Color Way #</td><td class="resultdetails-data">{{item.item_number | default}}</td>
             </tr>
             <tr>
               <td>Fabrium #</td><td class="resultdetails-data">{{item.fabrium_id}}</td>

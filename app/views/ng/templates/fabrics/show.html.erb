@@ -4,6 +4,7 @@
       <div id="slideshow-1">
         <div id="cycle-1" cycle
             index="position"
+            update="setPosition"
             bubble-click-events="!isModal"
             data-cycle-slides="[ng-repeat]"
             data-cycle-timeout="0"
@@ -28,7 +29,8 @@
     <div class="fabrics-show-details col-sm-5">
       <dl>
         <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd><br>
-        <span ng-if="!currentUser.isBuyer()"><dt>Item #</dt> <dd ng-bind="variant.item_number"></dd><br></span>
+        <span ng-if="!currentUser.isBuyer()"><dt>Item #</dt> <dd ng-bind="fabric.item_number"></dd><br></span>
+        <span ng-if="!currentUser.isBuyer()"><dt>Color Way #</dt> <dd ng-bind="variant.item_number"></dd><br></span>
         <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd><br>
         <dt>Fiber Content</dt> <dd ng-bind="fabric.materials | materials | default"></dd><br>
         <dt>Weight</dt> <dd ng-bind-html="fabric.weight | weight"></dd><br>

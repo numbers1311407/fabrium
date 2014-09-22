@@ -248,66 +248,64 @@
   );
 
   app.controller('FabricShowCtrl', function ($scope, $location, isModal, fabric, position, currentUser) {
-      $scope.fabric = fabric;
-      $scope.isModal = isModal;
+    $scope.fabric = fabric;
+    $scope.isModal = isModal;
 
-      currentUser.get().then(function (user) {
-        $scope.currentUser = user;
+    currentUser.get().then(function (user) {
+      $scope.currentUser = user;
 
-        if (user) user.getCart().then(function (cart) {
-          if (!cart) return;
+      if (user) user.getCart().then(function (cart) {
+        if (!cart) return;
 
-          $scope.cart = cart;
-          $scope.$watch("cart.size()", function (v) {
-            $("a.cart-link .count").text(v);
-          });
+        $scope.cart = cart;
+        $scope.$watch("cart.size()", function (v) {
+          $("a.cart-link .count").text(v);
         });
       });
+    });
 
-      /**
-       * Provide a cycling hook for jQuery Cycle to change the
-       * current fabric variant as the slides change.
-       */
+    /**
+     * Provide a cycling hook for jQuery Cycle to change the
+     * current fabric variant as the slides change.
+     */
 
-      $scope.$watch("position", function (val) {
-        $scope.variant = fabric.variants[val];
-      });
+    $scope.$watch("position", function (val) {
+      $scope.variant = fabric.variants[val];
+    });
 
-      $scope.setPosition = function (position) {
-        if (/^\d+$/.test(position) && parseInt(position, 0) < fabric.variants.length) {
-          $scope.position = parseInt(position, 0);
-        } else {
-          $scope.position = 0;
-        }
-      };
+    $scope.setPosition = function (position) {
+      if (/^\d+$/.test(position) && parseInt(position, 0) < fabric.variants.length) {
+        $scope.position = parseInt(position, 0);
+      } else {
+        $scope.position = 0;
+      }
+    };
 
-      $scope.setPosition(position);
+    $scope.setPosition(position);
 
-      $scope.$on('$routeUpdate', function () {
-        $scope.setPosition($location.search().v);
-      });
+    $scope.$on('$routeUpdate', function () {
+      $scope.setPosition($location.search().v);
+    });
 
-      $scope.handleRequestClick = function (id) {
-        if ($scope.cart.hasItem(id)) {
-          location.href = "/cart";
-        } else {
-          $scope.cart.toggleItem(id);
-        }
-      };
-
-
-      /**
-       * "Print screen" function
-       * TODO needs work
-       */
-
-      $scope.print = function () {
-        var $el = $(".fabrics-show");
-        utils.printElement($el[0]);
-        window.print();
-      };
+    $scope.handleRequestClick = function (id) {
+      if ($scope.cart.hasItem(id)) {
+        location.href = "/cart";
+      } else {
+        $scope.cart.toggleItem(id);
+      }
+    };
 
 
-    }
-  );
+    /**
+     * "Print screen" function
+     * TODO needs work
+     */
+
+    $scope.print = function () {
+      var $el = $(".fabrics-show");
+      utils.printElement($el[0]);
+      window.print();
+    };
+  });
+
 })(window);

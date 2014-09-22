@@ -105,6 +105,7 @@
 
       scope: {
         index: "=",
+        update: "=",
         bubble: '=bubbleClickEvents'
       },
 
@@ -117,14 +118,17 @@
           });
 
           if (undefined !== scope.index) {
-            // $(elem).on("cycle-before", function (e, API) {
-            //   scope.index = API.nextSlide;
-            // });
-
             scope.$watch("index", function (index) {
               $(elem).cycle("goto", index);
             });
           }
+
+          if (undefined !== scope.update) {
+            $(elem).on("cycle-before", function (e, API) {
+              scope.update(API.nextSlide);
+            });
+          }
+
         });
 
         scope.$on('$destroy', function() {

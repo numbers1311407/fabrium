@@ -6,6 +6,7 @@ module FabricVariantRepresenter
   property :fabrium_id
   property :fabric_id
   property :item_number
+  property :fabric_item_number
   property :color
   property :in_stock
   property :position
