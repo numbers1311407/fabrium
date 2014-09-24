@@ -264,6 +264,7 @@ en:
         tags: Keywords
         views_count: Viewed
         country: Country of Origin
+        width: Width in cm
       mill:
         name: Mill Name
         active: Mill is active?
