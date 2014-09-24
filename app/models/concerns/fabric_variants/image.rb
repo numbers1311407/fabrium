@@ -55,7 +55,8 @@ module FabricVariants
     end
 
     def crop_height
-      image_crop ? image_crop[:w] : 0
+      # The crop is always square currently
+      crop_width
     end
 
     def image_path
