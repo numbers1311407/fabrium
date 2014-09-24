@@ -10,6 +10,31 @@
     .shipping-email
       = resource.buyer.user_email
 
+  p
+    button.btn.btn-info#print-packing-slip
+      span Print Packing Slip
+      .hidden
+        | Customer name: #{resource.buyer.name}<br>
+        | #{resource.buyer.company}<br>
+        | #{buyer_address resource.buyer}
+        | #{resource.buyer.user_email}<br>
+        | <br>
+        | Mill Item #:<br>
+        - resource.cart_items.each do |item|
+          | #{item.fabric_variant.item_number}
+
+- content_for :body_end do
+  javascript:
+    $(function () {
+      $("#print-packing-slip").click(function () {
+        var $el = $(this).find(".hidden");
+        var div = $("<div></div>").html($el.html())[0];
+        utils.printElement(div);
+        window.print();
+      });
+    });
+
+
 .cart-form-wrapper
   = simple_form_for resource do |f|
     .cart-form-block
