@@ -4,6 +4,8 @@
   th= sort_link(@q, :creator_type, 'Source')
   - if current_user.is_admin?
     th= sort_link(@q, :parent_name, 'Parent Cart')
+  - if current_user.is_mill?
+    th= sort_link(@q, :buyer_viewed, 'Buyer Viewed')
   th= sort_link(@q, :state)
 
 td= l(resource.created_at, format: :long)
@@ -11,4 +13,6 @@ td= resource.name
 td= humanize_creator_type(resource)
 - if current_user.is_admin?
   td= resource.parent.present? && link_to('Edit', cart_path(resource.parent)) || 'n/a'
+- if current_user.is_mill?
+  td= resource.public_viewed ? l(resource.public_viewed, format: :long) : 'No'
 td= translate_cart_state(resource.state)

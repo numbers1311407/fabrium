@@ -40,7 +40,7 @@ class CartsController < ResourceController
       elsif user.is_buyer?
         scope = scope.buyer_build
       end
-    when 'ordered', 'mill_build', 'buyer_build'
+    when 'ordered', 'mill_build', 'buyer_build', 'closed'
       scope = scope.send(value)
     end
 
@@ -90,6 +90,10 @@ class CartsController < ResourceController
   #
   def public_show
     object = resource
+
+    unless object.public_viewed
+      object.update_column(:public_viewed, Time.now)
+    end
 
     # If the object is not public (basically if it has a buyer attached
     # already) then this will just redirect to the authenticated URL of
@@ -147,7 +151,7 @@ class CartsController < ResourceController
     if current_user.is_admin?
       %w(buyer_build mill_build ordered)
     else
-      %w(active ordered)
+      %w(active ordered closed)
     end
   end
   helper_method :scope_options
