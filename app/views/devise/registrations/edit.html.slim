@@ -7,7 +7,7 @@ h2 Manage Login
   .row.form-inputs-row
     .form-inputs
       - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-        p Currently waiting confirmation for: #{ resource.unconfirmed_email }
+        p Currently awaiting confirmation for: #{ resource.unconfirmed_email }
       
       = f.input :password, autocomplete: 'off', required: false
       = f.input :password_confirmation, required: false
