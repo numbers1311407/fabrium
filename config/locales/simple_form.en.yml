@@ -28,8 +28,8 @@ en:
         tag_ids: "Contact admin@fabrium.com to suggest additional keywords"
         mill: "Choosing a mill will populate a new fabric form for that mill"
       buyer:
-        preferred_mills: 'Your default "preferred" mills by which you can filter search results'
-        blocked_mills: 'Your default "blocked" mills by which you can filter search results'
+        preferred_mills: 'On the search screen under advanced search, you can filter your search results so it only shows fabrics from your "Preferred Mills."'
+        blocked_mills: 'On the search screen under advanced search, you can filter your search results so it does not show any fabrics from your "Blocked Mills."'
 
 
     # Examples
