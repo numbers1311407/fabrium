@@ -10,7 +10,7 @@
       label 
         = link_to fabric_path_with_variant(fabric, variant) do
           | Fabrium #: #{cart_item.fabrium_id}
-    - unless current_user.is_buyer?
+    - unless current_user && current_user.is_buyer?
       p.line-item: label Item #: #{variant.item_number}
     p.line-item
       label 
@@ -20,4 +20,5 @@
     - if cart_item.sample_yardage.present?
       p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
 
-    = fake_input(:notes, cart_item)
+    - if current_user
+      = fake_input(:notes, cart_item)

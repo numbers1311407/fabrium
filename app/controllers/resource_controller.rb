@@ -25,8 +25,8 @@ class ResourceController < InheritedResources::Base
     end
   end
 
-  def update
-    update! do |success, failure|
+  def update(options={})
+    update!(options) do |success, failure|
       success.html { redirect_to after_commit_redirect_path }
     end
   end

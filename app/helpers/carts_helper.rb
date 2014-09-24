@@ -13,7 +13,7 @@ module CartsHelper
 
   def translate_state(state, type)
     defaults = []
-    defaults << :"states.#{type}.#{current_user.meta_type.human}.#{state}"
+    defaults << :"states.#{type}.#{current_user.meta_type.human}.#{state}" if current_user
     defaults << :"states.#{type}.#{state}"
     defaults << state.humanize
 

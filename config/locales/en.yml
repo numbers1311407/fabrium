@@ -36,6 +36,17 @@ en:
       buyer: "Buyer"
       mill: "Mill"
 
+  cart_state_flash:
+    mill_build:
+      notice: "Selections sent successfully"
+      alert: "There was an error sending your selections"
+    buyer_build:
+      notice: "Hanger request submitted successfully"
+      alert: "There was an error submitting your hanger request"
+    default:
+      notice: "Cart updated successfully"
+      alert: "There was an error updating the cart"
+
   states:
     cart:
       pending: "Pending"

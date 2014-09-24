@@ -99,7 +99,8 @@ Devise.setup do |config|
 
   # ==> Configuration for :invitable
   # 
-  Devise.invited_by_class_name = 'User'
+  # Returning `nil` here allows for polymorphic inviters
+  Devise.invited_by_class_name = nil
  
   # The period the generated invitation token is valid, after
   # this period, the invited resource won't be able to accept the invitation.

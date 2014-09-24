@@ -53,6 +53,27 @@ class RegistrationsController < Devise::RegistrationsController
   def build_resource(hash=nil)
     object = resource_class.new_with_session(hash || {}, session)
 
+    # If there's a public cart in the session, we're going to assume this
+    # buyer received a cart from a mill and has visited the public cart
+    # page.  It is not currently required that the resulting user has
+    # the same email as that sent by the mill, only that they've visited
+    # the cart in the current session.
+    #
+    # The point of this is both to track users created as a result of
+    # mill "invites", and to prevent the need for user confirmation, as
+    # all invited users skip both the confirm & pending steps.  This means
+    # that users resulting from mill sent cart "invites" should be able
+    # to proceed directly to editing their cart, whether or not their
+    # email domain is pre-approved.
+    #
+    # Note if for whatever reason the mill specified by the session id
+    # cannot be found, user creation will not be prevented, but the user
+    # will require confirmation.
+    #
+    if session[:public_cart_mill]
+      object.invited_by = Mill.find_by(id: session[:public_cart_mill])
+    end
+
     # NOTE this works in the implementation because meta_type is always
     # set in the params, either via the `meta` param or submitted with
     # the form.  This way the user knows how to build the meta.

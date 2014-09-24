@@ -71,6 +71,16 @@ class CartsController < ResourceController
   end
 
 
+  #
+  # The state based messages here are probably a little too complex for
+  # the basic responder interpolation options (unless the messages were `"%{message}").
+  # Let's just send our own flash.
+  #
+  def update
+    super(flash_update_messages)
+  end
+
+
   # GET /carts/<public id>/pub
   #
   # This is a public route that a member is sent via a token.  It is
@@ -103,10 +113,31 @@ class CartsController < ResourceController
     # sign up
     session[:public_cart_id] = object.id
 
+    # Store the mill of the public cart.  This will be set as the inviter
+    # of the resulting user, if the cart invite results in a user registration
+    # (which is hopefully that of a buyer and not another mill, though there's
+    # nothing stopping that from happening currently)
+    session[:public_cart_mill] = object.mill.try(:id)
+
     respond_with(object)
   end
 
   protected
+
+  def flash_update_messages
+    resource_state = resource.state
+    messages = {}
+
+    %w(alert notice).each do |state|
+      defaults = []
+      defaults << :"cart_state_flash.#{resource_state}.#{state}"
+      defaults << :"cart_state_flash.default.#{state}"
+
+      messages[state.to_sym] = I18n.t(defaults.shift, default: defaults)
+    end
+
+    messages
+  end
 
   def after_commit_redirect_path
     collection_path
