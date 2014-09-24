@@ -613,6 +613,11 @@ tfoot.paginator {
   width: 150px;
   display: block;
 }
+@media screen and (max-width: $screen-md-max) {
+  .popover {
+    display: none;
+  }
+}
 
 .hidden-content {
   display: none;
