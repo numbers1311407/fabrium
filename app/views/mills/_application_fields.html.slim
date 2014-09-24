@@ -1,6 +1,6 @@
 fieldset
   legend Application Settings
-  - if current_user.is_admin?
+  - if current_user && current_user.is_admin?
     .row
       .col-sm-12
         = f.input :active, label: false, inline_label: true

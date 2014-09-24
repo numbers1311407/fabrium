@@ -9,6 +9,7 @@ h2 Sign Up
   = f.simple_fields_for :meta do |mf|
     - if resource.is_buyer?
       = render 'buyers/profile_fields', f: mf
+      = render 'buyers/application_fields', f: mf
     - elsif resource.is_mill?
       = render 'mills/profile_fields', f: mf
 
