@@ -13,9 +13,39 @@
 
   pwin.$("#loading-message").html('');
 
+  var error = pwin.$('<div class="alert alert-danger" style="display: none"></div>').prependTo(".modal-content .simple_form")[0];
+  var showError = function (msg) {
+    error.innerHTML = msg;
+    error.style.display = "block";
+    setTimeout(hideError, 5000);
+  }
+  var hideError = function () {
+    error.innerHTML = '';
+    error.style.display = "none";
+  }
+
+  var exts = [/\.jpe?g$/i, /\.gif$/i, /\.png$/i];
+
   //automatically submit the form
   document.getElementById("image").onchange = function() {
     var form = document.getElementById("image_preview_form");
+
+    var valid = false, fileName = this.value;
+    for (var i=0; i<exts.length; i++) {
+      if (exts[i].test(fileName)) {
+        valid = true;
+        break;
+      }
+    }
+
+    if (!valid) {
+      showError("Image must be of of type: jpg, png, or gif");
+      form.reset();
+      return;
+    }
+
+    hideError();
+
     form.submit();
     document.getElementById("formwrapper").removeChild(form);
     pwin.$("#loading-message").setLoading();
