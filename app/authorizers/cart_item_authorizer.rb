@@ -15,8 +15,8 @@ class CartItemAuthorizer < ApplicationAuthorizer
 
   def deletable_by?(user)
     # NOTE admins can't delete cart items.  Is this right?
-    # User is buyer and built the cart
-    (user.is_buyer? && cart.buyer == user.meta && cart.buyer_build? && cart.buyer_created?) ||
+    # User is buyer (doesn't matter who built cart)
+    (user.is_buyer? && cart.buyer == user.meta && cart.buyer_build?) ||
 
     # User is mill and built the cart
     (user.is_mill? && cart.mill == user.meta && cart.mill_build? && cart.mill_created?)
