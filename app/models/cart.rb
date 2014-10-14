@@ -13,7 +13,7 @@ class Cart < ActiveRecord::Base
   validates :cart_items, presence: true, if: :transitioning_from_buyer_build_to_pending?
 
   before_create :generate_public_id
-  after_create :generate_name
+  after_create :generate_name, unless: 'parent.present?'
 
   before_save :perform_state_update
 
@@ -70,6 +70,7 @@ class Cart < ActiveRecord::Base
     grouped_items.keys.map do |mill_id|
       cart = self.dup
       cart.parent = self
+      cart.state = :ordered
       cart.mill_id = mill_id
       cart
     end
@@ -167,6 +168,14 @@ class Cart < ActiveRecord::Base
     scoped = Cart.where(parent_id: parent_id)
     scoped = scoped.where.not(id: id) if persisted?
     scoped
+  end
+
+  def name(labeled=false)
+    n = read_attribute(:name)
+    if labeled && n.present?
+      n << ' (Subcart)' if subcart?
+    end
+    n || ''
   end
 
   protected
