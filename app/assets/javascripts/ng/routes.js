@@ -13,8 +13,10 @@
         templateUrl: '/templates/fabrics/show',
         controller: 'FabricShowCtrl',
         resolve: {
-          isModal: function () {
-            return false;
+          // NOTE we pass a null modalInstance here so that the same controller
+          // can be used for both modal and non-modal fabric views
+          $modalInstance: function () {
+            return null;
           },
           position: function ($route, $location) {
             return $location.search().v || 0;

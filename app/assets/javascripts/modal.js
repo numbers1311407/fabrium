@@ -1,5 +1,8 @@
 ;(function () {
 
+  // IMPORTANT This modal implementation is for the non-angular parts of the
+  // app.  Angular uses the angular-bootstrap modal.
+
   // add a "ready' for modal show, so that code can be re-run when a modal
   // is opened
   utils.addReady(function (fn) {

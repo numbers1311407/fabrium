@@ -228,8 +228,8 @@
           windowClass: "ng-modal",
           // scope: $scope,
           resolve: {
-            isModal: function () {
-              return true;
+            modal: function () {
+              return $modal;
             },
             position: function () {
               return position;
@@ -247,9 +247,9 @@
     }
   );
 
-  app.controller('FabricShowCtrl', function ($scope, $location, isModal, fabric, position, currentUser) {
+  app.controller('FabricShowCtrl', function ($scope, $location, $modalInstance, fabric, position, currentUser) {
     $scope.fabric = fabric;
-    $scope.isModal = isModal;
+    $scope.isModal = !!$modalInstance;
 
     currentUser.get().then(function (user) {
       $scope.currentUser = user;
@@ -263,6 +263,12 @@
         });
       });
     });
+
+    if ($modalInstance) {
+      $scope.close = function () {
+        $modalInstance.dismiss();
+      };
+    }
 
     /**
      * Provide a cycling hook for jQuery Cycle to change the
