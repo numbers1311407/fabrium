@@ -227,7 +227,7 @@ en:
         tag:
           attributes:
             name:
-              invalid: "%{attribute} must be made up of only numbers, letters and dashes"
+              invalid: "%{attribute} must be made up of only numbers, letters, spaces and dashes"
         cart:
           attributes:
             buyer_email_confirmation:
