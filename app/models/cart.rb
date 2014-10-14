@@ -48,14 +48,14 @@ class Cart < ActiveRecord::Base
   # At the order processing stage, sub carts are created if a cart has items
   # within that belong to more than one mill.  This alias will subquery
   # the relevant items from the parent for the mill of this cart
-  def cart_items_with_parent
-    if parent
-      parent.cart_items.where(mill_id: self.mill_id)
-    else
-      cart_items_without_parent
-    end
-  end
-  alias_method_chain :cart_items, :parent
+  # def cart_items_with_parent
+  #   if parent
+  #     parent.cart_items.where(mill_id: self.mill_id)
+  #   else
+  #     cart_items_without_parent
+  #   end
+  # end
+  # alias_method_chain :cart_items, :parent
 
 
   def build_subcarts
@@ -67,11 +67,12 @@ class Cart < ActiveRecord::Base
     # stop here if there's only one cart
     return [] if grouped_items.length < 2
 
-    grouped_items.keys.map do |mill_id|
+    grouped_items.map do |mill_id, items|
       cart = self.dup
       cart.parent = self
       cart.state = :ordered
       cart.mill_id = mill_id
+      cart.cart_items = items
       cart
     end
   end
@@ -95,6 +96,7 @@ class Cart < ActiveRecord::Base
   # cart items together.
   #
   belongs_to :parent, class_name: 'Cart', foreign_key: :parent_id
+  has_many :subcarts, class_name: 'Cart', foreign_key: :parent_id
 
   # The buyer for the cart may be assigned at 3 stages.
   #
@@ -267,7 +269,7 @@ class Cart < ActiveRecord::Base
   def transition_ordered_to_closed
     # if this is a subcart and there are no carts in the "open" state,
     # set the parent to closed
-    if subcart? && siblings.not_state(:closed).any?
+    if subcart? && siblings.not_state(:closed).empty?
       parent.update(state: :closed)
     end
   end

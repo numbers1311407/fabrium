@@ -13,4 +13,8 @@
           = resource.tracking_number
 
 .cart-items
-  = render partial: 'cart_items/static', collection: resource.cart_items, as: :cart_item
+  - if resource.subcarts.any?
+    - resource.subcarts.each do |subcart|
+      = render partial: 'cart_items/static', collection: subcart.cart_items, as: :cart_item
+  - else
+    = render partial: 'cart_items/static', collection: resource.cart_items, as: :cart_item

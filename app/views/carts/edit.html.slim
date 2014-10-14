@@ -6,7 +6,7 @@
     = render "form"
 
   / afterwards, show the "order" form if the user is a mill
-  - elsif current_user.is_buyer?
+  - elsif current_user.is_buyer? || resource.subcarts.any?
     = render "static"
 
   / otherwise the static view (for admins and buyers)
