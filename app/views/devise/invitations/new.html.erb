@@ -2,6 +2,12 @@
 
 <%= simple_form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
 
+  <%- if f.object.errors.any? %>
+    <div class="alert alert-danger">
+      <%= f.error_notification %>
+    </div>
+  <%- end %>
+
 <% resource.class.invite_key_fields.each do |field| -%>
   <%= f.input field %>
 <% end -%>
