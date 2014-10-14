@@ -105,10 +105,8 @@ class UsersController < ResourceController
     object
   end
 
-  def build_resource
-    @user ||= super.tap do |object|
-      object.skip_password = true
-    end
+  def method_for_build
+    :new_as_admin
   end
 
   def create_resource(object)

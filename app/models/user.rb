@@ -4,13 +4,22 @@ class User < ActiveRecord::Base
   include Authority::UserAbilities
   include Authority::Abilities
 
+  devise :database_authenticatable, 
+    :invitable, 
+    :confirmable,
+    :registerable,
+    :recoverable, 
+    :trackable, 
+    :validatable, 
+    :lockable
+
   include Users::BelongsToMeta
+  include Users::AdminCreation
 
   has_many :favorites
   has_many :favorite_fabrics, through: :favorites, source: :fabric
 
   has_many :fabric_notes
-  before_validation :clean_password_fields
 
   after_commit :send_invitation_if_invited, on: :create
 
@@ -23,23 +32,7 @@ class User < ActiveRecord::Base
 
   define_meta_types :admin, :mill, :buyer
 
-  devise :database_authenticatable, 
-    :invitable, 
-    :confirmable,
-    :registerable,
-    :recoverable, 
-    :trackable, 
-    :validatable, 
-    :lockable
-
   validates :email, presence: true, email: true, uniqueness: true
-
-
-  attr_writer :skip_password
-
-  def skip_password?
-    !!@skip_password
-  end
 
   # Hack to pass mill in users controller #new
   attr_accessor :mill
@@ -63,21 +56,9 @@ class User < ActiveRecord::Base
     pending? && :pending || super
   end
 
-  def password_required?
-    if new_record?
-      !skip_password?
-    else
-      super
-    end
-  end
-
   delegate :name, to: :meta, prefix: true, allow_nil: true
 
   protected
-
-  def clean_password_fields
-    clean_up_passwords if password.blank?
-  end
 
   # as this affects validation
   def preset_pending_status
