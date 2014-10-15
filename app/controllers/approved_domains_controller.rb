@@ -1,4 +1,6 @@
 class ApprovedDomainsController < ResourceController
+  include NameSearchable
+
   self.default_sort = {name: 'name', dir: 'asc'}
 
   permit_params :name, :entity
