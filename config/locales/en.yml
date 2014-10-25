@@ -253,14 +253,14 @@ en:
       fabric:
         materials: Fiber Content
         bulk_lead_time: Bulk Lead Time
-        bulk_minimum_quality: Bulk Min. Quantity in Sq. Meters
+        bulk_minimum_quality: Bulk Min. Quantity in Meters
         dye_method: Dye Method
         fabric_variants: Color Ways
         favorites_count: Favorited
         id: Fabrium ID
         orders_count: Ordered
         sample_lead_time: Sample Lead Time
-        sample_minimum_quality: Sample Min. Quantity in Sq. Meters
+        sample_minimum_quality: Sample Min. Quantity in Meters
         tags: Keywords
         views_count: Viewed
         country: Country of Origin
