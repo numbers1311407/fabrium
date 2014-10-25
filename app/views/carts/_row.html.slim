@@ -10,7 +10,9 @@
   th= sort_link(@q, :state)
 
 td= l(resource.created_at, format: :long)
-td= resource.name(current_user.is_admin?)
+td
+  = resource.name(current_user.is_admin?)
+  = " (#{resource.buyer.company.presence || resource.buyer.name})" if resource.buyer
 /* td= humanize_creator_type(resource) */
 - if current_user.is_admin?
   td= resource.mill.present? ? link_to(resource.mill.name, resource.mill) : 'Mixed'
