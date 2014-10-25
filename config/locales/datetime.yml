@@ -193,6 +193,6 @@ en:
     am: am
     formats:
       default: ! '%a, %d %b %Y %H:%M:%S %z'
-      long: ! '%B %d, %Y %H:%M'
+      long: ! '%b %d, %Y %l:%M%P'
       short: ! '%b %d %H:%M'
     pm: pm

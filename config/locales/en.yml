@@ -92,6 +92,9 @@ en:
           title_with_count: "Hanger Requests (%{count} Requests)"
         pending_cart:
           title: "New Hanger Request"
+    fabrics:
+      links:
+        edit: 'View & Edit'
     profiles:
       actions:
         edit:

@@ -38,7 +38,7 @@ class CartAuthorizer < ApplicationAuthorizer
 
     # mills can operate on their own resources in the initial `mill_build`
     # state or any state after `pending`
-    is_mill?(user) && resource.state.not?(:buyer_build, :pending) ||
+    is_mill?(user) && resource.state.not?(:pending) ||
 
     # buyers can operate on their own resources not in the mill build state 
     # and that ARE NOT subcarts (they will see the parent cart)

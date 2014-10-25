@@ -65,6 +65,12 @@ class CartsController < ResourceController
   # viewer, but always renders the "edit" template.
   #
   def show
+    # if the cart isn't publicly viewed yet and the viewer is the cart's
+    # buyer's user, set public_viewed
+    if !resource.public_viewed && resource.buyer.try(:user) == current_user
+      resource.update_column(:public_viewed, Time.now)
+    end
+
     show! do |wants|
       wants.html { render 'edit' }
     end
@@ -92,7 +98,7 @@ class CartsController < ResourceController
     object = resource
 
     unless object.public_viewed
-      object.update_column(:public_viewed, Time.now)
+      object.update_column(:public_viewed, Time.now.utc)
     end
 
     # If the object is not public (basically if it has a buyer attached
@@ -241,7 +247,7 @@ class CartsController < ResourceController
   #
   def collection_filter_mill_carts(object)
     if current_user.is_mill?
-      object = object.not_state(:buyer_unclaimed, :buyer_build, :pending)
+      object = object.not_state(:buyer_unclaimed, :pending)
     end
 
     object
