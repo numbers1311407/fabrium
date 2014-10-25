@@ -1,0 +1,18 @@
+@media print {
+  [cycle] img {
+    width: auto !important;
+  }
+  .print-hide {
+    display: none !important;
+  }
+  .cycle-sentinel, .cycle-slide {
+    display: none !important;
+  }
+  .cycle-slide-active {
+    margin: 0 0 20px !important;
+    position: static !important;
+    display: block !important;
+    top: 0;
+    left: 0;
+  }
+}

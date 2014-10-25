@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div id="adv-custom-pager" class="center external">
+      <div id="adv-custom-pager" class="center external print-hide">
         <a href={{fabric.getVariantUrl(v.position)}} ng-repeat="v in fabric.variants">
           <img ng-src="{{ v.image.tiny }}">
         </a>
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row print-hide">
     <div class="buttons col-sm-12">
       <a class="btn btn-default fabric-favorite-status" ng-click="currentUser.toggleFavorite(fabric.id)">
         <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(fabric.id)]"></i>

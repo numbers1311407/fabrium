@@ -20,8 +20,8 @@
         | #{resource.buyer.user_email}<br>
         | <br>
         | Mill Item #:<br>
-        - resource.cart_items.each do |item|
-          | #{item.fabric_variant.item_number}
+        - resource.cart_items.shipped.each do |item|
+          | #{item.fabric_variant.item_number}<br>
 
 - content_for :body_end do
   javascript:
