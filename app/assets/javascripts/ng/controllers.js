@@ -123,6 +123,8 @@
 
         // $scope.hideSearch();
 
+        $scope.search._ = Date.now();
+
         items.getList($scope.search)
           .then(function (res) {
             $scope.items = res.data;
