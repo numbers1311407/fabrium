@@ -46,16 +46,17 @@ class FabricVariantsController < ResourceController
   end
 
   has_scope :weight_max, if: 'params[:weight_min].blank?' do |controller, scope, value|
-    scope.weight -Float::INFINITY..(value.to_f), controller.params[:weight_units]
+    scope.weight 0..(value.to_f), controller.params[:weight_units]
   end
 
   has_scope :price_range_or_min, as: :price_min do |controller, scope, value|
-    max = controller.params[:price_max] || Float::INFINITY
-    scope.price (value.to_f)..(max.to_f), controller.params[:price_units]
+    max = controller.params[:price_max] || 999999
+    range = Range.new(*[value.to_f, max.to_f].sort)
+    scope.price range, controller.params[:price_units]
   end
 
   has_scope :price_max, if: 'params[:price_min].blank?' do |controller, scope, value|
-    scope.price -Float::INFINITY..(value.to_f), controller.params[:price_units]
+    scope.price 0..(value.to_f), controller.params[:price_units]
   end
 
   has_scope :in_stock
