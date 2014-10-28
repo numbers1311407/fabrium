@@ -57,9 +57,15 @@
             }
           });
 
-          scope.$watch("ao_show", function (value) {
-            if (value) return;
+          scope.$watch("ao.in_stock", function (value) {
+            if (value) { scope.search.in_stock = '1'; }
+          });
 
+          scope.$watch("ao.favorites", function (value) {
+            if (value) { scope.search.favorites = '1'; }
+          });
+
+          scope.$watch("ao_show", function (value) {
             if (!value) {
               var deleted = 0;
 
