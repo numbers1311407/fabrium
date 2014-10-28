@@ -87,6 +87,17 @@ class CartsController < ResourceController
   end
 
 
+  def index
+    index! do |format|
+      format.html do
+        if !request.xhr? && params[:scope].blank? && current_user.is_mill?
+          redirect_to collection_path(scope: 'ordered')
+        end
+      end
+    end
+  end
+
+
   # GET /carts/<public id>/pub
   #
   # This is a public route that a member is sent via a token.  It is
