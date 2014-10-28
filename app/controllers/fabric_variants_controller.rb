@@ -177,7 +177,7 @@ class FabricVariantsController < ResourceController
   end
 
   def collection_filter_primary_variant(object)
-    non_primary_search_keys = [:color, :fid, :item_number]
+    non_primary_search_keys = [:color, :fid, :item_number, :in_stock]
 
     if non_primary_search_keys.any? {|key| params.has_key?(key) }
       object
