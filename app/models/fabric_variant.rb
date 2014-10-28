@@ -101,6 +101,11 @@ class FabricVariant < ActiveRecord::Base
     to: :fabric, allow_nil: true, prefix: true
   )
 
+  delegate(
+    :active,
+    to: :mill, allow_nil: true, prefix: true
+  )
+
   protected
 
   def denormalize_columns

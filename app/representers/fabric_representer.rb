@@ -70,6 +70,7 @@ module FabricRepresenter
     property :color
     property :in_stock
     property :position
+    property :mill_active
 
     nested :image do
       property :crop_width, as: :width
