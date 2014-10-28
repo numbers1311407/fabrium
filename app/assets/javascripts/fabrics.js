@@ -114,6 +114,8 @@ utils.ready(function () {
       } else {
         $el.remove();
       }
+
+      $(".fabric-variants input[type=submit]").show();
     });
 
     var render = function (data) {
@@ -126,6 +128,8 @@ utils.ready(function () {
         data.n = n++;
         $container.append(tmpl(data));
       }
+
+      $(".fabric-variants input[type=submit]").show();
 
       utils.runReadyCallbacks();
     }

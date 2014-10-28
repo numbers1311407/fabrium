@@ -66,6 +66,7 @@
           tr
             td colspan=42
               = link_to "Add Image/Color", new_fabric_variant_path, class: "btn btn-default", rel: "modal"
+              = f.button :submit, class: 'btn-primary', style: "margin-left: 5px; display: none"
     .notice= t(:variant_persistence, scope: 'messages')
     
 
