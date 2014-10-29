@@ -34,6 +34,10 @@ class CartsController < ResourceController
     user = controller.current_user
 
     case value
+    when 'buyer'
+      if user.is_mill?
+        scope = scope.state(:buyer_build, :buyer_unclaimed)
+      end
     when 'active'
       if user.is_mill?
         scope = scope.mill_build
@@ -166,7 +170,9 @@ class CartsController < ResourceController
 
   def scope_options
     if current_user.is_admin?
-      %w(buyer_build mill_build ordered)
+      %w(buyer_build mill_build ordered closed)
+    elsif current_user.is_mill?
+      %w(buyer ordered closed)
     else
       %w(active ordered closed)
     end
@@ -258,7 +264,7 @@ class CartsController < ResourceController
   #
   def collection_filter_mill_carts(object)
     if current_user.is_mill?
-      object = object.not_state(:buyer_unclaimed, :pending)
+      object = object.not_state(:mill_build, :pending)
     end
 
     object

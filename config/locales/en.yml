@@ -51,12 +51,15 @@ en:
     cart:
       pending: "Pending"
       ordered: "Ordered"
+      buyer_unclaimed: "Unclaimed"
+      buyer_build: "Buyer"
+      mill_build: "Active"
       buyer:
-        mill_build: "Mill"
-        buyer_build: "Active"
+        buyer_unclaimed: "Active"
       mill:
-        buyer_build: "Buyer"
         mill_build: "Active"
+        buyer_unclaimed: "Buyer"
+
     cart_item:
       pending: "Open"
       shipped: "Shipped"
