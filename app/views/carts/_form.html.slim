@@ -15,7 +15,7 @@
         = f.simple_fields_for :cart_items do |cf|
           = render cf.object, f: cf, cart: resource
 
-      - if resource.state == :mill_build && current_user.is_mill?
+      - if resource.mill_build? && current_user.is_mill?
         .row
           #buyer-email-form
             = f.input :buyer_email
