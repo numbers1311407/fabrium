@@ -51,26 +51,39 @@ module HasState
     end
   end
 
-  class State < String
+  class State
     include Comparable
 
-    def initialize(str, model)
-      super(str)
+    def initialize(value, model)
+      @value = value.to_s
       @model = model
     end
 
     def <=>(other)
-      step = @model.states[self]
-      other_step = @model.states[other] || -1
-      step <=> other_step
+      raise ArgumentError unless other.respond_to?(:to_s)
+      index <=> model_index(other.to_s)
     end
 
-    def any?(*array)
-      [*array].map(&:to_s).member?(self)
+    def index
+      model_index(@value)
     end
 
-    def not?(*array)
-      !any?(*array)
+    def any?(*args)
+      args.flatten.map(&:to_s).member?(@value)
+    end
+
+    def not?(*args)
+      !any?(*args)
+    end
+
+    def to_s
+      @value
+    end
+
+    private
+
+    def model_index(value)
+      @model.states[value] || -1
     end
   end
 end
