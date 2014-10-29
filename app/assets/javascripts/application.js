@@ -290,3 +290,12 @@ $(function () {
     });
   });
 });
+
+$(function () {
+  $(document).on("click", ".print-hidden", function () {
+    var $el = $(this).find(".hidden");
+    var div = $("<div></div>").html($el.html())[0];
+    utils.printElement(div);
+    window.print();
+  });
+});
