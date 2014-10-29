@@ -30,13 +30,21 @@ class ProcessOrderJob
     # more than one mill.  Subcarts are clones used to split up carts
     # so mills can each manage their own cart object
     if subcarts.length > 1
-      subcarts.each(&:save)
+      subcarts.each do |subcart|
+        if subcart.save
+          users = subcart.mill.users.wants_email
+          AppMailer.order_received(subcart, users).deliver unless users.none?
+        end
+      end
 
     # If no subcarts are created it means that all the cart items belong
     # to this mill.  Rather than creating a subcart, just assign the
     # mill to this cart
     else
-      cart.update(mill: cart_items.first.mill)
+      mill = cart_items.first.mill
+      cart.update_attribute(:mill, mill)
+      users = mill.users.wants_email
+      AppMailer.order_received(cart, users).deliver unless users.none?
     end
 
     # Update the orders_count for the ordered fabrics, which may be

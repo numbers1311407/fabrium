@@ -11,12 +11,15 @@ class AppMailer < ActionMailer::Base
 
   def user_activated(user_id)
     @user = User.find(user_id)
-    subject = "Your account at Fabrium has been activated"
+    subject = "Your account at Fabrium.com has been activated"
     mail(to: @user.email, subject: subject)
   end
 
   # email mill user(s) when order received (by preference?)
-  def order_received()
+  def order_received(cart, users)
+    @cart = cart
+    subject = "You've received an order at Fabrium.com"
+    mail(to: users.map(&:email), subject: subject)
   end
 
   # email buyer when order refused

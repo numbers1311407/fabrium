@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   validates :mill, presence: true, on: :create, if: :should_validate_mill?
 
   scope :pending, ->(val=true) { where(pending: !!val) }
+  scope :wants_email, ->(val=true) { where(wants_email: !!val) }
 
   def send_invitation!(from)
     InviteUserJob.new.async.perform(id, from.id)
