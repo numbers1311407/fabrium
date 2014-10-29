@@ -51,33 +51,32 @@ module HasState
     end
   end
 
-  class State
+  class State < String
     include Comparable
 
     def initialize(value, model)
-      @value = value.to_s
+      super(value.to_s)
       @model = model
     end
 
     def <=>(other)
       raise ArgumentError unless other.respond_to?(:to_s)
-      index <=> model_index(other.to_s)
-    end
-
-    def index
-      model_index(@value)
+      model_index(self) <=> model_index(other.to_s)
     end
 
     def any?(*args)
-      args.flatten.map(&:to_s).member?(@value)
+      args.flatten.map(&:to_s).member?(self)
+    end
+
+    # NOTE not sure why I have to overwrite `==` which should presumably
+    # be handled by Comparable and <=>?  `String` must treat require a
+    # special case?
+    def ==(other)
+      0 == send(:<=>, other)
     end
 
     def not?(*args)
       !any?(*args)
-    end
-
-    def to_s
-      @value
     end
 
     private
