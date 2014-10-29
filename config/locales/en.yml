@@ -244,8 +244,8 @@ en:
               cart_mill_mismatch: "The item you are trying to add does not belong to the right mill"
         mill:
           attributes:
-            domain_filter:
-              presence: "You must enter at least one domain if whitelisting is specified"
+            domain_names:
+              blank: "You must enter at least one domain if whitelisting is specified"
 
 
 

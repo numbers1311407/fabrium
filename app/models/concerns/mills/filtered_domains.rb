@@ -3,6 +3,8 @@ module Mills::FilteredDomains
 
   included do
     enum domain_filter: [:blacklist, :whitelist]
+
+    # validates :domain_names, presence: true, if: :whitelist?
   end
 
   module ClassMethods
