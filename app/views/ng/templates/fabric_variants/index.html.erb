@@ -118,6 +118,8 @@
                 </div>
               </fieldset>
 
+              <% blocked = current_user.is_buyer? ? current_user.meta.blocked_mills : [] %>
+
               <fieldset id="ao_exclude_mills" class="advanced-option">
                 <legend>Exclude Mills</legend>
                 <div class="row form-row-not_mills">
@@ -127,12 +129,13 @@
                       selectize="selectize.mills" 
                       ng-model="search.not_mills" 
                       class="form-control" 
-                      placeholder="Type to search mills by name..."
+                      placeholder="<%= blocked.present? ? "My Blocklist: " + blocked.map(&:name).join(", ") : "Type to search mills by name..." %>"
                       options="mill_options"
                     >
                   </div>
                   <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
                     <div class="form-link">
+                      <!--
                       <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>
                         Load my blocked mills 
                       </a>
@@ -142,6 +145,7 @@
                       <div class="hidden-content">
                         You can manage your blocked mills list by editing your buyer details.
                       </div>
+                      -->
                     </div>
                   <% end %>
                 </div>

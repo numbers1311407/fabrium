@@ -65,17 +65,21 @@
             if (value) { scope.search.favorites = '1'; }
           });
 
+          // scope.$watch("ao.exclude_mills", function (value) {
+          //   if (value) { 
+          //     scope.search.not_mills = $("#ao_exclude_mills").data("blocklist") || [];
+          //   }
+          // });
+
           scope.$watch("ao_show", function (value) {
             if (!value) {
               var deleted = 0;
 
               angular.forEach(scope.ao, function (value, options) {
-
                 if (!value) {
                   _.each(map[options], function (option) {
                     delete scope.search[option];
                   });
-
                   deleted++;
                 }
               });

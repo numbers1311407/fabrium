@@ -222,17 +222,16 @@
     this.setup = (function () {
       return function () {
         var api = this;
-
         setup.apply(api, arguments);
 
         var closed_placeholder = api.$control_input.attr("placeholder");
 
-        api.on("dropdown_open", function (value, $item) {
+        api.$control_input.on("focus", function () {
           api.settings.placeholder = open_placeholder;
           api.updatePlaceholder();
         });
 
-        api.on("dropdown_close", function (value, $item) {
+        api.$control_input.on("blur", function () {
           api.settings.placeholder = closed_placeholder;
           api.updatePlaceholder();
         });

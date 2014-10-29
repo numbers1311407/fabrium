@@ -20,6 +20,7 @@
       $scope.mill_options = {};
       $scope.mill_cache = {};
       $scope.load_mill_options = function (mill_ids) {
+
         var cache = function () {
           $scope.mill_options.values = _.map($scope.mill_cache, _.identity);
         }
@@ -123,7 +124,8 @@
 
         // $scope.hideSearch();
 
-        $scope.search._ = Date.now();
+        // NOTE Is this needed?  Does the index cache?
+        // $scope.search._ = Date.now();
 
         items.getList($scope.search)
           .then(function (res) {
@@ -196,7 +198,13 @@
           valueField: 'id',
           labelField: 'name',
           searchField: 'name',
-          plugins: ['remove_button', 'close_button'],
+          plugins: {
+            remove_button: {},
+            close_button: {},
+            open_placeholder: {
+              placeholder: "Type to search mills by name..."
+            }
+          },
           onInitialize: function () {
             this.on("invalid_values", $scope.load_mill_options);
           },
