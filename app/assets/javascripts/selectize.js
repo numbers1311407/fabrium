@@ -240,6 +240,32 @@
   });
 
   /**
+   * Preload on focus of the control input, as opposed to immediately
+   * on page load.
+   */
+  Selectize.define('lazy_preload', function(options) {
+    var api = this;
+
+    this.setup = (function () {
+      var setup = api.setup;
+
+      return function () {
+        setup.apply(api, arguments);
+
+        api.lazy_preloaded = false;
+
+        api.$control_input.on("focus", function () {
+          if (!api.lazy_preloaded) {
+            api.lazy_preloaded = true;
+            api.onSearchChange('');
+          }
+        });
+      }
+    })();
+  });
+
+
+  /**
    * Close button plugin
    */
   Selectize.define('close_button', function(options) {
