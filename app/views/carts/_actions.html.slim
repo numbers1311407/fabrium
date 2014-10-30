@@ -7,14 +7,16 @@
       i.fa.fa-print(title='Print Packing Slip')
       span= 'Print Packing Slip'
       .hidden
-        | Customer name: #{resource.buyer.name}<br>
-        | #{resource.buyer.company}<br>
-        | #{buyer_address resource.buyer}
-        | #{resource.buyer.user_email}<br>
-        | <br>
-        | Mill Item #:<br>
-        - resource.cart_items.shipped.each do |item|
-          | #{item.fabric_variant.item_number}<br>
+        .packing-slip
+          | <br>
+          | Customer name: #{resource.buyer.name}<br>
+          | #{resource.buyer.company}<br>
+          | #{buyer_address resource.buyer}
+          | #{resource.buyer.user_email}<br>
+          | <br>
+          | Mill Item #:<br>
+          - resource.cart_items.shipped.each do |item|
+            | #{item.fabric_variant.item_number}<br>
 - elsif current_user.can_read?(resource)
   = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
     i.fa.fa-info(title=st('links.view'))
