@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     when 'buyer'
       root_path
     when 'mill'
-      carts_path(scope: 'active')
+      carts_path(scope: 'ordered')
     else
       super
     end
