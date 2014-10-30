@@ -15,12 +15,12 @@
         = f.simple_fields_for :cart_items do |cf|
           = render cf.object, f: cf, cart: resource
 
-      - if resource.mill_build? && current_user.is_mill?
+      - if resource.mill_build? && current_user.is_mill? && current_user.meta.active?
         .row
           #buyer-email-form
             = f.input :buyer_email
             = f.input :buyer_email_confirmation
 
-      - unless current_user.is_admin?
+      - if current_user.is_buyer? || current_user.is_mill? && current_user.meta.active?
         .form-actions
           = f.submit cart_button_label(resource), class: 'btn btn-primary'

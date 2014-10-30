@@ -14,7 +14,8 @@
         span.badge.badge-success In Stock
     - unless current_user.is_buyer?
       p.line-item: label Item #: #{variant.item_number}
-    - if current_user.is_buyer? && cart_item.sample_yardage.present?
+
+    - if cart_item.sample_yardage.present? && (current_user.is_buyer? || current_user.is_mill? && !current_user.meta.active?)
       p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
 
     - if cart_item.deletable_by?(current_user)
@@ -22,7 +23,7 @@
         span Remove
 
     / if this is a mill show the sample yardage field
-    - if current_user.is_mill?
+    - if current_user.is_mill? && current_user.meta.active?
       = f.input :sample_yardage
     / otherwise finally if this is a buyer, show the field to reques the yardage
     - elsif current_user.is_buyer? && cart_item.sample_yardage.blank?

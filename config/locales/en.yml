@@ -16,6 +16,7 @@ en:
         states:
           mill_build: "Send Selections to Buyer"
           buyer_build: "Submit Request"
+          buyer_unclaimed: "Update Request"
           ordered: "Save and Ship Request"
           closed: "Update Request"
       user:
