@@ -2,7 +2,7 @@
 
 - is_empty = resource.cart_items.empty?
 
-- if current_user.is_mill?
+- if resource.mill_build? && current_user.is_mill?
   h2 Selections to Send
 
 .cart-form-wrapper
@@ -21,6 +21,6 @@
             = f.input :buyer_email
             = f.input :buyer_email_confirmation
 
-      - if current_user.is_buyer? || current_user.is_mill? && current_user.meta.active?
+      - if current_user.is_buyer? || (current_user.is_mill? && current_user.meta.active? && resource.state.not?(:buyer_build, :buyer_unclaimed))
         .form-actions
           = f.submit cart_button_label(resource), class: 'btn btn-primary'
