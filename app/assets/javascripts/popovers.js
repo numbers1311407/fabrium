@@ -29,6 +29,23 @@
       .addClass("popover-initialized")
       .trigger("mouseover");
     });
+
+
+    $(".popover-hint").each(function () {
+      var $el = $(this);
+      var help = $('<span style="cursor: pointer"> <i class="fa fa-question-circle" ></i></span>');
+      help.appendTo($el.find("label"));
+
+      help.popover({
+        trigger: "hover",
+        html: true,
+        template: '<div class="popover popover-wide" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content popover-content-wide"></div></div>',
+        // by putting the popover in the same container we can keep the
+        // popover open when hovering it (and mousing off the trigger)
+        placement: "right",
+        content: $el.find(".help-block").html()
+      });
+    });
   }
 
   $(init);

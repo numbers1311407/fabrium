@@ -610,6 +610,14 @@ tfoot.paginator {
   cursor: pointer;
 }
 
+.popover-hint .help-block {
+  display: none;
+}
+.popover-wide {
+  max-width: 400px;
+  width: 400px;
+}
+
 .popover img.popover-thumb {
   width: 150px;
   display: block;
@@ -1006,3 +1014,5 @@ label {
 .resultdetails-inactive {
   color: #f00;
 }
+
+
