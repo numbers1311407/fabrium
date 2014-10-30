@@ -106,6 +106,10 @@ class FabricVariant < ActiveRecord::Base
     to: :mill, allow_nil: true, prefix: true
   )
 
+  def combined_item_number
+    [fabric_item_number, item_number].join("-")
+  end
+
   protected
 
   def denormalize_columns

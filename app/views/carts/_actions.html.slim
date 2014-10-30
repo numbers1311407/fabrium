@@ -16,7 +16,7 @@
           | <br>
           | Mill Item #:<br>
           - resource.cart_items.shipped.each do |item|
-            | #{item.fabric_variant.item_number}<br>
+            | #{item.fabric_variant.combined_item_number} (#{item.fabric_variant.fabrium_id})<br>
 - elsif current_user.can_read?(resource)
   = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
     i.fa.fa-info(title=st('links.view'))

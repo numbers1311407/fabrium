@@ -13,7 +13,7 @@
       - if variant.in_stock?
         span.badge.badge-success In Stock
     - unless current_user.is_buyer?
-      p.line-item: label Item #: #{variant.item_number}
+      p.line-item: label Item #: #{variant.combined_item_number}
 
     - if cart_item.sample_yardage.present? && (current_user.is_buyer? || current_user.is_mill? && !current_user.meta.active?)
       p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
