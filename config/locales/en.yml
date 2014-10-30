@@ -36,6 +36,8 @@ en:
       fabrium: "Fabrium"
       buyer: "Buyer"
       mill: "Mill"
+    carts:
+      active: "Mill Submitted"
 
   cart_state_flash:
     mill_build:
@@ -57,6 +59,7 @@ en:
       mill_build: "Active"
       buyer:
         buyer_unclaimed: "Active"
+        buyer_build: "Mill Submitted Requests"
       mill:
         mill_build: "Active"
         buyer_unclaimed: "Buyer"
