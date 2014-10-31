@@ -18,18 +18,17 @@
               </select>
             </div>
 
-            <div class="form-group form-group-material">
-              <label>Fiber Content</label>
-              <select
-                selectize="selectize.material" 
-                ng-model="search.material" 
+            <div class="form-group">
+              <label>Keywords</label>
+              <input 
+                selectize="selectize.tags"
+                type="text"
+                ng-model="search.tags"
                 class="form-control" 
-                placeholder="Select..."
+                placeholder="Type to search available keywords..."
               >
-                <%= select_options_for_material %>
-              </select>
             </div>
-           
+
             <div class="form-group form-group-weights form-group-range">
               <label>Weight</label>
               <input type="number" ng-model="search.weight_min" class="form-control" placeholder="Any" min=0 step="any">
@@ -42,16 +41,41 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label>Keywords</label>
-              <input 
-                selectize="selectize.tags"
-                type="text"
-                ng-model="search.tags"
+            <div class="form-group form-group-material">
+              <label>Fiber Content</label>
+              <select
+                selectize="selectize.material" 
+                ng-model="search.material" 
                 class="form-control" 
-                placeholder="Type to search available keywords..."
+                placeholder="Search Fibers..."
               >
+              </select>
+              <div id="mats" class="mats"></div>
+              <script type="html/template" id="mat-tmpl">
+                <div class="mat">
+                  {{ data.name }}
+                  <input name="mats-name" type="hidden" value="{{ data.name }}" />
+                  <span class="mat-percs">
+                    <input name="mats-min" type="number" value="{{ data.min }}" max=100 min=0 step=1 placeholder="Any" />%
+                      to
+                    <input name="mats-max" type="number" value="{{ data.max }}" max=100 min=0 step=1 placeholder="Any" />%
+                  </span>
+                  <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> &times; </a>
+                </div>
+              </script>
+
+              <div class="material" ng-repeat="mat in search.materials">
+                {{ mat.name }}
+                <input name="mats-name" type="hidden" ng-model="mat.name" />
+                <span class="mat-percs">
+                  <input name="mats-min" type="number" ng-model="mat.min" max=100 min=0 step=1 placeholder="Any" />%
+                    to
+                  <input name="mats-max" type="number" ng-model="mat.max" max=100 min=0 step=1 placeholder="Any" />%
+                </span>
+                <a ng-click="removeMaterial(mat)" class="remove" tabindex="-1" title="Remove"> &times; </a>
+              </div>
             </div>
+           
           </div>
         </fieldset>
 

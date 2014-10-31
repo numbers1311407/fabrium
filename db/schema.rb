@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140924184750) do
+ActiveRecord::Schema.define(version: 20141030213901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "admins", force: true do |t|
     t.datetime "created_at"
@@ -181,7 +182,7 @@ ActiveRecord::Schema.define(version: 20140924184750) do
   create_table "material_assignments", force: true do |t|
     t.integer "material_id"
     t.integer "fabric_id"
-    t.string  "value"
+    t.string  "value",       limit: nil
   end
 
   add_index "material_assignments", ["fabric_id"], name: "index_material_assignments_on_fabric_id", using: :btree

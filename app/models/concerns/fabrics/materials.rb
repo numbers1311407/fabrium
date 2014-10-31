@@ -11,10 +11,6 @@ module Fabrics
         allow_destroy: true,
         reject_if: :material_filter
 
-      scope :material, ->(id) { 
-        joins(:materials).where(material_assignments: {material_id: id})
-      }
-
       validates_presence_of :materials
     end
 
@@ -32,6 +28,13 @@ module Fabrics
         (foo = ass_id && MaterialAssignment.where(material_id: material_id, fabric_id: id).where.not(id: ass_id).exists?)
 
       retv
+    end
+
+    module ClassMethods
+      def material_condition(id, percentage)
+        ma_table = MaterialAssignment.arel_table
+        ma_table[:material_id].eq(id).and(ma_table[:value].in(percentage))
+      end
     end
   end
 end

@@ -106,6 +106,15 @@ class FabricVariantsController < ResourceController
     end
   end
 
+  has_scope :materials do |controller, scope, value|
+    mats = value.split(',').map do |token|
+      id, min, max = token.split('-')
+      { id: id, min: min, max: max }
+    end
+
+    scope
+  end
+
   has_scope :bulk_lead_time
   has_scope :bulk_minimum_quality, as: :bulk_min
   has_scope :category
@@ -113,7 +122,6 @@ class FabricVariantsController < ResourceController
   has_scope :dye_method
   has_scope :fabrium_id, as: :fid
   has_scope :item_number
-  has_scope :material
   has_scope :sample_lead_time
   has_scope :sample_minimum_quality, as: :sample_min
   has_scope :tags

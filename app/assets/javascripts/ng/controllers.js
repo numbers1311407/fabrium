@@ -3,6 +3,34 @@
   app.controller('FabricVariantIndexCtrl', 
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser) {
 
+
+      function serializeSearch (search) {
+        search = (search || angular.copy($scope.search));
+        _.each(searchSerializers, function (fn, key) {
+          if ('undefined' !== typeof search[key]) { search[key] = fn(search[key]); }
+        });
+        return search;
+      }
+
+      var searchDeserializers = {
+        materials: function (value) {
+          var vals = value.split(',');
+
+          return _.map(value.split(','), function (val) {
+            var split = val.split('-');
+            return { name: split[0], min: Number(split[1]) || 0, max: Number(split[2]) || 100 };
+          });
+        }
+      };
+
+      var searchSerializers = {
+        materials: function (array) {
+          return array.map(function (o) {
+            return [o.name, o.min, o.max].join('-');
+          }).join(",");
+        }
+      };
+
       currentUser.get().then(function (user) {
         $scope.currentUser = user;
 
@@ -43,14 +71,23 @@
         }
       };
 
-      $scope.parseSearch = function (search) {
+      $scope.parseSearch = function (search, deserialize) {
         search || (search = $scope.search);
 
         // copy the search so as to not reference the original
         search = angular.copy(search);
 
+        // if deserializing (from the location string) run any registered
+        // deserializers
+        if (deserialize) {
+          _.each(searchDeserializers, function (fn, key) {
+            if ('undefined' !== typeof search[key]) { search[key] = fn(search[key]); }
+          });
+        }
+
         // remove undefined/null
         _.compact(search);
+
 
         // parse numbers out of numeric form values.
         // TODO find a better way to do this?  A directive??
@@ -81,9 +118,6 @@
 
         $scope.search = search;
       };
-
-      // init the search scope var from the $location immediately
-      $scope.parseSearch($location.search());
 
 
       $scope.hideSearch = function () {
@@ -122,12 +156,14 @@
 
         var items = RestangularWithResponse.all("fabric_variants");
 
+        var search = angular.copy($scope.search);
+
         // $scope.hideSearch();
 
         // NOTE Is this needed?  Does the index cache?
         // $scope.search._ = Date.now();
 
-        items.getList($scope.search)
+        items.getList(serializeSearch(search))
           .then(function (res) {
             $scope.items = res.data;
             var pagination;
@@ -152,7 +188,7 @@
         if ($scope.shouldForceSubmit()) {
           $scope.submit();
         } else {
-          $location.search(angular.copy($scope.search));
+          $location.search(serializeSearch());
         }
       };
 
@@ -165,9 +201,10 @@
       };
 
       $scope.$on('$routeUpdate', function () {
-        $scope.parseSearch($location.search());
+        $scope.parseSearch($location.search(), true);
         $scope.submit();
       });
+
 
       $scope.selectize = {
         category: {
@@ -176,8 +213,28 @@
         },
 
         material: {
-          sortField: 'text',
-          plugins: ['clear_selection']
+          valueField: 'name',
+          labelField: 'name',
+          searchField: 'name',
+          plugins: ['lazy_preload'],
+          onInitialize: function () {
+            var api = this;
+
+            this.on("item_add", function (value, $item) {
+              $scope.search.materials || ($scope.search.materials = []);
+              $scope.search.materials.push({
+                name: value,
+                max: 0,
+                min: 100
+              });
+
+              api.clear();
+            });
+          },
+          load: function (query, callback) {
+            var args = query.length ? {name: query} : {};
+            Restangular.all("materials").getList(args).then(callback);
+          }
         },
 
         country: {
@@ -219,14 +276,16 @@
           valueField: 'name',
           labelField: 'name',
 					searchField: 'name',
-          options: $scope.search.tags
-            ? _.map($scope.search.tags.split(","), function(word){ return { name: word }; })
-            : [],
-          plugins: ['remove_button', 'close_button'],
+          plugins: ['remove_button', 'close_button', 'lazy_preload'],
+          onInitialize: function () {
+            var tags = $scope.search.tags
+              ? _.map($scope.search.tags.split(","), function(word){ return { name: word }; })
+              : [];
+            this.addOption(tags);
+          },
           load: function (query, callback) {
-						if (!query.length) return callback();
-            Restangular.all("tags").getList({name: query}).then(callback);
-
+            var args = query.length ? {name: query} : {};
+            Restangular.all("tags").getList(args).then(callback);
           }
         }
       };
@@ -250,6 +309,9 @@
           }
         });
       };
+
+      // init the search scope var from the $location immediately
+      $scope.parseSearch($location.search(), true);
 
       if (!_.isEmpty($scope.search)) {
         $timeout($scope.submit);
