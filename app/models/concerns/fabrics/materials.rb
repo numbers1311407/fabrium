@@ -31,9 +31,18 @@ module Fabrics
     end
 
     module ClassMethods
-      def material_condition(id, percentage)
-        ma_table = MaterialAssignment.arel_table
-        ma_table[:material_id].eq(id).and(ma_table[:value].in(percentage))
+
+      # chainable "scope" for material search by id and percentage that joins
+      # the material assignments table by alias
+      def has_material(id, percentage=nil)
+        return none unless id.respond_to?(:to_s)
+        suffix = Digest::SHA1.hexdigest(id.to_s)[0..6]
+        n = "ma_#{suffix}"
+        conditions = {}
+        conditions["#{n}.material_id"] = id
+        conditions["#{n}.value"] = percentage if percentage
+
+        joins("INNER JOIN material_assignments #{n} ON #{n}.fabric_id = fabrics.id AND #{sanitize_sql_hash_for_conditions(conditions)}")
       end
     end
   end
