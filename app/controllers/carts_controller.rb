@@ -245,7 +245,7 @@ class CartsController < ResourceController
   #
   def update_resource(object, attributes)
     object.attributes = attributes[0]
-    object.bump_state unless object.is_closed?
+    object.bump_state unless object.closed?
     object.save.tap do |success|
       object.state = object.state_was unless success
     end
