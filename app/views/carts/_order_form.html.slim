@@ -10,6 +10,23 @@
     .shipping-email
       = resource.buyer.user_email
 
+- if resource.closed? && !current_user.is_buyer?
+  #packing-slip-btn(style="margin-bottom: 20px")
+    = link_to '#print-packing-slip', class: 'btn btn-sm btn-default print-hidden' do
+      i.fa.fa-print(title='Print Packing Slip')
+      span= 'Print Packing Slip'
+      .hidden
+        .packing-slip
+          | <br>
+          | Customer name: #{resource.buyer.name}<br>
+          | #{resource.buyer.company}<br>
+          | #{buyer_address resource.buyer}
+          | #{resource.buyer.user_email}<br>
+          | <br>
+          | Mill Item # (Fabrium #):<br>
+          - resource.cart_items.shipped.each do |item|
+            | #{item.fabric_variant.combined_item_number} (#{item.fabric_variant.fabrium_id})<br>
+
 .cart-form-wrapper
   = simple_form_for resource do |f|
     .cart-form-block

@@ -292,7 +292,8 @@ $(function () {
 });
 
 $(function () {
-  $(document).on("click", ".print-hidden", function () {
+  $(document).on("click", ".print-hidden", function (e) {
+    e.preventDefault();
     var $el = $(this).find(".hidden");
     var div = $("<div></div>").html($el.html())[0];
     utils.printElement(div);
