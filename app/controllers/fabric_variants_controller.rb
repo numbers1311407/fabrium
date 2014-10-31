@@ -22,6 +22,12 @@ class FabricVariantsController < ResourceController
   # block searches as defined by each mill's block list
   add_collection_filter_scope :collection_filter_blocklists
 
+  # ransack is being problematic for the fiber content search
+  # TODO ransack should really just be removed, it's ONLY here for the
+  #      sort table header helpers....
+  skip_collection_filter_scope :apply_search_filter
+
+
   ##
   # Scopes
   #
@@ -107,9 +113,14 @@ class FabricVariantsController < ResourceController
   end
 
   has_scope :materials do |controller, scope, value|
-    mats = value.split(',').map do |token|
-      id, min, max = token.split('-')
-      { id: id, min: min, max: max }
+    value.split(',').each do |condition|
+      values = condition.split('-')
+
+      # ensure all the values are numeric and positive
+      if values.all? {|v| Float(v) >= 0 rescue nil }
+        id, min, max = values
+        scope = scope.has_material(id, (min.to_f)..(max.to_f))
+      end
     end
 
     scope
