@@ -18,7 +18,7 @@
           | #{buyer_address resource.buyer}
           | #{resource.buyer.user_email}<br>
           | <br>
-          | Mill Item #:<br>
+          | Mill Item # (Fabrium #):<br>
           - resource.cart_items.shipped.each do |item|
             | #{item.fabric_variant.combined_item_number} (#{item.fabric_variant.fabrium_id})<br>
 - elsif current_user.can_read?(resource)
