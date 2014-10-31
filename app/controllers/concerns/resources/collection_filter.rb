@@ -5,6 +5,9 @@ module Resources
     included do
       class_attribute :collection_filter_scopes
       self.collection_filter_scopes = []
+
+      class_attribute :skipped_collection_filter_scopes
+      self.skipped_collection_filter_scopes = []
     end
 
     module ClassMethods
@@ -12,6 +15,12 @@ module Resources
         # Note this is `+=` instead of `<<` to force creation of a new array 
         # rather than appending to the parent
         self.collection_filter_scopes += [scope]
+      end
+
+      def skip_collection_filter_scope(scope)
+        # Note this is `+=` instead of `<<` to force creation of a new array 
+        # rather than appending to the parent
+        self.skipped_collection_filter_scopes += [scope]
       end
     end
 
@@ -33,6 +42,8 @@ module Resources
 
       def apply_collection_filter_scopes(object)
         collection_filter_scopes.each do |scope|
+          next if skipped_collection_filter_scopes.member?(scope)
+
           case scope
           when Proc
             object = instance_exec(object, &scope)
