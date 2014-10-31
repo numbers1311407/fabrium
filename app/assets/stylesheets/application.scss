@@ -1018,3 +1018,47 @@ label {
 .selectize-input .inputs input[type="text"] {
   width: 40px;
 }
+
+.materials {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+
+  .material {
+    @include clearfix;
+    display: block;
+    border: 0;
+    margin: 0;
+    padding: 6px 12px;
+    font-size: 16px;
+
+    border-top: 1px solid #ddd;
+
+    &:first-child {
+      border-top: 0;
+    }
+
+    .remove {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .mat-name {
+      float: left;
+      margin-right: 10px;
+    }
+    .mat-percs {
+      float: right;
+      font-size: 14px;
+
+      input {
+        display: inline;
+        width: 50px;
+        height: 24px;
+        text-align: center;
+        background-color: #fff;
+        padding: 0;
+        margin: 0 1px 0 3px;
+      }
+    }
+  }
+}

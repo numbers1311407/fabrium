@@ -1,5 +1,10 @@
 ;(function (root) {
 
+  function isInteger(str) {
+    var n = ~~Number(str);
+    return String(n) === str && n >= 0;
+  }
+
   app.controller('FabricVariantIndexCtrl', 
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser) {
 
@@ -14,19 +19,25 @@
 
       var searchDeserializers = {
         materials: function (value) {
-          var vals = value.split(',');
-
-          return _.map(value.split(','), function (val) {
-            var split = val.split('-');
-            return { name: split[0], min: Number(split[1]) || 0, max: Number(split[2]) || 100 };
-          });
+          var split, id, min, max, name;
+          return _.reduce(value.split(','), function (m, val) {
+            split = val.split(':');
+            name = split[0];
+            id = parseInt(split[1], 10);
+            if (!isNaN(id) && name) {
+              min = isInteger(split[2]) ? Number(split[2]) : undefined;
+              max = isInteger(split[3]) ? Number(split[3]) : undefined;
+              m.push({id: id, name: name, min: min, max: max});
+            }
+            return m;
+          }, []);
         }
       };
 
       var searchSerializers = {
         materials: function (array) {
           return array.map(function (o) {
-            return [o.name, o.min, o.max].join('-');
+            return [escape(o.name), o.id, o.min, o.max].join(':');
           }).join(",");
         }
       };
@@ -87,6 +98,14 @@
 
         // remove undefined/null
         _.compact(search);
+
+
+        // delete empty arrays
+        _.each(search, function (value, key) {
+          if (Array.isArray(value) && !value.length) {
+            delete search[key]; 
+          }
+        });
 
 
         // parse numbers out of numeric form values.
@@ -206,6 +225,19 @@
       });
 
 
+      $scope.removeMaterial = function (id) {
+        if (!$scope.search.materials) { return; }
+        var i = 0, found = false;
+        for (;i < $scope.search.materials.length; i++) {
+          if ($scope.search.materials[i].id == id) {
+            found = true;
+            break;
+          }
+        }
+        if (found) { $scope.search.materials.splice(i, 1); }
+      };
+
+
       $scope.selectize = {
         category: {
           sortField: 'text',
@@ -213,7 +245,7 @@
         },
 
         material: {
-          valueField: 'name',
+          valueField: 'id',
           labelField: 'name',
           searchField: 'name',
           plugins: ['lazy_preload'],
@@ -222,11 +254,17 @@
 
             this.on("item_add", function (value, $item) {
               $scope.search.materials || ($scope.search.materials = []);
-              $scope.search.materials.push({
-                name: value,
-                max: 0,
-                min: 100
+
+              var existing = _.find($scope.search.materials, function (mat) {
+                return mat.id == value;
               });
+
+              if (!existing) {
+                $scope.search.materials.push({
+                  id: value,
+                  name: $item.html()
+                });
+              }
 
               api.clear();
             });

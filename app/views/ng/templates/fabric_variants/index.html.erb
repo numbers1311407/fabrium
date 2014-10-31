@@ -47,32 +47,20 @@
                 selectize="selectize.material" 
                 ng-model="search.material" 
                 class="form-control" 
-                placeholder="Search Fibers..."
+                placeholder="Search and Select Fibers..."
               >
               </select>
-              <div id="mats" class="mats"></div>
-              <script type="html/template" id="mat-tmpl">
-                <div class="mat">
-                  {{ data.name }}
-                  <input name="mats-name" type="hidden" value="{{ data.name }}" />
+              <div class="materials" ng-show="search.materials && search.materials.length">
+                <div class="material" ng-repeat="mat in search.materials">
+                  <a ng-click="removeMaterial(mat.id)" class="remove" tabindex="-1" title="Remove"> &times; </a>
+                  <span class="mat-name">{{ mat.name }}</span>
+                  <input name="mats-name" type="hidden" ng-model="mat.name" />
                   <span class="mat-percs">
-                    <input name="mats-min" type="number" value="{{ data.min }}" max=100 min=0 step=1 placeholder="Any" />%
+                    <input name="mats-min" type="number" ng-model="mat.min" max=100 min=0 step=1 placeholder="Any" />%
                       to
-                    <input name="mats-max" type="number" value="{{ data.max }}" max=100 min=0 step=1 placeholder="Any" />%
+                    <input name="mats-max" type="number" ng-model="mat.max" max=100 min=0 step=1 placeholder="Any" />%
                   </span>
-                  <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove"> &times; </a>
                 </div>
-              </script>
-
-              <div class="material" ng-repeat="mat in search.materials">
-                {{ mat.name }}
-                <input name="mats-name" type="hidden" ng-model="mat.name" />
-                <span class="mat-percs">
-                  <input name="mats-min" type="number" ng-model="mat.min" max=100 min=0 step=1 placeholder="Any" />%
-                    to
-                  <input name="mats-max" type="number" ng-model="mat.max" max=100 min=0 step=1 placeholder="Any" />%
-                </span>
-                <a ng-click="removeMaterial(mat)" class="remove" tabindex="-1" title="Remove"> &times; </a>
               </div>
             </div>
            

@@ -47,8 +47,8 @@ class FabricVariantsController < ResourceController
   end
 
   has_scope :weight_range_or_min, as: :weight_min do |controller, scope, value|
-    max = controller.params[:weight_max] || Float::INFINITY
-    scope.weight (value.to_f)..(max.to_f), controller.params[:weight_units]
+    max = Float(controller.params[:weight_max]) rescue Float::INFINITY
+    scope.weight (value.to_f)..max, controller.params[:weight_units]
   end
 
   has_scope :weight_max, if: 'params[:weight_min].blank?' do |controller, scope, value|
@@ -114,12 +114,19 @@ class FabricVariantsController < ResourceController
 
   has_scope :materials do |controller, scope, value|
     value.split(',').each do |condition|
-      values = condition.split('-')
+      id, min, max = condition.split(':')[1..-1]
+      if id
+        args = [id]
+        min = Float(min) rescue nil
+        max = Float(max) rescue nil
 
-      # ensure all the values are numeric and positive
-      if values.all? {|v| Float(v) >= 0 rescue nil }
-        id, min, max = values
-        scope = scope.has_material(id, (min.to_f)..(max.to_f))
+        if min || max
+          min ||= 0
+          max ||= 100
+          args << Range.new(*[min, max].sort)
+        end
+
+        scope = scope.has_material(*args)
       end
     end
 
@@ -241,5 +248,10 @@ class FabricVariantsController < ResourceController
 
   def collection_filter_archived(object)
     object.archived(false)
+  end
+
+  private
+
+  def is_number(n)
   end
 end
