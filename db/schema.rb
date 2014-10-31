@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141030213901) do
+ActiveRecord::Schema.define(version: 20141031165126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20141030213901) do
     t.integer  "orders_count",                                   default: 0
     t.integer  "views_count",                                    default: 0
     t.boolean  "archived",                                       default: false
+    t.hstore   "materials"
   end
 
   add_index "fabrics", ["category_id"], name: "index_fabrics_on_category_id", using: :btree
@@ -182,7 +183,7 @@ ActiveRecord::Schema.define(version: 20141030213901) do
   create_table "material_assignments", force: true do |t|
     t.integer "material_id"
     t.integer "fabric_id"
-    t.string  "value",       limit: nil
+    t.decimal "value"
   end
 
   add_index "material_assignments", ["fabric_id"], name: "index_material_assignments_on_fabric_id", using: :btree
