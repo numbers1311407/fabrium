@@ -33,6 +33,9 @@ Authority.configure do |config|
     # separate it from update.  It is probably not really necessary here.
     :activate => 'activate',
 
+    # Carts can be rejected by buyers
+    :reject => 'reject',
+
     # To administer is essentially to read the administrative interface.
     # It may be replaceable with update permissions, but this allows for
     # a blanket permission, for example, to read a resource index, while
@@ -54,7 +57,8 @@ Authority.configure do |config|
     :update => 'updatable',
     :delete => 'deletable',
     :activate => 'activatable',
-    :administer => 'administerable'
+    :administer => 'administerable',
+    :reject => 'rejectable'
   }
 
   # LOGGER

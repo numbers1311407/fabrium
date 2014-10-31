@@ -65,6 +65,9 @@ Rails.application.routes.draw do
 
   resources :carts, path: :hanger_requests, except: :edit do
     resources :cart_items, path: :items, except: [:index, :edit, :new]
+    member do
+      put :reject
+    end
   end
 
   # The "public" cart route, emailed to prospective buyers when mill's 

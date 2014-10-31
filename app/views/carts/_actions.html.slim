@@ -1,4 +1,8 @@
 - if current_user.can_update?(resource)
+  - if current_user.can_reject?(resource)
+    = link_to reject_resource_path(resource), class: 'btn btn-sm btn-default', remote: true, method: :put do
+      i.fa(class='fa fa-ban' title='Not Interested')
+      span Not Interested
   = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
     i.fa.fa-edit(title=st('links.edit'))
     span= st('links.edit')

@@ -38,7 +38,10 @@ class Cart < ActiveRecord::Base
     :ordered,
 
     # Submitted, all items resolved
-    :closed
+    :closed,
+
+    # 'Rejected' by the buyer
+    :rejected
   )
 
   has_many :cart_items, -> { order(fabrium_id: :asc) }, dependent: :destroy

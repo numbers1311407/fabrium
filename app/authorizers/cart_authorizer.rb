@@ -19,7 +19,11 @@ class CartAuthorizer < ApplicationAuthorizer
   def deletable_by?(user)
     # Carts are only deletable via the admin in the `mill_build` (first) 
     # state.
-    resource.state <= :buyer_build && (user.is_admin? || is_mill?(user))
+    (resource.state <= :buyer_build || resource.rejected?) && (user.is_admin? || is_mill?(user))
+  end
+
+  def rejectable_by?(user)
+    resource.mill_created? && resource.buyer_build? && is_buyer?(user)
   end
 
   protected

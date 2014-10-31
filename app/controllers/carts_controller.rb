@@ -1,6 +1,6 @@
 class CartsController < ResourceController
 
-  custom_actions resource: [:pending_cart]
+  custom_actions resource: [:pending_cart, :reject]
   authority_actions pending_cart: :read
 
   skip_before_filter :authenticate_user!, only: [:public_show]
@@ -44,7 +44,7 @@ class CartsController < ResourceController
       elsif user.is_buyer?
         scope = scope.buyer_build
       end
-    when 'ordered', 'mill_build', 'buyer_build', 'closed'
+    when 'ordered', 'mill_build', 'buyer_build', 'closed', 'rejected'
       scope = scope.send(value)
     end
 
@@ -135,6 +135,7 @@ class CartsController < ResourceController
       return
     end
 
+
     # store the location so we'll return here after signing in directly
     # (without hitting some other auth'd URL that would reset the stored
     # location)
@@ -151,6 +152,17 @@ class CartsController < ResourceController
     session[:public_cart_mill] = object.mill.try(:id)
 
     respond_with(object)
+  end
+
+
+  def reject
+    object = resource
+    object.update_attribute(:state, :rejected)
+
+    respond_to do |format|
+      format.html { redirect_to resource }
+      format.js
+    end
   end
 
   protected
@@ -176,9 +188,9 @@ class CartsController < ResourceController
 
   def scope_options
     if current_user.is_admin?
-      %w(buyer_build mill_build ordered closed)
+      %w(buyer_build mill_build ordered closed rejected)
     elsif current_user.is_mill?
-      %w(buyer ordered closed)
+      %w(buyer ordered closed rejected)
     else
       %w(active ordered closed)
     end
@@ -233,9 +245,9 @@ class CartsController < ResourceController
   #
   def update_resource(object, attributes)
     object.attributes = attributes[0]
-    object.bump_state
-    object.save.tap do |result|
-      object.state = object.state_was unless result
+    object.bump_state unless object.is_closed?
+    object.save.tap do |success|
+      object.state = object.state_was unless success
     end
   end
 

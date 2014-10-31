@@ -5,6 +5,9 @@
   - if resource.state <= "pending"
     = render "form"
 
+  - elsif resource.rejected?
+    = render "static"
+
   / afterwards, show the "order" form if the user is a mill
   - elsif current_user.is_buyer? || resource.subcarts.any?
     = render "static"
