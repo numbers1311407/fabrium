@@ -1,6 +1,10 @@
 class ProcessOrderJob
   include SuckerPunch::Job
 
+  def later(sec, *args)
+    after(sec) { perform(*args) }
+  end
+
   def perform(job, *args)
     ActiveRecord::Base.connection_pool.with_connection do
       send(job, *args)
@@ -14,6 +18,23 @@ class ProcessOrderJob
       cart.save
     end
   end
+
+
+  def transition_to_closed(cart_id)
+    cart = Cart.find(cart_id)
+
+    # if this is a subcart and there are no carts in the "open" state,
+    # set the parent to closed
+    if cart.subcart? && cart.siblings.not_state(:closed).none?
+      cart.parent.update(state: :closed)
+    end
+
+    if cart.cart_items.any? && user = cart.buyer.try(:user)
+      mailer = cart.cart_items.shipped.any? ? :order_shipped : :order_refused
+      AppMailer.send(mailer, cart.parent || cart, user, cart.mill).deliver
+    end
+  end
+
 
   def transition_to_ordered(cart_id)
     cart = Cart.find(cart_id)

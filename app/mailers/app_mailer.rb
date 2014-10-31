@@ -22,11 +22,17 @@ class AppMailer < ActionMailer::Base
     mail(to: users.map(&:email), subject: subject)
   end
 
-  # email buyer when order refused
-  def order_refused()
+  # email buyer when order shipped
+  def order_shipped(cart, user, mill)
+    @cart, @user, @mill = cart, user, mill
+    subject = "#{@mill.name} has shipped your fabric request from Fabrium.com"
+    mail(to: @user.email, subject: subject)
   end
 
-  # email buyer when order shipped
-  def order_shipped()
+  # email buyer when order refused
+  def order_refused(cart, user, mill)
+    @cart, @user, @mill = cart, user, mill
+    subject = "#{@mill.name} has declined to fulfill your fabric request at Fabrium.com"
+    mail(to: @user.email, subject: subject)
   end
 end

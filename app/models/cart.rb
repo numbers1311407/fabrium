@@ -266,15 +266,11 @@ class Cart < ActiveRecord::Base
   end
 
   def transition_pending_to_ordered
-    ProcessOrderJob.new.async.perform(:transition_to_ordered, id)
+    ProcessOrderJob.new.async.later(5, :transition_to_ordered, id)
   end
 
   def transition_ordered_to_closed
-    # if this is a subcart and there are no carts in the "open" state,
-    # set the parent to closed
-    if subcart? && siblings.not_state(:closed).empty?
-      parent.update(state: :closed)
-    end
+    ProcessOrderJob.new.async.later(5, :transition_to_closed, id)
   end
 
   def generate_name
