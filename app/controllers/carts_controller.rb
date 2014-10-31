@@ -94,9 +94,15 @@ class CartsController < ResourceController
   def index
     index! do |format|
       format.html do
-        if !request.xhr? && params[:scope].blank? && current_user.is_mill?
-          redirect_to collection_path(scope: 'ordered')
+        if params[:scope]
+          session[:carts_scope] = params[:scope]
+        else
+          session.delete(:carts_scope)
         end
+
+        # if !request.xhr? && params[:scope].blank? && current_user.is_mill?
+        #   redirect_to collection_path(scope: 'ordered')
+        # end
       end
     end
   end
@@ -292,5 +298,12 @@ class CartsController < ResourceController
     end
 
     object
+  end
+
+  def after_commit_redirect_path
+    resource_url
+    # args = {}
+    # args[:scope] = session[:carts_scope] if session[:carts_scope]
+    # collection_url(args)
   end
 end

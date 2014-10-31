@@ -31,7 +31,6 @@ module ApplicationHelper
   end
 
   def translate_scope_name scope, type
-    Rails.logger.error "#{scope} #{type}"
     t(:"scopes.#{type}.#{scope}", default: [:"scopes.#{scope}"])
   end
 
