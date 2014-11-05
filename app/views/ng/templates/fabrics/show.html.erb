@@ -51,6 +51,7 @@
 
   <div class="row print-hide">
     <div class="buttons col-sm-12">
+      <a ng-if="isModal" ng-click="close()" style="margin-right: 10px">Back to Search Results</a>
       <a class="btn btn-default fabric-favorite-status" ng-click="currentUser.toggleFavorite(fabric.id)">
         <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(fabric.id)]"></i>
         <span ng-bind="currentUser.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
