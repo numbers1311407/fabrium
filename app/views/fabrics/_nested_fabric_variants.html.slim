@@ -36,9 +36,9 @@
         thead
           tr
             td
-            td= resource_label(:fabrium_id)
-            td= resource_label(:item_number)
-            td= resource_label(:color)
+            td= resource_label(:fabrium_id, FabricVariant)
+            td= resource_label(:item_number, FabricVariant)
+            td= resource_label(:color, FabricVariant)
             td
         tbody(data-fabric-variants)
           = f.simple_fields_for :fabric_variants do |vf|
