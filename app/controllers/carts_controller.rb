@@ -182,10 +182,6 @@ class CartsController < ResourceController
     messages
   end
 
-  def after_commit_redirect_path
-    collection_path
-  end
-
   def scope_options
     if current_user.is_admin?
       %w(buyer_build mill_build ordered closed rejected)
