@@ -248,6 +248,7 @@
           valueField: 'id',
           labelField: 'name',
           searchField: 'name',
+          sortField: 'name',
           plugins: ['lazy_preload'],
           onInitialize: function () {
             var api = this;
