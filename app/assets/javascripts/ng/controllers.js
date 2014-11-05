@@ -25,6 +25,7 @@
             name = split[0];
             id = parseInt(split[1], 10);
             if (!isNaN(id) && name) {
+              name = unescape(name);
               min = isInteger(split[2]) ? Number(split[2]) : undefined;
               max = isInteger(split[3]) ? Number(split[3]) : undefined;
               m.push({id: id, name: name, min: min, max: max});
