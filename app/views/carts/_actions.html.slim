@@ -26,6 +26,6 @@
     i.fa.fa-info(title=st('links.view'))
     span= st('links.view')
 - if current_user.can_delete?(resource)
-  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, data: { confirm: st('messages.confirm_destroy') } do
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, remote: true, data: { confirm: st('messages.confirm_destroy') } do
     i.fa.fa-trash-o(title=st('links.destroy'))
     span= st('links.destroy')

@@ -33,7 +33,11 @@ class ResourceController < InheritedResources::Base
 
   def destroy
     destroy! do |wants|
-      wants.js { head 204 }
+      wants.html { redirect_to after_commit_redirect_path }
+      wants.js do
+        response.headers["X-Deleted"] = resource.id
+        head 204 
+      end
     end
   end
 

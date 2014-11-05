@@ -300,3 +300,12 @@ $(function () {
     window.print();
   });
 });
+
+
+$(function () {
+  $(document).on("ajax:success", function (event, data, msg, xhr) {
+    if (204 == xhr.status && (id = xhr.getResponseHeader("X-Deleted"))) {
+      $("tr[data-id="+id+"]").fadeOut();
+    }
+  });
+});
