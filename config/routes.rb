@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'ng#index'
+
   devise_for :users, 
     path: 'accounts', 
     controllers: { 
@@ -86,5 +88,5 @@ Rails.application.routes.draw do
   # user roles.
   get "/templates/*path", to: 'ng#template'
 
-  root 'ng#index'
+  match "*path", to: "application#routing_error", via: :all
 end

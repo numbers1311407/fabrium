@@ -6,13 +6,19 @@ class ApplicationController < ActionController::Base
   include AngularCsrf
 
   rescue_from ActionController::UnknownFormat, with: :render_406
-  # rescue_from ActionView::MissingTemplate, with: :render_404
+
+  rescue_from ActionView::MissingTemplate, with: :render_404
+  rescue_from ActiveRecord::RecordNotFound, with: :render_404
+  rescue_from ActionController::RoutingError, :with => :render_404
 
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def routing_error
+    raise ActionController::RoutingError.new(params[:path] || "/routing_error")
+  end
 
   protected
 
@@ -21,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_404
-    render file: 'public/404.html', layout: false, status: 404
+    render file: 'application/404', status: 404
   end
 
   def initiate_async_jobs
