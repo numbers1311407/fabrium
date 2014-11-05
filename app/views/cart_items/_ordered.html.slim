@@ -10,7 +10,7 @@
       label 
         = link_to fabric_path_with_variant(fabric, variant) do
           | Fabrium #: #{cart_item.fabrium_id}
-    p.line-item: label Item #: #{variant.item_number}
+    p.line-item: label Item #: #{variant.combined_item_number}
 
     = fake_input(:notes, cart_item)
 
