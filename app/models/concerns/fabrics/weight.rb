@@ -5,6 +5,7 @@ module Fabrics::Weight
   WEIGHT_UNITS = %w(gsm glm osy)
 
   included do
+    validates *WEIGHT_UNITS.map(&:to_sym), presence: true
 
     # This feels a little unsafe, but the way fabric weights work, the
     # weight is only set via `weight=`.  To make this feel safe, there'd
@@ -28,7 +29,7 @@ module Fabrics::Weight
     # this.  Is there a reason people can't enter the weight as GLM?
     # No there is not.
     #
-    before_save :convert_weights, if: :weight_set?
+    before_validation :convert_weights, if: :weight_set?
 
     scope :weight, ->(v, units=nil) {
       conditions = {}

@@ -6,8 +6,14 @@ module Fabrics::Prices
   PRICE_UNITS = %w(us eu)
 
   included do
-    validates :price_us_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_us_max }
-    validates :price_eu_min, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_eu_max }
+    validates :price_us_min, presence: true, 
+      numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_us_max }
+    validates :price_eu_min, presence: true, 
+      numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :price_eu_max }
+    validates :price_us_max, presence: true,
+      numericality: { greater_than_or_equal_to: :price_us_min }
+    validates :price_eu_max, presence: true,
+      numericality: { greater_than_or_equal_to: :price_eu_min }
 
     before_validation :cast_price_ranges_to_db
 
@@ -35,19 +41,19 @@ module Fabrics::Prices
   end
 
   def price_us_min
-    @price_us_min ||= price_us.try(:min) || 0
+    @price_us_min ||= price_us.try(:min)
   end
 
   def price_us_max
-    @price_us_max ||= price_us.try(:max) || 0
+    @price_us_max ||= price_us.try(:max)
   end
 
   def price_eu_min
-    @price_eu_min ||= price_eu.try(:min) || 0
+    @price_eu_min ||= price_eu.try(:min)
   end
 
   def price_eu_max
-    @price_eu_max ||= price_eu.try(:max) || 0
+    @price_eu_max ||= price_eu.try(:max)
   end
 
   def pricing_type

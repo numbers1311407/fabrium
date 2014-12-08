@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141031165126) do
+ActiveRecord::Schema.define(version: 20141208212113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,9 +144,9 @@ ActiveRecord::Schema.define(version: 20141031165126) do
     t.numrange "price_eu"
     t.numrange "price_us"
     t.integer  "width",                                          default: 0
-    t.decimal  "gsm",                    precision: 8, scale: 2, default: 0.0
-    t.decimal  "glm",                    precision: 8, scale: 2, default: 0.0
-    t.decimal  "osy",                    precision: 8, scale: 2, default: 0.0
+    t.decimal  "gsm",                    precision: 8, scale: 2
+    t.decimal  "glm",                    precision: 8, scale: 2
+    t.decimal  "osy",                    precision: 8, scale: 2
     t.string   "country",                                        default: ""
     t.integer  "sample_minimum_quality",                         default: 0
     t.integer  "bulk_minimum_quality",                           default: 0

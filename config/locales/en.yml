@@ -227,6 +227,8 @@ en:
       models:
         fabric:
           attributes:
+            fabric_variants:
+              too_short: "At least one color way must be uploaded"
             price_eu_min:
               less_than_or_equal_to: "Must be less than the upper range bound"
             price_us_min:

@@ -34,4 +34,8 @@ class Fabric < ActiveRecord::Base
   validates :weight, presence: true
   validates :bulk_minimum_quality, numericality: { greater_than_or_equal_to: 0 }
   validates :sample_minimum_quality, numericality: { greater_than_or_equal_to: 0 }
+
+  validates :category, presence: true
+  validates :dye_method, presence: true
+  validates :fabric_variants, length: { minimum: 1 }
 end

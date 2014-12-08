@@ -1,6 +1,10 @@
 .form-group.fabric_variants
   .panel-default
     = f.label :fabric_variants
+    - if f.object.errors[:fabric_variants].present?
+      .alert.alert-danger
+        = f.object.errors[:fabric_variants][0]
+
     script(type="html/template")
       | <tr class="fabric-variant" data-id="<%= obj.id %>">
           <td class="thumb">
