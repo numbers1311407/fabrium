@@ -10,7 +10,6 @@ class CartItem < ActiveRecord::Base
 
   validates :cart, presence: true
   validates :fabric_variant, presence: true
-  validates :sample_yardage, numericality: { greater_than_or_equal_to: 0, allow_blank: true }
   validate :ensure_fabric_variant_belongs_to_cart_mill, on: :create
 
   before_create :denormalize_attrs

@@ -16,7 +16,7 @@
       p.line-item: label Item #: #{variant.combined_item_number}
 
     - if cart_item.sample_yardage.present? && current_user.is_buyer?
-      p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
+      = fake_input(:sample_yardage, cart_item)
 
     - if cart_item.deletable_by?(current_user)
       = link_to cart_cart_item_path(cart, cart_item.fabric_variant_id), class: 'remove btn btn-default', method: :delete, remote: true do

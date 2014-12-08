@@ -17,8 +17,9 @@
         | Status: 
         span(class="state-#{cart_item.state}")
           = translate_cart_item_state(cart_item.state)
+
     - if cart_item.sample_yardage.present?
-      p.line-item: label Sample Yardage Available: #{cart_item.sample_yardage}
+      = fake_input(:sample_yardage, cart_item)
 
     - if current_user
       = fake_input(:notes, cart_item)

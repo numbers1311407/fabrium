@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208212113) do
+ActiveRecord::Schema.define(version: 20141208215006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20141208212113) do
     t.string   "fabrium_id"
     t.integer  "state",             default: 0
     t.text     "notes"
-    t.decimal  "sample_yardage"
+    t.text     "sample_yardage"
     t.boolean  "request_yardage",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
