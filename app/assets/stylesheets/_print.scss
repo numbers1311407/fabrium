@@ -1,3 +1,32 @@
+@media screen {
+  #printSection {
+    display: none;
+  }
+}
+
+@media print {
+  .fabrics-show-image .overlay {
+    display: block !important;
+  }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0;
+  }
+  body * {
+    visibility: hidden;
+  }
+  #printSection, #printSection * {
+    visibility: visible;
+    width: 100%;
+  }
+  #printSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
 @media print {
   [cycle] img {
     width: auto !important;
