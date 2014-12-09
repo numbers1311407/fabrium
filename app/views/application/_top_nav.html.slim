@@ -23,6 +23,13 @@
             span.caret
           ul.dropdown-menu(role="menu")
             = render "application/main_nav"
+        - if current_user.is_mill?
+          li
+            a.requests-link href=carts_path(scope: :ordered)
+              span Requests
+              span.count-outer
+                |  (<span class="count">#{current_user.meta.carts.ordered.count}</span>)
+
         li.dropdown.dropdown-toggle
           a.dropdown-toggle data-toggle="dropdown" href="#"
             i.fa.fa-gear.fa-lg.hidden-xs

@@ -4,7 +4,7 @@
   li= link_to st('links.edit_buyer'), edit_buyer_path(current_user.meta)
 
 = resource_menu_link(Fabric)
-= resource_menu_link(Cart)
+= resource_menu_link(Cart) unless current_user.is_mill?
 = resource_menu_link(User, text: t(current_user.is_mill? ? "st.users.actions.index.mill_user_title" : "st.users.actions.index.title") )
 = resource_menu_link(Buyer)
 = resource_menu_link(Mill)
