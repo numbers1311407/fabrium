@@ -67,4 +67,9 @@ class ApplicationController < ActionController::Base
 
     super
   end
+
+  # By default it is the root_path.
+  def after_sign_out_path_for(resource_or_scope)
+    "http://fabrium.com"
+  end
 end
