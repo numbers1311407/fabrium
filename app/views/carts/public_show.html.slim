@@ -2,4 +2,8 @@
   = t(:public_cart_message, mill: resource.mill.name)
   = link_to("Sign up now!", new_user_registration_path(:buyer), class: 'btn btn-primary')
 
-= render 'static'
+div ng-app='fabrium'
+  div ng-controller='CartPublicShowCtrl'
+    = render 'static'
+
+= render template: 'ng/index'

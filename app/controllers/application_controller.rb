@@ -26,8 +26,12 @@ class ApplicationController < ActionController::Base
     render file: 'public/406.html', layout: false, status: 406
   end
 
+
   def render_404
-    render file: 'application/404', status: 404
+    respond_to do |format|
+      format.html { render file: 'application/404', status: 404 }
+      format.json { render json: '', status: 404 }
+    end
   end
 
   def initiate_async_jobs

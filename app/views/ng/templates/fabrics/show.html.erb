@@ -52,13 +52,13 @@
   <div class="row print-hide">
     <div class="buttons col-sm-12">
       <a ng-if="isModal" ng-click="close()" style="margin-right: 10px">Back to Search Results</a>
-      <a class="btn btn-default fabric-favorite-status" ng-click="currentUser.toggleFavorite(fabric.id)">
+      <a class="btn btn-default fabric-favorite-status" ng-if="currentUser" ng-click="currentUser.toggleFavorite(fabric.id)">
         <i class="fa fa-heart" ng-class="{true: 'fa-favorite'}[currentUser.hasFavorite(fabric.id)]"></i>
         <span ng-bind="currentUser.hasFavorite(fabric.id) ? 'Remove from favorites' : 'Add to favorites'"></span>
       </a>
-      <a ng-if="!currentUser.isBuyer()" class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
+      <a ng-if="currentUser && !currentUser.isBuyer()" class="btn btn-default" href="{{ fabric.links | link:'edit' }}">Edit</a>
       <a class="btn btn-default" href="#print" ng-click="print()">Print</a>
-      <a class="btn" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="handleRequestClick(variant.id)" href="#request">
+      <a class="btn" ng-if="currentUser" ng-show="cart" ng-class="{true: 'btn-danger', false: 'btn-primary'}[cart.hasItem(variant.id)]" ng-click="handleRequestClick(variant.id)" href="#request">
         <span ng-if="cart.hasItem(variant.id) && currentUser.isBuyer()">Fabric In Cart - View Cart</span>
         <span ng-if="cart.hasItem(variant.id) && currentUser.isMill()">Item Selected - View Cart</span>
         <span ng-if="!cart.hasItem(variant.id) && currentUser.isBuyer()">Add Fabric To Cart</span>
@@ -66,7 +66,7 @@
       </a>
     </div>
   </div>
-  <% unless current_user.is_mill? %>
+  <% if current_user && !current_user.is_mill? %>
     <div class="row print-hide">
       <div class="col-sm-12">
         <div class="form-group">

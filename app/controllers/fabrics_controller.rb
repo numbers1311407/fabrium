@@ -3,6 +3,8 @@ class FabricsController < ResourceController
   add_collection_filter_scope :collection_filter_includes
   authority_actions toggle_archived: :update
 
+  skip_before_filter :authenticate_user!, if: :skip_authenticate_on_show?
+
   permit_params [
     :archived,
     :bulk_lead_time, 
@@ -135,5 +137,25 @@ class FabricsController < ResourceController
         end
       end
     end
+  end
+
+  def begin_of_association_chain
+    # likely nil
+    public_cart
+  end
+
+  def resource
+    object = resource_without_authority
+    authorize_action_for(object) unless public_cart
+    object
+  end
+
+  def public_cart
+    return nil if false == @public_cart
+    @public_cart ||= params[:public_id].present? && Cart.find_by!(public_id: params[:public_id]) || false
+  end
+
+  def skip_authenticate_on_show?
+    'show' == action_name && public_cart.present?
   end
 end

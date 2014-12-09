@@ -33,7 +33,9 @@
     });
 
     var API = {
-      get: function (id) {
+      get: function (id, args) {
+        args || (args = {});
+
         var promise, cached;
      
         if (cached = API.getCached(id)) {
@@ -41,7 +43,7 @@
           deferred.resolve(cached);
           promise = deferred.promise;
         } else {
-          promise = Restangular.one("fabrics", id).get();
+          promise = Restangular.one("fabrics", id).get(args);
           promise.then(function (data) {
             API.put(id, data);
           });

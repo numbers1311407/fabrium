@@ -18,7 +18,7 @@ class RegistrationsController < Devise::RegistrationsController
   # the wrong buyer, or no buyer, and the new user asks the mill to make them
   # another.  If this flow is not adequate we can come up with something else.
   # 
-  after_filter :attach_public_cart, on: :create
+  after_filter :attach_public_cart, only: :create
 
   # Send users to sign up on inactive sign out (not home page)
   # (this only applies of course if user is Timeoutable)
@@ -44,8 +44,12 @@ class RegistrationsController < Devise::RegistrationsController
   # For use in the client JS.  This should only be a json request
   #
   def profile
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    respond_with self.resource
+    if object = send(:"current_#{resource_name}")
+      self.resource = resource_class.to_adapter.get!(object.to_key)
+      respond_with self.resource
+    else
+      render json: '', status: 404
+    end
   end
 
   protected

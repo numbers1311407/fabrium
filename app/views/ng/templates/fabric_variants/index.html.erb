@@ -100,7 +100,7 @@
               </div>
             </fieldset>
 
-            <% unless current_user.is_mill? %>
+            <% unless current_user && current_user.is_mill? %>
               <fieldset id="ao_select_mills" class="advanced-option">
                 <legend>Select Mills</legend>
                 <div class="row form-row-mills">
@@ -114,7 +114,7 @@
                       options="mill_options"
                     >
                   </div>
-                  <% if current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
+                  <% if current_user && current_user.is_buyer? && (preferred = current_user.meta.preferred_mills) %>
                     <div class="form-link">
                       <a ng-click='search.mills = "<%= preferred.ids.join(',') %>"'>
                         Load my preferred mills 
@@ -130,7 +130,7 @@
                 </div>
               </fieldset>
 
-              <% blocked = current_user.is_buyer? ? current_user.meta.blocked_mills : [] %>
+              <% blocked = current_user && current_user.is_buyer? ? current_user.meta.blocked_mills : [] %>
 
               <fieldset id="ao_exclude_mills" class="advanced-option">
                 <legend>Exclude Mills</legend>
@@ -145,7 +145,7 @@
                       options="mill_options"
                     >
                   </div>
-                  <% if current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
+                  <% if current_user && current_user.is_buyer? && (blocked = current_user.meta.blocked_mills) %>
                     <div class="form-link">
                       <!--
                       <a ng-click='search.not_mills = "<%= blocked.ids.join(',') %>"'>

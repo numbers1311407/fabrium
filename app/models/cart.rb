@@ -82,6 +82,7 @@ class Cart < ActiveRecord::Base
 
 
   has_many :fabric_variants, through: :cart_items
+  has_many :fabrics, through: :fabric_variants
 
   # The cart belongs to a `creator` which may be either a cart or a mill.
   # This distinction is important for authority rules and made clear via this

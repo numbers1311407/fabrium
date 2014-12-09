@@ -5,6 +5,29 @@
     return String(n) === str && n >= 0;
   }
 
+  app.controller('CartPublicShowCtrl', function ($scope, $location, $modal, fabrics) {
+    $scope.public_id = $location.url().match(/\/carts\/(.*)\/pub/)[1];
+
+    $scope.show = function (id, position) {
+      var modalInstance = $modal.open({
+        templateUrl: "/templates/fabrics/show",
+        controller: "FabricShowCtrl",
+        windowClass: "ng-modal",
+        resolve: {
+          modal: function () {
+            return $modal;
+          },
+          position: function () {
+            return position;
+          },
+          fabric: function () {
+            return fabrics.get(id, {public_id: $scope.public_id});
+          }
+        }
+      });
+    };
+  });
+
   app.controller('FabricVariantIndexCtrl', 
     function ($scope, $location, $timeout, $modal, Restangular, RestangularWithResponse, fabrics, currentUser) {
 
