@@ -100,6 +100,8 @@ en:
           title_with_count: "Hanger Requests (%{count} Requests)"
         pending_cart:
           title: "New Hanger Request"
+        duplicate:
+          title: "Duplicate Order"
     fabrics:
       links:
         edit: 'View & Edit'

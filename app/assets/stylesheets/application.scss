@@ -1046,3 +1046,10 @@ label {
   text-align: center;
   margin-top: 70px;
 }
+
+.header-actions {
+  margin-bottom: 20px;
+  a + a {
+    margin-left: 5px;
+  }
+}

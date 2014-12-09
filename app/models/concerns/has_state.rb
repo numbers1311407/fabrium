@@ -33,6 +33,11 @@ module HasState
     false
   end
 
+  def bump_state!
+    bump_state
+    save
+  end
+
   def states
     self.class.states
   end

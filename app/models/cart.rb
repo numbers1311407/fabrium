@@ -6,8 +6,8 @@ class Cart < ActiveRecord::Base
   MILL_NAME_TEMPLATE = "%s Generated Hanger Request %s"
   BUYER_NAME_TEMPLATE = "Hanger Request %s"
 
-  validates :buyer_email, email: true, confirmation: true, if: :transitioning_from_mill_build_to_buyer_unclaimed?
-  validate :buyer_email_must_be_blank_or_buyer, if: :transitioning_from_mill_build_to_buyer_unclaimed?
+  validates :buyer_email, email: true, confirmation: true, if: :should_validate_email?
+  validate :buyer_email_must_be_blank_or_buyer, if: :should_validate_email?
   attr_accessor :buyer_email_confirmation
 
   validates :cart_items, presence: true, if: :transitioning_from_buyer_build_to_pending?
@@ -16,6 +16,14 @@ class Cart < ActiveRecord::Base
   after_create :generate_name, unless: 'parent.present?'
 
   before_save :perform_state_update
+
+  def duplicating?
+    @_duplicating.present?
+  end
+
+  def duplicating!
+    @_duplicating = true
+  end
 
   define_states(
     # Mill created, not yet submitted to buyer
@@ -60,7 +68,6 @@ class Cart < ActiveRecord::Base
   # end
   # alias_method_chain :cart_items, :parent
 
-
   def build_subcarts
     # do not build subcarts for subcarts
     return [] if parent.present?
@@ -78,6 +85,39 @@ class Cart < ActiveRecord::Base
       cart.cart_items = items
       cart
     end
+  end
+
+
+  # Note this dup'ish methid is for a very specific purpose: that of a 
+  # mill "duplicating" a cart to send it to another buyer.
+  #
+  # This means that:
+  #   - state is reset to mill_build
+  #   - buyer_id is not duped
+  #   - cart items are only partially copied (no notes, etc)
+  #
+  def build_duplicate(attrs)
+    # this kludgy "dup" is primarily to get around the original
+    # state of the object being set to a number
+    # NOTE (which should be fixed in the state plugin, not here)
+    cattrs = self.attributes.except('id', 'state', 'buyer_id')
+    cattrs[:state] = :mill_build
+    cloned = Cart.new(cattrs)
+
+    # the cart items aren't fully cloned
+    cart_items.each do |ci|
+      cloned.cart_items.build({
+        fabric_variant_id: ci.fabric_variant_id,
+        mill_id: ci.mill_id,
+        fabrium_id: ci.fabrium_id,
+        state: 0
+      })
+    end
+
+    # overrides
+    cloned.attributes = attrs
+    cloned.duplicating!
+    cloned
   end
 
 
@@ -289,5 +329,9 @@ class Cart < ActiveRecord::Base
       random_token = SecureRandom.urlsafe_base64(16).tr('lIO0_-', 'sxyzUD')
       break random_token unless self.class.exists?(public_id: random_token)
     end
+  end
+
+  def should_validate_email?
+    duplicating? || transitioning_from_mill_build_to_buyer_unclaimed?
   end
 end

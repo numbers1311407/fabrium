@@ -1,6 +1,11 @@
 - breadcrumb :resource, name: resource.name
 
 .cart-wrapper
+  - if current_user.is_mill? && (resource.state > "mill_build")
+    .header-actions
+      a.btn.btn-primary href=duplicate_resource_path(resource) rel="modal"
+        = t("st.carts.actions.duplicate.title")
+
   / before the cart is ordered, always show the "cart" form
   - if resource.state <= "pending"
     = render "form"
@@ -15,3 +20,5 @@
   / otherwise the static view (for admins and buyers)
   - else
     = render "order_form"
+
+

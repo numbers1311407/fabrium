@@ -1,7 +1,7 @@
 class CartsController < ResourceController
 
-  custom_actions resource: [:pending_cart, :reject]
-  authority_actions pending_cart: :read
+  custom_actions resource: [:pending_cart, :reject, :duplicate, :create_duplicate]
+  authority_actions pending_cart: :read, duplicate: :create, create_duplicate: :create
 
   skip_before_filter :authenticate_user!, only: [:public_show]
 
@@ -135,7 +135,6 @@ class CartsController < ResourceController
       return
     end
 
-
     # store the location so we'll return here after signing in directly
     # (without hitting some other auth'd URL that would reset the stored
     # location)
@@ -154,6 +153,20 @@ class CartsController < ResourceController
     respond_with(object)
   end
 
+  def duplicate
+    @duplicate_cart = Cart.new
+  end
+
+  def create_duplicate
+    @duplicate_cart = resource.build_duplicate(resource_params[0])
+
+    if @duplicate_cart.save
+      flash[:notice] = t(:"cart_state_flash.mill_build.notice")
+      @duplicate_cart.bump_state!
+    end
+
+    respond_with(@duplicate_cart)
+  end
 
   def reject
     object = resource
@@ -210,6 +223,8 @@ class CartsController < ResourceController
     elsif !current_user.is_admin?
       scoped = current_user.meta.pending_carts
       object = scoped.first || scoped.build
+
+
       authorize_action_for(object) if object
       object
     end

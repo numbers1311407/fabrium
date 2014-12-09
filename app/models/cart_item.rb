@@ -8,7 +8,7 @@ class CartItem < ActiveRecord::Base
   belongs_to :fabric_variant
   belongs_to :mill
 
-  validates :cart, presence: true
+  # validates :cart, presence: true
   validates :fabric_variant, presence: true
   validate :ensure_fabric_variant_belongs_to_cart_mill, on: :create
 

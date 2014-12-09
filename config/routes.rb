@@ -69,6 +69,8 @@ Rails.application.routes.draw do
     resources :cart_items, path: :items, except: [:index, :edit, :new]
     member do
       put :reject
+      get :duplicate
+      post :create_duplicate
     end
   end
 

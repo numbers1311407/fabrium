@@ -1,0 +1,15 @@
+- breadcrumb :new_resource
+
+.page-header
+  #content-title
+    = title st(:title)
+
+#content-body
+  = simple_form_for @duplicate_cart, url: create_duplicate_cart_path(resource) do |f|
+
+    div
+      = f.input :buyer_email
+      = f.input :buyer_email_confirmation
+
+    div
+      = f.submit cart_button_label(@duplicate_cart), class: 'btn btn-primary'
