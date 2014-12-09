@@ -65,7 +65,14 @@ class ApplicationController < ActionController::Base
       initiate_async_jobs
     end
 
-    super
+    # get/unset stored_location
+    stored = stored_location_for(resource_or_scope)
+
+    if stored && URI.parse(stored).path != root_path
+      stored
+    else
+      signed_in_root_path(resource_or_scope)
+    end
   end
 
   # By default it is the root_path.
