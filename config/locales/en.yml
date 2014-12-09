@@ -57,10 +57,9 @@ en:
       ordered: "Ordered"
       buyer_unclaimed: "Unclaimed"
       buyer_build: "Buyer"
-      mill_build: "Active"
+      mill_build: "Mill"
       rejected: "Not Interested"
       buyer:
-        buyer_unclaimed: "Active"
         buyer_build: "Mill Submitted Request"
       mill:
         mill_build: "Active"
