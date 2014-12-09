@@ -133,7 +133,7 @@ class Mill < ActiveRecord::Base
   validates :spectrophotometer, inclusion: {in: [true, false]}
   validates :light_box, inclusion: {in: [true, false]}
   validates :internal_lab, inclusion: {in: [true, false]}
-  validates :light_sources, inclusion: {in: [true, false]}
+  validates :light_sources, presence: true
   validates :inspection_stages, presence: true
   validates :inspection_system, presence: true
   validates :years_attending_premiere_vision, presence: true
