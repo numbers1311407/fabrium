@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141208215006) do
+ActiveRecord::Schema.define(version: 20141209153006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,7 +259,7 @@ ActiveRecord::Schema.define(version: 20141208215006) do
     t.integer  "dying_monthly_capacity",            default: 0
     t.integer  "finishing_monthly_capacity",        default: 0
     t.integer  "printing_monthly_capacity",         default: 0
-    t.integer  "printing_methods",                  default: 0
+    t.string   "printing_methods",                  default: "0"
     t.integer  "printing_max_colors",               default: 0
     t.boolean  "automatic_lab_dipping",             default: false
     t.boolean  "spectrophotometer",                 default: false
