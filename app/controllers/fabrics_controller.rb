@@ -104,7 +104,9 @@ class FabricsController < ResourceController
   end
 
   def begin_of_association_chain
-    if current_user && current_user.is_mill?
+    if public_cart
+      public_cart
+    elsif current_user && current_user.is_mill?
       current_user.meta
     end
   end
@@ -137,11 +139,6 @@ class FabricsController < ResourceController
         end
       end
     end
-  end
-
-  def begin_of_association_chain
-    # likely nil
-    public_cart
   end
 
   def resource
