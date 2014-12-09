@@ -31,7 +31,7 @@ en:
         preferred_mills: 'On the search screen under advanced search, you can filter your search results so it only shows fabrics from your "Preferred Mills."'
         blocked_mills: 'On the search screen under advanced search, you can filter your search results so it does not show any fabrics from your "Blocked Mills."'
       mill:
-        domain_filter: 'The default state is that all buyers can see your fabrics in search results.<br><br>If you "blacklist" certain buyer domains, they will not be able to see your fabrics in their search results.<br><br>If you "whitelist" certain buyer domains, then only they will be able to see your fabrics while no one else can.<br><br>If you choose "whitelist" and leave Filtered Domains blank, then this means no one is whitelisted and thus no one can see your fabrics in search results. Use this if you temporarily want to hide your fabrics from all buyers.'
+        domain_filter: 'The default state is that all buyers can see your fabrics in search results.<br><br>If you "blacklist" certain buyer domains, anyone with an email address at those domains will not be able to see your fabrics in their search results.<br><br>If you "whitelist" certain buyer domains, then only people with an email address at those domains will be able to see your fabrics while no one else can.<br><br>If you choose "whitelist" and leave Filtered Domains blank, then this means no one is whitelisted and thus no one can see your fabrics in search results. Use this if you temporarily want to hide your fabrics from all buyers.<br><br>For example, if you enter a domain as "google.com" then this will apply to all people that have an email address @google.com.<br><br>'
 
     # Examples
     # labels:
