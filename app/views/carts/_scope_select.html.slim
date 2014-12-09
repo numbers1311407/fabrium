@@ -6,6 +6,17 @@
     .form-group
       label(for="cart_mill_select") Pick Mill
       = carts_mill_select_tag
-  .form-group
-    label(for="cart_scope_select") Filter by Type
-    = carts_scope_select_tag
+
+  / Mill gets the special help popover
+  - if current_user.is_mill?
+    .form-group.popover-hint
+      label(for="cart_scope_select")
+        span Filter by Type
+        - if current_user.is_mill?
+          .help-block= t(:"simple_form.hints.cart.scope").html_safe
+      = carts_scope_select_tag
+  - else
+    .form-group
+      label(for="cart_scope_select")
+        span Filter by Type
+      = carts_scope_select_tag

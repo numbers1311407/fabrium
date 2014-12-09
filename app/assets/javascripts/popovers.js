@@ -33,7 +33,7 @@
 
     $(".popover-hint").each(function () {
       var $el = $(this);
-      var help = $('<span style="cursor: pointer"> <i class="fa fa-question-circle" ></i></span>');
+      var help = $('<span style="cursor: pointer; margin-left: 3px;"> <i class="fa fa-question-circle" ></i></span>');
       help.appendTo($el.find("label"));
 
       help.popover({
