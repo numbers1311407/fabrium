@@ -81,6 +81,12 @@
     }
   });
 
+  app.filter("price_label", function () {
+    return function () {
+      return "Price per Yard";
+    }
+  });
+
   /**
    * Format the `price` object of a resource for display
    */
@@ -95,7 +101,9 @@
     return function (input) {
       if (!input) return "";
 
-      var out = _.map(input, function (v, k) {
+      var price = input.price;
+
+      var out = _.map(price, function (v, k) {
         var cur = currency_map[k]
           , min = parseFloat(v.min).toFixed(2)
           , max = parseFloat(v.max).toFixed(2);
