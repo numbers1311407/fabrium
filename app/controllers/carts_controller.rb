@@ -160,9 +160,16 @@ class CartsController < ResourceController
   def create_duplicate
     @duplicate_cart = resource.build_duplicate(resource_params[0])
 
-    if @duplicate_cart.save
-      flash[:notice] = t(:"cart_state_flash.mill_build.notice")
-      @duplicate_cart.bump_state!
+    if !current_user.is_mill?
+      error = flash[:alert] = "Only mills may duplicate orders."
+      @duplicate_cart.errors.add(:base, error)
+    else
+      @duplicate_cart.creator = current_user.meta
+
+      if @duplicate_cart.save
+        flash[:notice] = t(:"cart_state_flash.mill_build.notice")
+        @duplicate_cart.bump_state!
+      end
     end
 
     respond_with(@duplicate_cart)

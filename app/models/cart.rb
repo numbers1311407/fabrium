@@ -94,13 +94,14 @@ class Cart < ActiveRecord::Base
   # This means that:
   #   - state is reset to mill_build
   #   - buyer_id is not duped
+  #   - creator is not duped
   #   - cart items are only partially copied (no notes, etc)
   #
   def build_duplicate(attrs)
     # this kludgy "dup" is primarily to get around the original
     # state of the object being set to a number
     # NOTE (which should be fixed in the state plugin, not here)
-    cattrs = self.attributes.except('id', 'state', 'buyer_id')
+    cattrs = self.attributes.except('id', 'state', 'buyer_id', 'creator_type', 'creator_id')
     cattrs[:state] = :mill_build
     cloned = Cart.new(cattrs)
 
