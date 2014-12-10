@@ -24,6 +24,7 @@ class Mill < ActiveRecord::Base
     :major_markets, 
     :name,
     :number_of_employees, 
+    :phone,
     :postal_code, 
     :printing_max_colors, 
     :printing_methods, 
