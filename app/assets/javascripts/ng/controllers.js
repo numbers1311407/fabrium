@@ -9,6 +9,12 @@
     $scope.isModal = !!$modalInstance;
     $scope.mill = mill;
 
+    if ($modalInstance) {
+      $scope.close = function () {
+        $modalInstance.dismiss();
+      };
+    }
+
     currentUser.get().then(function (user) {
       $scope.currentUser = user;
 
