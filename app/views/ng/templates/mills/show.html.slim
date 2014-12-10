@@ -1,0 +1,153 @@
+button ng-if="isModal" type="button" class="close" ng-click="close()"
+  span aria-hidden="true" &times
+  span.sr-only Close
+
+.mill-show
+
+  .mill-show-header ng-class="{'modal-header': isModal}"
+    h3 ng-bind="mill.name" ng-class="{'modal-title': isModal}"
+
+  .mill-show-body ng-class="{'modal-body': isModal}"
+    .mill-show-details.details-definition-list
+      .row
+        dl.col-sm-6
+          lh Profile
+          dt= Mill.human_attribute_name(:phone)
+          dd ng-bind="mill.phone | default"
+          br
+          dt= Mill.human_attribute_name(:shipping_address_1)
+          dd ng-bind="mill.shiping_address_1 | default"
+          br
+          dt= Mill.human_attribute_name(:city)
+          dd ng-bind="mill.city | default"
+          br
+          dt= Mill.human_attribute_name(:postal_code)
+          dd ng-bind="mill.postal_code | default"
+          br
+          dt= Mill.human_attribute_name(:country)
+          dd ng-bind="mill.country | default"
+          br
+          dt= Mill.human_attribute_name(:subregion)
+          dd ng-bind="mill.subregion | default"
+          br
+          dt= Mill.human_attribute_name(:product_type)
+          dd ng-bind="mill.product_type | default"
+          br
+          dt= Mill.human_attribute_name(:year_established)
+          dd ng-bind="mill.year_established | default"
+          br
+          dt= Mill.human_attribute_name(:number_of_employees)
+          dd ng-bind="mill.number_of_employees | default"
+          br
+          dt= Mill.human_attribute_name(:major_markets)
+          dd ng-bind="mill.major_markets | default"
+          br
+          dt= Mill.human_attribute_name(:major_customers)
+          dd ng-bind="mill.major_customers | default"
+
+        .col-sm-6
+          dl
+            lh Production
+            dt= Mill.human_attribute_name(:sample_lead_time)
+            dd ng-bind="mill.sample_lead_time | default"
+            br
+            dt= Mill.human_attribute_name(:bulk_lead_time)
+            dd ng-bind="mill.bulk_lead_time | default"
+            br
+            dt= Mill.human_attribute_name(:sample_minimum_quality)
+            dd ng-bind="mill.sample_minimum_quality | default"
+            br
+            dt= Mill.human_attribute_name(:bulk_minimum_quality)
+            dd ng-bind="mill.bulk_minimum_quality | default"
+
+          dl
+            lh Collection
+            dt= Mill.human_attribute_name(:seasonal)
+            dd ng-bind="mill.seasonal | yesno | default"
+            br
+            dt= Mill.human_attribute_name(:seasonal_count)
+            dd ng-bind="mill.seasonal_count | default"
+            br
+            dt= Mill.human_attribute_name(:designs_per_season)
+            dd ng-bind="mill.designs_per_season | default"
+            br
+            dt= Mill.human_attribute_name(:designs_per_archive)
+            dd ng-bind="mill.designs_per_archive | default"
+
+      .row
+        dl.col-sm-6
+          lh Operations
+          dt= Mill.human_attribute_name(:spinning_monthly_capacity)
+          dd ng-bind="mill.spinning_monthly_capacity | default"
+          br
+          dt= Mill.human_attribute_name(:weaving_knitting_monthly_capacity)
+          dd ng-bind="mill.weaving_knitting_monthly_capacity | default"
+          br
+          dt= Mill.human_attribute_name(:dying_monthly_capacity)
+          dd ng-bind="mill.dying_monthly_capacity | default"
+          br
+          dt= Mill.human_attribute_name(:finishing_monthly_capacity)
+          dd ng-bind="mill.finishing_monthly_capacity | default"
+          br
+          dt= Mill.human_attribute_name(:printing_monthly_capacity)
+          dd ng-bind="mill.printing_monthly_capacity | default"
+          br
+          dt= Mill.human_attribute_name(:printing_methods)
+          dd ng-bind="mill.printing_methods | default"
+          br
+          dt= Mill.human_attribute_name(:printing_max_colors)
+          dd ng-bind="mill.printing_max_colors | default"
+        dl.col-sm-6
+          lh Color and Testing
+          dt= Mill.human_attribute_name(:automatic_lab_dipping)
+          dd ng-bind="mill.automatic_lab_dipping | yesno | default"
+          br
+          dt= Mill.human_attribute_name(:spectrophotometer)
+          dd ng-bind="mill.spectrophotometer | yesno | default"
+          br
+          dt= Mill.human_attribute_name(:light_box)
+          dd ng-bind="mill.light_box | yesno | default"
+          br
+          dt= Mill.human_attribute_name(:internal_lab)
+          dd ng-bind="mill.internal_lab | yesno | default"
+          br
+          dt= Mill.human_attribute_name(:light_sources)
+          dd ng-bind="mill.light_sources | default"
+          br
+          dt= Mill.human_attribute_name(:testing_capabilities)
+          dd ng-bind="mill.testing_capabilities | default"
+
+      .row
+        dl.col-sm-6
+          lh Quality Control
+          dt= Mill.human_attribute_name(:inspection_stages)
+          dd ng-bind="mill.inspection_stages | default"
+          br
+          dt= Mill.human_attribute_name(:inspection_system)
+          dd ng-bind="mill.inspection_system | default"
+        dl.col-sm-6
+          lh Fabric Exhibition
+          dt= Mill.human_attribute_name(:years_attending_premiere_vision)
+          dd ng-bind="mill.years_attending_premiere_vision | default"
+          br
+          dt= Mill.human_attribute_name(:years_attending_texworld)
+          dd ng-bind="mill.years_attending_texworld | default"
+
+    .mill-associations.row
+      .association-table.table-responsive.col-sm-12 ng-if="mill.contacts | default"
+        table.table
+          caption Contacts
+          tr ng-repeat="contact in mill.contacts"
+            td ng-bind="contact.name"
+            td ng-bind="contact.email"
+            td ng-bind="contact.phone"
+            td ng-bind="contact.job_title"
+
+      .association-table.table-responsive.col-sm-12 ng-if="mill.agents"
+        table.table
+          caption Agents
+          tr ng-repeat="agent in mill.agents"
+            td ng-bind="agent.name"
+            td ng-bind="agent.email"
+            td ng-bind="agent.phone"
+            td ng-bind="agent.country"

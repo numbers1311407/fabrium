@@ -84,4 +84,5 @@ module FabricRepresenter
 
   link(:self) { fabric_url(self) }
   link(:edit) { edit_fabric_url(self) }
+  link(:mill) { mill_url(self.mill) }
 end

@@ -296,7 +296,7 @@ en:
         active: Mill is active?
         automatic_lab_dipping: Automatic Lab Dipping?
         bulk_lead_time: Bulk Lead Time
-        bulk_minimum_quality: Bulk Min. Quality
+        bulk_minimum_quality: Bulk Min. Quantity in Meters
         creator: Primary User
         designs_in_archive: Designs In Archive
         designs_per_season: Designs Per Season
@@ -313,7 +313,7 @@ en:
         printing_methods: Printing - Methods
         printing_monthly_capacity: Printing - Monthly Capacity
         sample_lead_time: Sample Lead Time
-        sample_minimum_quality: Sample Min. Quality
+        sample_minimum_quality: Sample Min. Quantity in Meters
         seasonal: Seasonal?
         seasonal_count: How many times per year?
         spectrophotometer: Spectrophotometer?

@@ -26,9 +26,9 @@
         </a>
       </div>
     </div>
-    <div class="fabrics-show-details col-sm-5">
+    <div class="detils-definition-list fabrics-show-details col-sm-5">
       <dl>
-        <dt>Mill</dt> <dd ng-bind="fabric.mill.name | default"></dd><br>
+        <dt>Mill</dt> <dd><a ng-bind="fabric.mill.name" href="{{fabric.links | link:'mill'}}" ng-click="showMill(fabric.mill.id)"></a></dd><br>
         <span ng-if="!currentUser.isBuyer()"><dt>Item #</dt> <dd ng-bind="fabric.item_number"></dd><br></span>
         <span ng-if="!currentUser.isBuyer()"><dt>Color Way #</dt> <dd ng-bind="variant.item_number"></dd><br></span>
         <dt>Fabrium #</dt> <dd ng-bind="variant.fabrium_id"></dd><br>

@@ -5,6 +5,25 @@
     return String(n) === str && n >= 0;
   }
 
+  app.controller('MillShowCtrl', function ($scope, $modal, $modalInstance, currentUser, mill) {
+    $scope.isModal = !!$modalInstance;
+    $scope.mill = mill;
+
+    currentUser.get().then(function (user) {
+      $scope.currentUser = user;
+
+      if (user) user.getCart().then(function (cart) {
+        if (!cart) return;
+
+        $scope.cart = cart;
+        $scope.$watch("cart.size()", function (v) {
+          $("a.cart-link .count").text(v);
+        });
+      });
+    });
+
+  });
+
   app.controller('CartPublicShowCtrl', function ($scope, $location, $modal, fabrics) {
     $scope.public_id = $location.url().match(/\/carts\/(.*)\/pub/)[1];
 
@@ -382,7 +401,7 @@
     }
   );
 
-  app.controller('FabricShowCtrl', function ($scope, $location, $modalInstance, fabric, position, currentUser) {
+  app.controller('FabricShowCtrl', function ($scope, $location, $modal, $modalInstance, fabric, position, currentUser, mills) {
     $scope.fabric = fabric;
     $scope.isModal = !!$modalInstance;
 
@@ -434,6 +453,22 @@
       } else {
         $scope.cart.toggleItem(id);
       }
+    };
+
+    $scope.showMill = function (id) {
+      var modalInstance = $modal.open({
+        templateUrl: "/templates/mills/show",
+        controller: "MillShowCtrl",
+        windowClass: "ng-modal",
+        resolve: {
+          modal: function () {
+            return $modal;
+          },
+          mill: function () {
+            return mills.get(id);
+          }
+        }
+      });
     };
 
 

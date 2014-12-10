@@ -13,6 +13,11 @@ class ResourceController < InheritedResources::Base
 
   respond_to :json
 
+  helper_method :maybe_resource, 
+                :resource_name,
+                :collection_name, 
+                :resource_label
+
   def show
     show! do |wants|
       wants.html { redirect_to edit_resource_path(resource) }
@@ -46,11 +51,6 @@ class ResourceController < InheritedResources::Base
   def after_commit_redirect_path
     collection_path
   end
-
-  helper_method :maybe_resource, 
-                :resource_name,
-                :collection_name, 
-                :resource_label
 
   # Helper method to maybe access the resource in views, without triggering
   # the actual resource generation

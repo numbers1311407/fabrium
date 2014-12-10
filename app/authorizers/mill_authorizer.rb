@@ -4,7 +4,8 @@ class MillAuthorizer < ApplicationAuthorizer
   end
 
   def readable_by?(user)
-    resource.new_record? || admin_or_mill_user?(user)
+    true
+    # resource.new_record? || admin_or_mill_user?(user)
   end
 
   def updatable_by?(user)

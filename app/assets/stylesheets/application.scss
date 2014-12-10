@@ -342,7 +342,7 @@ select[data-select],
 }
 
 .modal-body {
-  padding: 25px 40px;
+  padding: 20px 15px;
 }
 
 // decrease the double margin top on headers in modal titles
@@ -679,9 +679,15 @@ a.fabric-favorite-status {
 a[rel~=popover] .popover {
   line-height: 1.4;
 }
+lh {
+  display: block;
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+}
 
 dt {
   font-weight: bold;
+  margin-right: 4px;
 }
 dd, dt {
   display: inline;
@@ -872,8 +878,12 @@ fieldset {
 }
 
 .modal-dialog {
-  width: 75%;
+  @media (min-width: $screen-md-min) {
+    width: 65%;
+  }
 }
+
+
 
 .well.well-message {
   font-size: 18px;
@@ -1052,4 +1062,9 @@ label {
   a + a {
     margin-left: 5px;
   }
+}
+
+.association-table caption {
+  text-align: left;
+  font-size: 20px;
 }

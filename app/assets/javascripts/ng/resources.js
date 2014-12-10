@@ -22,6 +22,61 @@
     }
   });
 
+
+  // TODO mills & fabrics use the same caching strategy.  This should be a prototype
+  // or something.
+  app.service('mills', function ($q, DSCacheFactory, Restangular) {
+    var cacheName = 'millsCache';
+    var resource = 'mills'
+
+    DSCacheFactory(cacheName, {
+        // Items added to this cache expire after 15 minutes.
+        maxAge: 90000,
+        // This cache will clear itself every hour.
+        // cacheFlushInterval: 600000,
+        // Items will be deleted from this cache right when they expire.
+        deleteOnExpire: 'aggressive'
+    });
+
+    var API = {
+      get: function (id, args) {
+        args || (args = {});
+
+        var promise, cached;
+     
+        if (cached = API.getCached(id)) {
+          var deferred = $q.defer();
+          deferred.resolve(cached);
+          promise = deferred.promise;
+        } else {
+          promise = Restangular.one(resource, id).get(args);
+          promise.then(function (data) {
+            API.put(id, data);
+          });
+        }
+
+        return promise;
+      },
+
+      getCached: function (id) {
+        return DSCacheFactory.get(cacheName).get(id);
+      },
+
+      put: function (id, data) {
+        return DSCacheFactory.get(cacheName).put(id, data);
+      },
+
+      update: function (id, data) {
+        var cached = API.getCached(id);
+        if (!cached) return false;
+        angular.extend(cached, data);
+        return API.put(id, cached);
+      }
+    };
+
+    return API;
+  });
+
   app.service('fabrics', function ($q, DSCacheFactory, Restangular) {
     DSCacheFactory('fabricCache', {
         // Items added to this cache expire after 15 minutes.
@@ -108,9 +163,9 @@
 
 
     Restangular.extendModel("fabrics", function Fabric (model) {
-      model.getVariantUrl = function (position) {
-        var search = position ? "?v="+position : "";
-        return this.getRestangularUrl() + search;
+
+      model.getMillUrl = function () {
+        Restangular.one("mill", model.mill_id);
       };
 
       model.isFree = function () {
