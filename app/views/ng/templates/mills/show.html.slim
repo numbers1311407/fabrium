@@ -52,7 +52,7 @@ button ng-if="isModal" type="button" class="close" ng-click="close()"
           dl
             lh Production
             dt= Mill.human_attribute_name(:sample_lead_time)
-            dd ng-bin-template="{{mill.sample_lead_time}} Weeks"
+            dd ng-bind-template="{{mill.sample_lead_time}} Weeks"
             br
             dt= Mill.human_attribute_name(:bulk_lead_time)
             dd ng-bind-template="{{mill.bulk_lead_time}} Weeks"
