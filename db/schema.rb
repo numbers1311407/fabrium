@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141209153500) do
+ActiveRecord::Schema.define(version: 20141210222940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,7 +265,7 @@ ActiveRecord::Schema.define(version: 20141209153500) do
     t.boolean  "spectrophotometer",                 default: false
     t.boolean  "light_box",                         default: false
     t.boolean  "internal_lab",                      default: false
-    t.string   "light_sources",                     default: false
+    t.string   "light_sources"
     t.string   "testing_capabilities"
     t.string   "inspection_stages"
     t.string   "inspection_system"
