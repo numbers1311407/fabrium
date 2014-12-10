@@ -16,7 +16,10 @@ button ng-if="isModal" type="button" class="close" ng-click="close()"
           dd ng-bind="mill.phone | default"
           br
           dt= Mill.human_attribute_name(:shipping_address_1)
-          dd ng-bind="mill.shiping_address_1 | default"
+          dd ng-bind="mill.shipping_address_1 | default"
+          br
+          dt= Mill.human_attribute_name(:shipping_address_2)
+          dd ng-bind="mill.shipping_address_2 | default"
           br
           dt= Mill.human_attribute_name(:city)
           dd ng-bind="mill.city | default"
@@ -49,16 +52,16 @@ button ng-if="isModal" type="button" class="close" ng-click="close()"
           dl
             lh Production
             dt= Mill.human_attribute_name(:sample_lead_time)
-            dd ng-bind="mill.sample_lead_time | default"
+            dd ng-bin-template="{{mill.sample_lead_time}} Weeks"
             br
             dt= Mill.human_attribute_name(:bulk_lead_time)
-            dd ng-bind="mill.bulk_lead_time | default"
+            dd ng-bind-template="{{mill.bulk_lead_time}} Weeks"
             br
             dt= Mill.human_attribute_name(:sample_minimum_quality)
-            dd ng-bind="mill.sample_minimum_quality | default"
+            dd ng-bind-template="{{mill.sample_minimum_quality Meters"
             br
             dt= Mill.human_attribute_name(:bulk_minimum_quality)
-            dd ng-bind="mill.bulk_minimum_quality | default"
+            dd ng-bind-template="{{mill.bulk_minimum_quality}} Meters"
 
           dl
             lh Collection
@@ -71,8 +74,8 @@ button ng-if="isModal" type="button" class="close" ng-click="close()"
             dt= Mill.human_attribute_name(:designs_per_season)
             dd ng-bind="mill.designs_per_season | default"
             br
-            dt= Mill.human_attribute_name(:designs_per_archive)
-            dd ng-bind="mill.designs_per_archive | default"
+            dt= Mill.human_attribute_name(:designs_in_archive)
+            dd ng-bind="mill.designs_in_archive | default"
 
       .row
         dl.col-sm-6
