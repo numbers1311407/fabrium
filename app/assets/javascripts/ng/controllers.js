@@ -364,6 +364,7 @@
           valueField: 'name',
           labelField: 'name',
 					searchField: 'name',
+          sortField: 'name',
           plugins: ['remove_button', 'close_button', 'lazy_preload'],
           onInitialize: function () {
             var tags = $scope.search.tags
