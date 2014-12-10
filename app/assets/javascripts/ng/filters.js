@@ -81,11 +81,6 @@
     }
   });
 
-  app.filter("price_label", function () {
-    return function () {
-      return "Price per Yard";
-    }
-  });
 
   /**
    * Format the `price` object of a resource for display
@@ -94,28 +89,38 @@
     var to = " to ";
     var delim = "; ";
     var currency_map = {
-      us: '$',
-      eu: '€'
+      us: {symbol: '$', rate: 0.9144},
+      eu: {symbol: '€'}
     };
 
-    return function (input) {
+    // NOTE the `rate` is converting from price per meter to yard
+
+    return function (input, currency) {
       if (!input) return "";
 
-      var price = input.price;
+      currency || (currency = 'us');
 
-      var out = _.map(price, function (v, k) {
-        var cur = currency_map[k]
-          , min = parseFloat(v.min).toFixed(2)
-          , max = parseFloat(v.max).toFixed(2);
+      var price = input.price[currency]
+        , data = currency_map[currency]
+        , cur = data.symbol
+        , rate = data.rate
+        , min = parseFloat(price.min)
+        , max = parseFloat(price.max)
 
-        return '0.00' === max
-          ? ""
-          : min === max
-          ? "{0}{1}".format(cur, min)
-          : "{0}{1} {2} {0}{3}".format(cur, min, to, max)
-      });
+      if (rate) {
+        min *= rate;
+        max *= rate;
+      }
 
-      return _.compact(out).join(delim);
+      // currencyify the output decimals
+      min = min.toFixed(2);
+      max = max.toFixed(2);
+
+      return '0.00' === max
+        ? ""
+        : min === max
+        ? "{0}{1}".format(cur, min)
+        : "{0}{1} {2} {0}{3}".format(cur, min, to, max)
     }
   });
 

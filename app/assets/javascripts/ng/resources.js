@@ -168,6 +168,19 @@
         Restangular.one("mill", model.mill_id);
       };
 
+      model.hasPriceUSD = function () {
+        return model.price.us.max > 0;
+      };
+
+      model.hasPriceEU = function () {
+        return model.price.eu.max > 0;
+      };
+
+      model.getVariantUrl = function (position) {
+        var search = position ? "?v="+position : "";
+        return this.getRestangularUrl() + search;
+      };
+
       model.isFree = function () {
         return _.all(model.price, function (v, k) {
           return parseFloat(v.max) == 0;
