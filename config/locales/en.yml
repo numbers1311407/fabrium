@@ -282,6 +282,7 @@ en:
         favorites_count: Favorited
         id: Fabrium ID
         orders_count: Ordered
+        price: Price per Meter
         sample_lead_time: Sample Lead Time
         sample_minimum_quality: Sample Min. Quantity in Meters
         tags: Keywords
