@@ -258,6 +258,8 @@ en:
           attributes:
             domain_names:
               blank: "You must enter at least one domain if whitelisting is specified"
+            contacts:
+              too_short: "You must provide at least one contact"
 
 
 

@@ -138,6 +138,7 @@ class Mill < ActiveRecord::Base
   validates :inspection_system, presence: true
   validates :years_attending_premiere_vision, presence: true
   validates :years_attending_texworld, presence: true
+  validates :contacts, length: { minimum: 1 }
 
   def pending_carts
     carts.created_by_mill(self).state(:mill_build)

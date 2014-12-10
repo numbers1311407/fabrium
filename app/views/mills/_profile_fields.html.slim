@@ -125,6 +125,9 @@ fieldset.nested-resources
 
 fieldset.nested-resources
   legend Mill Contacts
+  - if f.object.errors[:contacts].present?
+    .alert.alert-danger
+      = f.object.errors[:contacts][0]
   .contacts.nested-resource-list
     = f.simple_fields_for :contacts do |ff|
       .nested-resource.contact(data-id = ff.object.id)
