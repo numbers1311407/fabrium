@@ -98,25 +98,21 @@ class Cart < ActiveRecord::Base
   #   - cart items are only partially copied (no notes, etc)
   #
   def build_duplicate(attrs)
-    # this kludgy "dup" is primarily to get around the original
-    # state of the object being set to a number
-    # NOTE (which should be fixed in the state plugin, not here)
-    cattrs = self.attributes.except('id', 'state', 'buyer_id', 'creator_type', 'creator_id')
-    cattrs[:state] = :mill_build
-    cloned = Cart.new(cattrs)
+    # Note that the duplication is *ONLY* the cart items and no attributes from
+    # the originating cart are retained
+    cloned = Cart.new(attrs)
 
-    # the cart items aren't fully cloned
+    # Nor are the cart items fully cloned.  Only the fabric variant is
+    # retained (and associated denormalized columns)
     cart_items.each do |ci|
       cloned.cart_items.build({
         fabric_variant_id: ci.fabric_variant_id,
         mill_id: ci.mill_id,
-        fabrium_id: ci.fabrium_id,
-        state: 0
+        fabrium_id: ci.fabrium_id
       })
     end
 
     # overrides
-    cloned.attributes = attrs
     cloned.duplicating!
     cloned
   end

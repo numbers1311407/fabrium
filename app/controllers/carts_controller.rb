@@ -164,7 +164,8 @@ class CartsController < ResourceController
       error = flash[:alert] = "Only mills may duplicate orders."
       @duplicate_cart.errors.add(:base, error)
     else
-      @duplicate_cart.creator = current_user.meta
+      @duplicate_cart.creator = 
+      @duplicate_cart.mill = current_user.meta
 
       if @duplicate_cart.save
         flash[:notice] = t(:"cart_state_flash.mill_build.notice")
