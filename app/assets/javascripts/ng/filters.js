@@ -81,36 +81,45 @@
     }
   });
 
+  app.filter("price_per_yard", function () {
+    var rate = 0.9144;
+
+    return function (price) {
+      var ret = _.reduce(price, function (o, val, key) {
+        o[key] = {
+          min: parseFloat(val.min) * rate,
+          max: parseFloat(val.max) * rate
+        };
+        return o;
+      }, {});
+
+      return ret;
+    }
+  });
+
 
   /**
    * Format the `price` object of a resource for display
    */
-  app.filter("price", function () {
+  app.filter("price_to_s", function () {
     var to = " to ";
     var delim = "; ";
     var currency_map = {
-      us: {symbol: '$', rate: 0.9144},
+      us: {symbol: '$'},
       eu: {symbol: '€'}
     };
 
-    // NOTE the `rate` is converting from price per meter to yard
-
-    return function (input, currency) {
-      if (!input) return "";
-
+    return function (price, currency) {
       currency || (currency = 'us');
+      // dig into price for the currency
+      price = price && price[currency];
 
-      var price = input.price[currency]
-        , data = currency_map[currency]
+      if (!price) return "";
+
+      var data = currency_map[currency]
         , cur = data.symbol
-        , rate = data.rate
         , min = parseFloat(price.min)
         , max = parseFloat(price.max)
-
-      if (rate) {
-        min *= rate;
-        max *= rate;
-      }
 
       // currencyify the output decimals
       min = min.toFixed(2);
