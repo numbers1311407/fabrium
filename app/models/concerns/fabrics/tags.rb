@@ -16,7 +16,7 @@ module Fabrics
     included do
       scope :tags, ->(list) {
         list = list.split(',') if list.is_a?(String)
-        where.contains(tags: list)
+        where.contains(tags: list.map(&:downcase))
       }
 
       # Tags are always downcased.  This is necessary as case-insensitive
@@ -52,14 +52,16 @@ module Fabrics
       # Remove a tag across the table
       #
       def remove_tag tag
-        tags(tag).update_all ["tags = array_remove(tags, ?)", tag]
+        tag.downcase!
+        tags(tag).update_all ["tags = array_remove(tags, ?)", tag.downcase]
       end
 
       ##
       # Edit a tag across the table
       #
-      def edit_tag tag, new_value
-        tags(tag).update_all ["tags = array_replace(tags, ?, ?)", tag, new_value]
+      def edit_tag tag, value
+        tag, value = tag.downcase, value.downcase
+        tags(tag).update_all ["tags = array_replace(tags, ?, ?)", tag, value]
       end
     end
 
