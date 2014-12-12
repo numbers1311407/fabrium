@@ -34,7 +34,7 @@ class Buyer < ActiveRecord::Base
   validates :country, presence: true
   validates :subregion, presence: true
 
-  has_many :buyer_mills
+  has_many :buyer_mills, dependent: :delete_all
   has_many :preferred_buyer_mills, -> { preferred }, class_name: 'BuyerMill'
   has_many :blocked_buyer_mills, -> { blocked }, class_name: 'BuyerMill'
 

@@ -26,7 +26,7 @@ class Fabric < ActiveRecord::Base
   scope :favorites, ->(user) { joins(:favorites).merge(Favorite.for_user(user)) }
   scope :archived, ->(val=true) { where(archived: val) }
 
-  has_many :fabric_notes
+  has_many :fabric_notes, dependent: :delete_all
 
   validates :width, numericality: { greater_than: 0 }, presence: true
   validates :mill, presence: true

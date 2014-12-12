@@ -5,7 +5,8 @@ module Fabrics
     included do
       has_many :materials, 
         -> { includes(:material) },
-        class_name: 'MaterialAssignment'
+        class_name: 'MaterialAssignment',
+        dependent: :delete_all
 
       accepts_nested_attributes_for :materials, 
         allow_destroy: true,

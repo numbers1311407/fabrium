@@ -93,9 +93,9 @@ class Mill < ActiveRecord::Base
   # cart_items are a denormalized association
   has_many :cart_items
 
-  has_many :contacts, class_name: 'MillContact'
-  has_many :agents, class_name: 'MillAgent'
-  has_many :references, class_name: 'MillReference'
+  has_many :contacts, class_name: 'MillContact', dependent: :delete_all
+  has_many :agents, class_name: 'MillAgent', dependent: :delete_all
+  has_many :references, class_name: 'MillReference', dependent: :delete_all
 
   accepts_nested_attributes_for :contacts, allow_destroy: true
   accepts_nested_attributes_for :agents, allow_destroy: true
