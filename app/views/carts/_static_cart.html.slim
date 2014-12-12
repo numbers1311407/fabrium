@@ -1,0 +1,13 @@
+.cart
+  - if cart.state > "pending"
+    .cart-header
+      p.line-item
+        label Order from #{cart.mill.name}
+      p.line-item
+        label Status: #{translate_cart_state(cart.state)}
+      - if cart.tracking_number.present?
+        p.line-item
+          label #{resource_label :tracking_number}: #{cart.tracking_number}
+
+  .cart-items
+    = render partial: 'cart_items/static', collection: cart.cart_items, as: :cart_item

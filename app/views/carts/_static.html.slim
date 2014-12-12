@@ -1,20 +1,4 @@
-- if resource.state > "pending"
-  .cart-header
-    p.line-item
-      label 
-        | Status: 
-        = translate_cart_state(resource.state)
-
-    - if resource.tracking_number.present?
-      p.line-item
-        label
-          = resource_label :tracking_number
-          |: 
-          = resource.tracking_number
-
-.cart-items
-  - if resource.subcarts.any?
-    - resource.subcarts.each do |subcart|
-      = render partial: 'cart_items/static', collection: subcart.cart_items, as: :cart_item
-  - else
-    = render partial: 'cart_items/static', collection: resource.cart_items, as: :cart_item
+- if resource.subcarts.any?
+  = render partial: 'static_cart', collection: resource.subcarts, as: :cart
+- else
+  = render 'static_cart', cart: resource

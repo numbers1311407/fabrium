@@ -206,6 +206,10 @@ class Cart < ActiveRecord::Base
     parent_id.present?
   end
 
+  def mill
+    super || cart_items.first.try(:mill)
+  end
+
   def siblings
     return Cart.none unless subcart?
     scoped = Cart.where(parent_id: parent_id)
