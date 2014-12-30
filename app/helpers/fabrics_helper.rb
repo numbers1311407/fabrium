@@ -8,4 +8,9 @@ module FabricsHelper
     search[:v] = variant.position unless variant.position.zero?
     fabric_path(fabric, search)
   end
+
+  def fabric_price(field, fabric)
+    value = fabric.send(field)
+    value.present? && !value.zero? ? number_with_precision(value, precision: 2) : nil
+  end
 end

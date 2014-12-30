@@ -23,6 +23,11 @@ en:
       buyer:
         preferred_mills: "Type to Search Mills"
         blocked_mills: "Type to Search Mills"
+      fabric:
+        price_eu_min: "Min or exact EUR PPM"
+        price_us_min: "Min or exact USD PPM"
+        price_eu_max: "Max EUR PPM"
+        price_us_max: "Max USD PPM"
     hints:
       defaults:
         # phone: "For international numbers, you must include the country code preceded by a '+', e.g. \"+001 234 5678\""

@@ -49,24 +49,24 @@
       = f.input :price_us_min, wrapper: :basic do
         .input-group
           span.input-group-addon $
-          = f.input_field :price_us_min, class: "form-control", value: number_with_precision(f.object.price_us_min, precision: 2)
+          = f.input_field :price_us_min, class: "form-control", value: fabric_price(:price_us_min, f.object), placeholder: :translate
       .price_range_upper
         .price_range_sep to
         = f.input :price_us_max, wrapper: :basic do
           .input-group
             span.input-group-addon $
-            = f.input_field :price_us_max, class: "form-control", value: number_with_precision(f.object.price_us_max, precision: 2)
+            = f.input_field :price_us_max, class: "form-control", value: fabric_price(:price_us_max, f.object), placeholder: :translate
     .pricing_eu.pricing_type
       = f.input :price_eu_min, wrapper: :basic do
         .input-group
           span.input-group-addon €
-          = f.input_field :price_eu_min, class: "form-control", value: number_with_precision(f.object.price_eu_min, precision: 2)
+          = f.input_field :price_eu_min, class: "form-control", value: fabric_price(:price_eu_min, f.object), placeholder: :translate
       .price_range_upper
         .price_range_sep to
         = f.input :price_eu_max, wrapper: :basic do
           .input-group
             span.input-group-addon €
-            = f.input_field :price_eu_max, class: "form-control", value: number_with_precision(f.object.price_eu_max, precision: 2)
+            = f.input_field :price_eu_max, class: "form-control", value: fabric_price(:price_eu_max, f.object), placeholder: :translate
 
 = f.input :sample_lead_time, as: :select, collection: weeks_select_options, input_html: { data: { select: {} }}
 

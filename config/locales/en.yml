@@ -203,6 +203,10 @@ en:
     shipping_address_1: "Shipping Address 1"
     shipping_address_2: "Shipping Address 2"
     formatted_phone: "Phone"
+    price_eu_min: "Min EUR PPM"
+    price_eu_max: "Max EUR PPM"
+    price_us_min: "Min USD PPM"
+    price_us_max: "Max USD PPM"
 
   # Active Record models configuration
   activerecord:
@@ -232,9 +236,15 @@ en:
             fabric_variants:
               too_short: "At least one color way must be uploaded"
             price_eu_min:
-              less_than_or_equal_to: "Must be less than the upper range bound"
+              less_than_or_equal_to: "Must be less than the max PPM"
+              greater_than: "At least one PPM must be entered"
+            price_eu_max:
+              greater_than_or_equal_to: "Must be greater than the min PPM"
             price_us_min:
-              less_than_or_equal_to: "Must be less than the upper range bound"
+              less_than_or_equal_to: "Must be less than the max PPM"
+              greater_than: "At least one PPM must be entered"
+            price_us_max:
+              greater_than_or_equal_to: "Must be greater than the min PPM"
         fabric_variant:
           attributes:
             image_crop:
@@ -283,7 +293,7 @@ en:
         favorites_count: Favorited
         id: Fabrium ID
         orders_count: Ordered
-        price: Price per Meter
+        price: Price per Meter (PPM)
         sample_lead_time: Sample Lead Time
         sample_minimum_quality: Sample Min. Quantity in Meters
         tags: Keywords

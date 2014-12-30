@@ -15,6 +15,12 @@ module Fabrics::Prices
     validates :price_eu_max, presence: true,
       numericality: { greater_than_or_equal_to: :price_eu_min }
 
+
+    validates :price_us_min,
+      numericality: { greater_than: 0 }, if: 'price_eu_min.zero?'
+    validates :price_eu_min,
+      numericality: { greater_than: 0 }, if: 'price_us_min.zero?'
+
     before_validation :cast_price_ranges_to_db
 
     scope :price, ->(v, units=nil) {
