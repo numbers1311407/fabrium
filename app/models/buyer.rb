@@ -1,5 +1,6 @@
 class Buyer < ActiveRecord::Base
   include Authority::Abilities
+  include HasPhone
 
   PERMISSABLE_PARAMS = [
     :first_name,
@@ -21,13 +22,11 @@ class Buyer < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  phony_normalize :phone, :default_country_code => 'US'
-
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :company, presence: true
   validates :position, presence: true
-  validates :phone, presence: true, phony_plausible: true
+  validates :phone, presence: true
   validates :shipping_address_1, presence: true
   validates :city, presence: true
   validates :postal_code, presence: true

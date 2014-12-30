@@ -160,7 +160,7 @@ en:
     # The values :model, :attribute and :value are always available for interpolation
     # The value :count is available when applicable. Can be used for pluralization.
     messages:
-      improbable_phone: "Must be a complete phone number"
+      improbable_phone: "Must be a valid phone number.  International numbers must include the country code"
       inclusion: "You must select an option for this field"
       taken: "%{attribute} has already been taken."
       exclusion: "%{attribute} is reserved"
@@ -202,6 +202,7 @@ en:
     last_name: "Last Name"
     shipping_address_1: "Shipping Address 1"
     shipping_address_2: "Shipping Address 2"
+    formatted_phone: "Phone"
 
   # Active Record models configuration
   activerecord:

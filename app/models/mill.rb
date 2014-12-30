@@ -1,4 +1,5 @@
 class Mill < ActiveRecord::Base
+  include HasPhone
   include Authority::Abilities
 
   PERMISSABLE_PARAMS = [

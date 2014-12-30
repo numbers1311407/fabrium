@@ -8,7 +8,7 @@ a.remove-nested-resource(href="javascript:void(0)" class="remove" tabindex="-1" 
   .col-sm-3
     = f.input :email
   .col-sm-3
-    = f.input :phone
+    = f.input :phone, as: :phone
   .col-sm-3
     = f.input :country do
       = f.country_select :country, {priority: %w(US CA), object: f.object, prompt: true}, class: 'form-control'

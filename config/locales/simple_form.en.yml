@@ -24,6 +24,8 @@ en:
         preferred_mills: "Type to Search Mills"
         blocked_mills: "Type to Search Mills"
     hints:
+      defaults:
+        # phone: "For international numbers, you must include the country code preceded by a '+', e.g. \"+001 234 5678\""
       fabric:
         tag_ids: "Contact admin@fabrium.com to suggest additional keywords"
         mill: "Choosing a mill will populate a new fabric form for that mill"
