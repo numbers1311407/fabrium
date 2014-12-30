@@ -22,9 +22,15 @@ module Fabrics
       # fabric afterward (essentially to allow for the pre-upload of images before
       # the record is persisted)
       #
+      # Here the fabric variant is associated *before* the default implementation is
+      # called which would update all the already associated variants.  In this way
+      # a variant is associated if necessary, *then* the variants are all updated
+      # per the passed params
+      #
       attributes.each do |key, attrs|
-        if attrs['id'] && !fabric_variants.detect {|v| v.id == attrs['id'] }
-          if fv = FabricVariant.find_by(id: attrs['id'])
+        id = attrs['id'].to_i
+        if !id.zero? && !fabric_variant_ids.member?(id)
+          if fv = FabricVariant.find_by(id: id)
             self.fabric_variants << fv
           end
         end
