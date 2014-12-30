@@ -75,8 +75,9 @@ ul.fabric-variant-resultlist {
 
 li.fabric-variant-result {
 
-  @include make-xs-column(4, $result-padding);
-  @include make-sm-column(3, $result-padding);
+  // @include make-xs-column(12, $result-padding);
+  @include make-sm-column(4, $result-padding);
+  @include make-md-column(3, $result-padding);
   @include make-lg-column(2, $result-padding);
   padding-bottom: $result-padding;
 
