@@ -40,10 +40,11 @@
       if (!input) return "";
 
       var out = _.map(input, function (o) {
-        return "{0}% {1}".format(o.percentage, o.fiber);
+        if (!(o.percentage && o.fiber)) return;
+        return "{0}% {1}".format(Number(o.percentage), o.fiber);
       });
 
-      return out.join(delim);
+      return _.compact(out).join(delim);
     }
   });
 

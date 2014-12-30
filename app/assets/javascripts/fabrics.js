@@ -175,7 +175,14 @@ utils.ready(function () {
     var activeSelector = ".property-assignment:not(.inactive) [type=number]";
 
     var updateTotal = function () {
-      var vals = $.makeArray($ass.find(activeSelector).map(function () {
+      var $asses = $ass.find(activeSelector);
+
+      // ensure 0 remains
+      $asses.val(function (i, v) {
+        return v || 0;
+      });
+
+      var vals = $.makeArray($asses.map(function () {
         return Number($(this).val());
       }));
 
