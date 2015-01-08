@@ -2,7 +2,7 @@
 - image_url = f.object.image_stored? ? f.object.image.url : nil
 - thumb_url = thumb.present? ? f.object.thumb.url : image_url
 
-= f.input :item_number
+= f.input :item_number, as: :string
 
 = f.input :image_crop, label: false do
   = f.label :image
