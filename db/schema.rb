@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211162721) do
+ActiveRecord::Schema.define(version: 20150108163921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20141211162721) do
     t.integer  "fabric_id"
     t.integer  "position",     default: 0
     t.string   "fabrium_id"
-    t.string   "item_number",  default: ""
+    t.text     "item_number",  default: ""
     t.integer  "mill_id"
     t.string   "color"
     t.decimal  "cie_l",        default: 0.0
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20141211162721) do
     t.integer  "mill_id"
     t.integer  "dye_method_id"
     t.integer  "category_id"
-    t.string   "item_number",                                    default: ""
+    t.text     "item_number",                                    default: ""
     t.numrange "price_eu"
     t.numrange "price_us"
     t.integer  "width",                                          default: 0
