@@ -16,3 +16,6 @@ $.validator.setDefaults({
     }
   }
 });
+
+// 
+$.validator.classRuleSettings.required = { required: false };
