@@ -85,7 +85,11 @@ class FabricsController < ResourceController
   end
 
   def after_commit_redirect_path
-    params[:commit_and_redirect] ? new_resource_path : edit_resource_path 
+    if 'destroy' == action_name
+      collection_path
+    else
+      params[:commit_and_redirect] ? new_resource_path : edit_resource_path 
+    end
   end
 
   def build_nested_associations
