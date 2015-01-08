@@ -301,7 +301,7 @@
   </div>
 
   <div class="row">
-    <div class="result-pagination col-sm-6">
+    <div class="result-pagination col-sm-8">
       <div ng-if="pagination">
         <div ng-show="!loading" ng-switch="pagination.total_count">
           <div ng-switch-when="0">
@@ -326,7 +326,7 @@
       </div>
     </div>
 
-    <div ng-show="items" id="pagesort" class="col-sm-6">
+    <div ng-show="items" id="pagesort" class="col-sm-4">
       <select class="form-control" ng-model="search.sort" ng-change="updateSearch()">
         <!-- because for whatever reason, angular select is just painfully broken -->
         <option value="">Sort: Newest First</option>
@@ -375,7 +375,7 @@
   </ul>
 
   <div class="row">
-    <div class="result-pagination col-sm-6">
+    <div class="result-pagination col-sm-12">
       <div ng-if="pagination">
         <pagination 
           ng-show="pagination.pages > 1"
