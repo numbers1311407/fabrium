@@ -985,7 +985,7 @@ label {
     display: block;
     padding-top: 100%;
   }
-  img {
+  img, span.loader {
     min-width: 100%;
     height: auto;
     position: absolute;
@@ -993,7 +993,14 @@ label {
     left: 0;
     right: 0;
     bottom: 0;
+    text-align: center;
   }
+  span.loader {
+    padding-top: 38%;
+    font-size: 24px;
+    color: lighten($brand-primary, 10%);
+  }
+  img { display: none !important; }
   .overlay {
     position: absolute;
     top: 0;
