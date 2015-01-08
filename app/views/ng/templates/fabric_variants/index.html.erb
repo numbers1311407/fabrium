@@ -301,7 +301,7 @@
   </div>
 
   <div class="row">
-    <div id="pagination" class="col-sm-6">
+    <div class="result-pagination col-sm-6">
       <div ng-if="pagination">
         <div ng-show="!loading" ng-switch="pagination.total_count">
           <div ng-switch-when="0">
@@ -373,4 +373,18 @@
       </div>
     </li>
   </ul>
+
+  <div class="row">
+    <div class="result-pagination col-sm-6">
+      <div ng-if="pagination">
+        <pagination 
+          ng-show="pagination.pages > 1"
+          items-per-page="pagination.per_page" 
+          max-size="10" 
+          total-items="pagination.total_count" 
+          ng-model="pagination.page"
+          ng-change="updateSearch(pagination.page)"
+        ></pagination>
+      </div>
+    </div>
 </div>
