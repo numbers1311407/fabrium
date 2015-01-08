@@ -119,18 +119,19 @@ class Mill < ActiveRecord::Base
   validates :major_markets, presence: true
   validates :sample_lead_time, presence: true
   validates :bulk_lead_time, presence: true
-  validates :sample_minimum_quality, presence: true
-  validates :bulk_minimum_quality, presence: true
+  validates :sample_minimum_quality, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :seasonal_count, numericality: { greater_than_or_equal_to: 0 }
+  validates :bulk_minimum_quality, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :seasonal, inclusion: {in: [true, false]}
-  validates :designs_per_season, presence: true
-  validates :designs_in_archive, presence: true
-  validates :spinning_monthly_capacity, presence: true
-  validates :weaving_knitting_monthly_capacity, presence: true
-  validates :dying_monthly_capacity, presence: true
-  validates :finishing_monthly_capacity, presence: true
-  validates :printing_monthly_capacity, presence: true
+  validates :designs_per_season, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :designs_in_archive, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :spinning_monthly_capacity, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :weaving_knitting_monthly_capacity, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :dying_monthly_capacity, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :finishing_monthly_capacity, presence: true, numericality: { greater_than_or_equal_to: 0 } 
+  validates :printing_monthly_capacity, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :printing_methods, presence: true
-  validates :printing_max_colors, presence: true
+  validates :printing_max_colors, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :automatic_lab_dipping, inclusion: {in: [true, false]}
   validates :spectrophotometer, inclusion: {in: [true, false]}
   validates :light_box, inclusion: {in: [true, false]}
@@ -138,8 +139,8 @@ class Mill < ActiveRecord::Base
   validates :light_sources, presence: true
   validates :inspection_stages, presence: true
   validates :inspection_system, presence: true
-  validates :years_attending_premiere_vision, presence: true
-  validates :years_attending_texworld, presence: true
+  validates :years_attending_premiere_vision, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :years_attending_texworld, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :contacts, length: { minimum: 1 }
 
   def pending_carts
