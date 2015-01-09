@@ -1,0 +1,10 @@
+default: &default
+  access_key_id: <%= ENV['FABRIUM_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['FABRIUM_SECRET_ACCESS_KEY'] %>
+  region: 'us-east-1'
+
+development:
+  <<: *default
+
+production:
+  <<: *default

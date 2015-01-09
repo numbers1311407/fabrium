@@ -84,4 +84,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = 
   config.representer.default_url_options = { host: 'search.fabrium.com' }
+
+  config.action_mailer.delivery_method = :amazon_ses
 end

@@ -1,5 +1,6 @@
 class AppMailer < ActionMailer::Base
-  default from: "admin@fabrium.com"
+  default from: "support@fabrium.com",
+           bcc: "support@fabrium.com"
   
   def mill_cart_created(cart)
     @cart = cart

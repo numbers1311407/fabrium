@@ -45,3 +45,5 @@ gem 'carmen'
 gem 'carmen-rails'
 gem 'phony_rails'
 
+gem 'aws-sdk'
+
