@@ -13,7 +13,7 @@ class BuyerAuthorizer < ApplicationAuthorizer
   end
 
   def deletable_by?(user)
-    user.is_admin?
+    user.is_admin? && resource.carts.state(:closed).none?
   end
 
   def administerable_by?(user)

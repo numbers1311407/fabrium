@@ -1,16 +1,18 @@
 .cart-header
   .shipping
-    h5 Ship To:
+    - if resource.buyer.blank?
+      p The buyer which was attached to this cart has been deleted.
+    - else
+      h5 Ship To:
+      .shipping-name
+        = resource.buyer.name
+      .shipping-company
+        = resource.buyer.company
+      = buyer_address resource.buyer
+      .shipping-email
+        = resource.buyer.user_email
 
-    .shipping-name
-      = resource.buyer.name
-    .shipping-company
-      = resource.buyer.company
-    = buyer_address resource.buyer
-    .shipping-email
-      = resource.buyer.user_email
-
-- if resource.closed? && !current_user.is_buyer?
+- if resource.buyer && resource.closed? && !current_user.is_buyer?
   #packing-slip-btn(style="margin-bottom: 20px")
     = link_to '#print-packing-slip', class: 'btn btn-sm btn-default print-hidden' do
       i.fa.fa-print(title='Print Packing Slip')

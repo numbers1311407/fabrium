@@ -40,7 +40,7 @@ class Buyer < ActiveRecord::Base
   has_many :preferred_mills, through: :preferred_buyer_mills, source: :mill, class_name: 'Mill'
   has_many :blocked_mills, through: :blocked_buyer_mills, source: :mill, class_name: 'Mill'
 
-  has_many :carts, -> { exclude_subcarts }
+  has_many :carts, -> { exclude_subcarts }, dependent: :restrict_with_error
 
   scope :pending, ->(val=true) { joins(:user).merge(User.pending(val)) }
 

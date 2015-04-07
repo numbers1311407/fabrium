@@ -6,7 +6,7 @@
   = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
     i.fa.fa-edit(title=st('links.edit'))
     span= st('links.edit')
-  - if resource.closed? && !current_user.is_buyer?
+  - if resource.buyer && resource.closed? && !current_user.is_buyer?
     = link_to '#print-packing-slip', class: 'btn btn-sm btn-default print-hidden' do
       i.fa.fa-print(title='Print Packing Slip')
       span= 'Print Packing Slip'
