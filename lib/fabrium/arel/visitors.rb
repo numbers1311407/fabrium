@@ -9,18 +9,18 @@ module Arel
     end
 
     class PostgreSQL
+      # the available range types
+      RANGE_TYPES = %w(
+        int4range
+        int8range
+        numrange
+        daterange
+        tsrange
+        tstzrange
+      ).freeze
+
       def visit_Arel_Nodes_Overlaps o, a
         a = o.left if ::Arel::Attributes::Attribute === o.left
-
-        # the available range types
-        range_types = %w(
-          int4range
-          int8range
-          numrange
-          daterange
-          tsrange
-          tstzrange
-        )
 
         # the sql_type also serves as the function call to return the
         # overlapping range for the query, e.g.
@@ -29,19 +29,18 @@ module Arel
         #
         sql_type = a.relation.engine.columns_hash[a.name.to_s].sql_type
 
-        # if the right value isn't a range or this column is not a range
-        # type, nullify the query
-        unless o.right.is_a?(Range) && range_types.member?(sql_type)
-          return "1=0"
+        if o.right.is_a?(Range) && RANGE_TYPES.member?(sql_type)
+          # pg supports (and defaults to in the case of overlap) exlusive 
+          # lower bounded ranges, but ruby does not.  It's either inclusive 
+          # ends or exclusive upper bound
+          bounds = o.right.exclude_end? ? "[)" : "[]"
+
+          "#{visit o.left, a} #{o.operator} " +
+              "#{sql_type}(#{visit o.right, a}, '#{bounds}')"
+
+        else
+          "#{visit o.left, a} #{o.operator} ARRAY[#{visit o.right, a}]"
         end
-
-        # pg supports (and defaults to in the case of overlap) exlusive 
-        # lower bounded ranges, but ruby does not.  It's either inclusive 
-        # ends or exclusive upper bound
-        bounds = o.right.exclude_end? ? "[)" : "[]"
-
-        "#{visit o.left, a} #{o.operator} " +
-            "#{sql_type}(#{visit o.right, a}, '#{bounds}')"
       end
 
       def visit_Arel_Nodes_Contains o, a
