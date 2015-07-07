@@ -156,6 +156,38 @@ class FabricVariantsController < ResourceController
     :image_width
   ]
 
+  def edit
+    object = resource
+
+    @thumb_url = resource.thumb.url
+    @image_url = resource.image.url
+
+    edit!
+  end
+
+  def create
+    object = build_resource
+
+    if !object.retained_image && duplicate_target
+      object.image = duplicate_target.image
+    end
+
+    create!
+  end
+
+  def new
+    object = build_resource
+
+    if dt = duplicate_target
+      object.attributes = dt.attributes.dup
+      object.image = dt.image
+      @thumb_url = dt.thumb.url
+      @image_url = dt.image.url
+    end
+
+    new!
+  end
+
   # Renders the "preview" IFRAME form within the fabric variants upload
   # form which allows for async uploads of images without Ajax.  This
   # makes use of the dragonly image caching mechanism to store the image
@@ -177,6 +209,14 @@ class FabricVariantsController < ResourceController
   end
 
   protected
+
+  def duplicate_target
+    return nil if false == @duplicate_target
+
+    @duplicate_target ||= begin
+      params[:duplicate_id].present? ? FabricVariant.find_by(id: params[:duplicate_id]) : false
+    end
+  end
 
   def build_resource
     @fabric_variant = super.tap do |variant|

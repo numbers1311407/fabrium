@@ -23,6 +23,9 @@
             <span>#<%= obj.color %></span>
           </td>
           <td class="actions">
+            <a href="/fabric_variants/new?duplicate_id=<%= obj.id %>" rel="modal" title="Duplicate">
+              <i class="fa fa-copy"></i>
+            </a>
             <a href="/fabric_variants/<%= obj.id %>/edit" rel="modal" title="Edit">
               <i class="fa fa-edit"></i>
             </a>
@@ -60,6 +63,8 @@
                 span.swatch(style="background-color: ##{variant.color}")
                 span ##{variant.color}
               td.actions
+                = link_to new_fabric_variant_path(duplicate_id: variant.id), rel: 'modal', title: 'Duplicate' do
+                  i.fa.fa-copy
                 = link_to edit_fabric_variant_path(variant), rel: 'modal', title: 'Edit' do
                   i.fa.fa-edit
                 a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove")

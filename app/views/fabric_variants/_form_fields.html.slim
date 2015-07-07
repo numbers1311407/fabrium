@@ -1,6 +1,4 @@
-- thumb = f.object.thumb
-- image_url = f.object.image_stored? ? f.object.image.url : nil
-- thumb_url = thumb.present? ? f.object.thumb.url : image_url
+= hidden_field_tag :duplicate_id, params[:duplicate_id]
 
 = f.input :item_number, as: :string
 
@@ -19,11 +17,11 @@
     a.btn.btn-warning#crop_cancel_action(style="display: none;")
       = t('labels.crop_cancel')
 
-  #crops(style="#{thumb_url.blank? ? "display:none;" : ""}width:#{FabricVariant::THUMB_SIZE}px; height:#{FabricVariant::THUMB_SIZE}px;")
-    = image_tag(thumb_url, id: "cropped")
-    = image_tag(image_url, id: "preview", class: 'fabric_image', style: "display: none;") 
+  #crops(style="#{@thumb_url.blank? ? "display:none;" : ""}width:#{FabricVariant::THUMB_SIZE}px; height:#{FabricVariant::THUMB_SIZE}px;")
+    = image_tag(@thumb_url, id: "cropped")
+    = image_tag(@image_url, id: "preview", class: 'fabric_image', style: "display: none;") 
   #full_image(style="display: none")
-    = image_tag(image_url, id: "full_img", class: 'fabric_image')
+    = image_tag(@image_url, id: "full_img", class: 'fabric_image')
 
 = f.hidden_field :retained_image
 = f.input :image_crop, as: :hidden
