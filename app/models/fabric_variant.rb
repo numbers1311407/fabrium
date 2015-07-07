@@ -67,7 +67,12 @@ class FabricVariant < ActiveRecord::Base
     end
   }
   scope :item_number, ->(val) { 
-    joins(:fabric).where(arel_table[:item_number].eq(val).or(Fabric.arel_table[:item_number].eq(val))) 
+    term = "%#{val}%"
+
+    conditions = arel_table[:item_number].matches(term)
+    conditions = conditions.or Fabric.arel_table[:item_number].matches(term)
+
+    joins(:fabric).references(:fabric).where(conditions) 
   }
 
   #

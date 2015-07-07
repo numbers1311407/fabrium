@@ -196,10 +196,10 @@
 
             <% unless current_user && current_user.is_buyer? %>
               <fieldset id="ao_item_number" class="advanced-option">
-                <legend>Item #</legend>
+                <legend>Item or Color Way #</legend>
                 <div class="row">
                   <div class="form-group">
-                    <label>Item #</label>
+                    <label>Item or Color Way #</label>
                     <div class="input-group">
                       <div class="input-group-addon">#</div>
                       <input class="form-control" type="text" ng-model="search.item_number">
