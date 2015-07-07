@@ -59,7 +59,6 @@ $(function () {
 });
 
 utils.ready(function () {
-
   // On submitting the form, set all the position values to be that of
   // their order in the list.  Sorting the elements simply moves them
   // around, while on form submit the positions are taken into account.
@@ -134,14 +133,16 @@ utils.ready(function () {
       utils.runReadyCallbacks();
     }
 
-    $(document).on("ajax:success", selector, function (event, data, msg, xhr) {
-      if (204 == xhr.status) {
-        var loc = xhr.getResponseHeader('Location');
-        $.getJSON(loc, render);
-      } else {
-        render(data);
-      }
-    });
+    $(document)
+      .off(".fabrics")
+      .on("ajax:success.fabrics", selector, function (event, data, msg, xhr) {
+        if (204 == xhr.status) {
+          var loc = xhr.getResponseHeader('Location');
+          $.getJSON(loc, render);
+        } else {
+          render(data);
+        }
+      });
   });
 
   //
