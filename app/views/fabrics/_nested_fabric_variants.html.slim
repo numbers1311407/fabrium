@@ -60,7 +60,7 @@
                 span.swatch(style="background-color: ##{variant.color}")
                 span ##{variant.color}
               td.actions
-                = link_to edit_fabric_variant_path(variant), rel: 'modal' do
+                = link_to edit_fabric_variant_path(variant), rel: 'modal', title: 'Edit' do
                   i.fa.fa-edit
                 a(href="javascript:void(0)" class="remove" tabindex="-1" title="Remove")
                   i.fa.fa-trash-o
