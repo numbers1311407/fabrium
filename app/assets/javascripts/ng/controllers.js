@@ -366,6 +366,15 @@
 					searchField: 'name',
           sortField: 'name',
           plugins: ['remove_button', 'close_button', 'lazy_preload'],
+          persist: false, 
+          create: function(input) {
+            return { name: input + "*" };
+          },
+          render: {
+            option_create: function (data, escape) {
+              return '<div class="create">Search on partial keyword <strong>"' + escape(data.input) + '"</strong>?</div>';
+            }
+          },
           onInitialize: function () {
             var tags = $scope.search.tags
               ? _.map($scope.search.tags.split(","), function(word){ return { name: word }; })

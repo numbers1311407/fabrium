@@ -14,11 +14,6 @@ module Fabrics
     extend ActiveSupport::Concern
 
     included do
-      scope :tags, ->(list) {
-        list = list.split(',') if list.is_a?(String)
-        where.contains(tags: list.map(&:downcase))
-      }
-
       # Tags are always downcased.  This is necessary as case-insensitive
       # array inclusion queries are not possible.
       before_validation :downcase_tags
@@ -40,6 +35,43 @@ module Fabrics
     end
 
     module ClassMethods
+      def tags(list)
+        return none if list.blank?
+
+        # accepts either an array of terms or a string delimited by
+        # commas
+        list = list.split(',') if list.is_a?(String)
+
+        # split up into "partial" term matches and exact tag matches
+        partials, exacts = list.partition {|item| item.match(/\*$/) }
+
+        conditions = []
+        # For partial searches we'll search for matching tag first, then
+        # add an overlap condition that the fabric has at least one of the
+        # found tags.
+        #
+        # If no tags are found at all by the partial term, return `none`
+        # immediately
+        partials.each do |partial|
+          # match both sides of the term
+          term = "%#{partial.delete('*')}%"
+          tags = Tag.name_like(term).all
+          raise ActiveRecord::RecordNotFound, "Tag match not found" if tags.empty?
+          tag_names = tags.map {|t| t.name.downcase }
+          conditions << arel_table[:tags].overlaps(tag_names)
+        end
+
+        # exact matches are simple, just look for the downcased term
+        if exacts.any?
+          conditions << arel_table[:tags].contains(exacts.map(&:downcase))
+        end
+
+        where conditions.inject(&:and)
+      rescue ActiveRecord::RecordNotFound
+        none
+      end
+
+
       #
       # The class methods are for operating on existing tags across the
       # whole collection.  This is required as while tags are stored as

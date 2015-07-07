@@ -20,7 +20,6 @@
         // Default options
         options = angular.extend({
           delimiter: ',',
-          // persist: false,
           mode: (element[0].tagName === 'SELECT') ? 'single' : 'multi'
         }, scope.selectize() || {});
 
