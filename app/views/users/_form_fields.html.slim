@@ -1,4 +1,4 @@
-- if user_signed_in? && current_user.is_admin? && f.object.persisted?
+- if current_user.is_admin? && f.object.persisted?
   - if f.object.is_mill?
     .top-actions
       = link_to "Edit the mill for this user?", edit_mill_path(f.object.meta)
@@ -6,8 +6,11 @@
     .top-actions
       = link_to "Edit the buyer for this user?", edit_buyer_path(f.object.meta)
 
-- if f.object.new_record? && current_user.is_admin?
-  = f.input :mill, as: :select, collection: Mill.limit(10).order(name: :desc), input_html: { data: { select: { plugins: { endpoint: {url: mills_path(:json)} } } } }
+- if current_user.is_admin?
+  - if f.object.new_record?
+    = f.input :mill, as: :select, collection: Mill.limit(10).order(name: :desc), input_html: { data: { select: { plugins: { endpoint: {url: mills_path(:json)} } } } }
+  - else
+    = f.association :mills, as: :select, hint: :translate, placeholder: :translate, input_html: {data: {select: {plugins: {endpoint: {url: mills_path(:json) }, close_button: {}}}}}
 
 = f.input :email
 

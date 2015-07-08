@@ -28,6 +28,8 @@ en:
         price_us_min: "Min or exact USD PPM"
         price_eu_max: "Max EUR PPM"
         price_us_max: "Max USD PPM"
+      user:
+        password: "Leave blank to remain unchanged"
     hints:
       defaults:
         # phone: "For international numbers, you must include the country code preceded by a '+', e.g. \"+001 234 5678\""
@@ -41,6 +43,7 @@ en:
         domain_filter: 'The default state is that all buyers can see your fabrics in search results.<br><br>If you "blacklist" certain buyer domains, anyone with an email address at those domains will not be able to see your fabrics in their search results.<br><br>If you "whitelist" certain buyer domains, then only people with an email address at those domains will be able to see your fabrics while no one else can.<br><br>If you choose "whitelist" and leave Filtered Domains blank, then this means no one is whitelisted and thus no one can see your fabrics in search results. Use this if you temporarily want to hide your fabrics from all buyers.<br><br>For example, if you enter a domain as "google.com" then this will apply to all people that have an email address @google.com.'
       cart:
         scope: 'A status of "Buyer" means that you generated a portfolio for the designer/buyer to review and they are currently reviewing it.<br><br>A status of "Ordered" means that the designer/buyer has requested samples.<br><br>A status of "Closed" means you shipped the samples.<br><br>A status of "Not Interested" means the designer/buyer is not interested in the portfolio you sent them to review.'
+
     # Examples
     # labels:
     #   defaults:

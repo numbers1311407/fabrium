@@ -39,6 +39,12 @@ class RegistrationsController < Devise::RegistrationsController
     respond_with self.resource
   end
 
+  def edit
+    object = resource
+    object.mill = object.meta.id if object.is_mill?
+    render :edit
+  end
+
   # /profile.json
   #
   # For use in the client JS.  This should only be a json request
@@ -114,6 +120,7 @@ class RegistrationsController < Devise::RegistrationsController
       :password_confirmation, 
       :current_password,
       :wants_email, 
+      :mill,
       :meta_type
     ]
 
@@ -134,4 +141,8 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def update_resource(resource, params)
+    params.except!(:password, :password_confirmation) if params[:password].blank?
+    resource.update_attributes(params)
+  end
 end

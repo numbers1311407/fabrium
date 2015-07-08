@@ -21,10 +21,14 @@ class User < ActiveRecord::Base
 
   has_many :fabric_notes
 
+  has_many :user_mills, dependent: :destroy
+  has_many :mills, through: :user_mills
+
   after_commit :send_invitation_if_invited, on: :create
 
   before_validation :preset_pending_status, on: :create
-  before_create :set_mill_if_mill_passed
+  before_save :set_mill_if_mill_passed
+  after_create :add_mills_association_if_mill
   before_create :set_initial_pending_status
   after_update :on_pending_change, if: :pending_changed?
 
@@ -121,6 +125,10 @@ class User < ActiveRecord::Base
 
       self.meta = mill_record
     end
+  end
+
+  def add_mills_association_if_mill
+    self.mills = [self.meta] if is_mill?
   end
 
   def should_validate_mill?

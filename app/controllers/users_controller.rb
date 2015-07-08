@@ -6,7 +6,8 @@ class UsersController < ResourceController
     :pending,
     :wants_email,
     :admin,
-    :mill
+    :mill,
+    mill_ids: []
   ]
 
   has_scope :mill do |controller, scope, value|

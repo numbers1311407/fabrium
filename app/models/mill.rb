@@ -77,7 +77,8 @@ class Mill < ActiveRecord::Base
   belongs_to :creator, class_name: 'User'
 
   # the users who have this cart as meta (should include the creator)
-  has_many :users, as: :meta, dependent: :destroy
+  has_many :user_mills, dependent: :destroy
+  has_many :users, through: :user_mills
 
   # fabrics the mill creates
   has_many :fabrics

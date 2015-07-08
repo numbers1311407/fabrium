@@ -8,12 +8,15 @@ h2 Manage Login
     .form-inputs
       - if devise_mapping.confirmable? && resource.pending_reconfirmation?
         p Currently awaiting confirmation for: #{ resource.unconfirmed_email }
+
+      - if f.object.is_mill?
+        = f.input :mill, label: "Current Mill", as: :select, collection: f.object.mills, include_blank: false, input_html: { data: { select: {} } }
       
       = f.input :password, autocomplete: 'off', required: false
       = f.input :password_confirmation, required: false
       = f.input :wants_email, label: false, inline_label: true
 
-      = f.input :current_password, hint: "We need your current password to confirm your changes"
+      /* = f.input :current_password, hint: "We need your current password to confirm your changes" */
 
   .form-actions
     = f.button :submit, "Update", class: 'btn btn-primary'
