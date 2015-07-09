@@ -7,3 +7,4 @@
 //= require jcrop/js/jquery.Jcrop
 //= require jquery-ui-sortable/jquery-ui-sortable
 //= require jquery-validate/dist/jquery.validate
+//= require jquery-placeholder

@@ -27,6 +27,8 @@ $.fn.setLoading = (function () {
 
 $(function () {
 
+  // $("input, textarea").placeholder();
+
   var rulerImg = $("meta[name=ruler]").attr("content");
 
   $(document).on("mouseover mouseout", "[data-rulered]", function (e) {

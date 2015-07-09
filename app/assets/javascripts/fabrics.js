@@ -173,7 +173,7 @@ utils.ready(function () {
         $tv = $el.find(".totals-value input"),
         $ass = $el.find(".property-assignments");
 
-    var activeSelector = ".property-assignment:not(.inactive) [type=number]";
+    var activeSelector = ".property-assignment:not(.inactive) span input";
 
     var updateTotal = function () {
       var $asses = $ass.find(activeSelector);
