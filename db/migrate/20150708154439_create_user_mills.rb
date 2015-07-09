@@ -4,13 +4,5 @@ class CreateUserMills < ActiveRecord::Migration
       t.belongs_to :mill
       t.belongs_to :user
     end
-
-    reversible do |dir|
-      dir.up do
-        User.mills.each do |user|
-          user.mills = [user.meta] if user.meta.present?
-        end
-      end
-    end
   end
 end
