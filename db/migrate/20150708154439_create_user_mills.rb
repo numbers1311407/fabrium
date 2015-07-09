@@ -8,7 +8,7 @@ class CreateUserMills < ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         User.mills.each do |user|
-          user.mills = [user.meta]
+          user.mills = [user.meta] if user.meta.present?
         end
       end
     end
