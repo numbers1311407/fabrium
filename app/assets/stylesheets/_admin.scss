@@ -4,7 +4,7 @@
 .table > tbody > tr > td,
 .table > tfoot > tr > th,
 .table > tfoot > tr > td {
-  vertical-align: middle;
+  // vertical-align: middle;
 }
 
 // put a margin on the span after an icon
@@ -48,11 +48,11 @@ td.actions {
     }
   }
 
-  @media (min-width: $screen-lg-min) {
-    a span {
-      display: inline;
-    }
-  }
+  // @media (min-width: $screen-lg-min) {
+  //   a span {
+  //     display: inline;
+  //   }
+  // }
 }
 
 .form-group.image_preview {
@@ -151,4 +151,8 @@ td.fabrium_id {
 }
 td.item_number {
   white-space: nowrap;
+}
+
+.fa-fw {
+  width: 1em;
 }

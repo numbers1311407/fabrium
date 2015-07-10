@@ -6,6 +6,15 @@
       a.btn.btn-primary href=duplicate_resource_path(resource) rel="modal"
         = t("st.carts.actions.duplicate.title")
 
+
+  - if resource.state > "mill_build" && !current_user.is_buyer? && resource.mill_created? 
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Created by #{resource.creator.name}
+      .panel-body
+        | Hanger request originally sent to #{resource.buyer_email}<br>
+        | Buyer: #{resource.buyer ? resource.buyer.name : "Not yet associated"}
+
   / before the cart is ordered, always show the "cart" form
   - if resource.state <= "pending"
     = render "form"
@@ -20,5 +29,3 @@
   / otherwise the static view (for admins and buyers)
   - else
     = render "order_form"
-
-

@@ -1,14 +1,12 @@
 - if current_user.can_update?(resource)
   - if current_user.can_reject?(resource)
-    = link_to reject_resource_path(resource), class: 'btn btn-sm btn-default', remote: true, method: :put do
-      i.fa(class='fa fa-ban' title='Not Interested')
+    = link_to reject_resource_path(resource), title: 'Not Interested', class: 'btn btn-sm btn-default', remote: true, method: :put do
+      i.fa.fa-ban
       span Not Interested
-  = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
-    i.fa.fa-edit(title=st('links.edit'))
-    span= st('links.edit')
+
   - if resource.buyer && resource.closed? && !current_user.is_buyer?
-    = link_to '#print-packing-slip', class: 'btn btn-sm btn-default print-hidden' do
-      i.fa.fa-print(title='Print Packing Slip')
+    = link_to '#print-packing-slip', class: 'btn btn-sm btn-default print-hidden', title: 'Print Packing Slip' do
+      i.fa.fa-print
       span= 'Print Packing Slip'
       .hidden
         .packing-slip
@@ -21,11 +19,22 @@
           | Mill Item # (Fabrium #):<br>
           - resource.cart_items.shipped.each do |item|
             | #{item.fabric_variant.combined_item_number} (#{item.fabric_variant.fabrium_id})<br>
+
+  - if current_user.is_admin? && resource.subcart?
+    = link_to cart_path(resource.parent), class: 'btn btn-sm btn-default', title: 'View & Edit Parent Cart' do
+      i.fa.fa-level-up.fa-fw
+      span View & Edit Parent Cart
+
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', title: st('links.edit') do
+    i.fa.fa-edit
+    span= st('links.edit')
+
 - elsif current_user.can_read?(resource)
-  = link_to resource_path(resource), class: 'btn btn-sm btn-default' do
-    i.fa.fa-info(title=st('links.view'))
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', title: st('links.view') do
+    i.fa.fa-info
     span= st('links.view')
+
 - if current_user.can_delete?(resource)
-  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, remote: true, data: { confirm: st('messages.confirm_destroy') } do
-    i.fa.fa-trash-o(title=st('links.destroy'))
+  = link_to resource_path(resource), class: 'btn btn-sm btn-default', method: :delete, remote: true, title: st('links.destroy'), data: { confirm: st('messages.confirm_destroy') } do
+    i.fa.fa-trash-o
     span= st('links.destroy')

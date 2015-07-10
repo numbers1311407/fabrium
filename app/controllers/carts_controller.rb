@@ -7,6 +7,8 @@ class CartsController < ResourceController
 
   add_collection_filter_scope :collection_filter_mill_carts
   add_collection_filter_scope :collection_filter_buyer_carts
+  add_collection_filter_scope :collection_filter_includes
+  add_collection_filter_scope :collection_filter_sorts
 
   permit_params [
     :buyer_email,
@@ -337,4 +339,27 @@ class CartsController < ResourceController
     # args[:scope] = session[:carts_scope] if session[:carts_scope]
     # collection_url(args)
   end
+
+
+  def collection_filter_includes(object)
+    object.
+      includes(:mill).references(:mills).
+      includes(:buyer).references(:buyers)
+  end
+
+  def collection_filter_sorts(object)
+    # Ransack simply ignores the sort param if it doesn't determine it to be
+    # "ransortable", so we'll just look at the param and apply an order to
+    # the relation directly if it's "mill"
+    if params[:q] && sort = params[:q][:s] 
+      if sort =~ /mill (asc|desc)/
+        object = object.order("mills.name #{$1}")
+      elsif sort =~ /mill (asc|desc)/
+        object = object.order("buyers.first_name #{$1}")
+      end
+    end
+
+    object
+  end
+
 end

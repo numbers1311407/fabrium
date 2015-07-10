@@ -1,22 +1,51 @@
 - index_table_headers do
-  th= sort_link(@q, :created_at)
-  th= sort_link(@q, :name)
+  th.th-created_at
+    = sort_link(@q, :created_at)
+  th.th-name
+    = sort_link(@q, :name)
   /* th= sort_link(@q, :creator_type, 'Source') */
+  th.th-state
+    = sort_link(@q, :state)
   - if current_user.is_admin?
-    th= sort_link(@q, :mill, 'Mill')
-    th= sort_link(@q, :parent_name, 'Parent Cart')
-  - if current_user.is_mill?
-    th= sort_link(@q, :buyer_viewed, 'Buyer Viewed')
-  th= sort_link(@q, :state)
+    th.th-mill
+      = sort_link(@q, :mill, 'Mill')
+    /* th.th-parent_name */
+    /*   = sort_link(@q, :parent_name, 'Parent Cart') */
+  - unless current_user.is_buyer?
+    th.th-buyer_viewed
+      = sort_link(@q, :buyer, 'Buyer')
 
 td= l(resource.created_at, format: :long)
 td
   = resource.name(current_user.is_admin?)
   = " (#{resource.buyer.company.presence || resource.buyer.name})" if resource.buyer
 /* td= humanize_creator_type(resource) */
+td= translate_cart_state(resource.state)
 - if current_user.is_admin?
   td= resource.mill.present? ? link_to(resource.mill.name, resource.mill) : 'Mixed'
-  td= resource.subcart? ? link_to('Edit', cart_path(resource.parent)) : 'n/a'
-- if current_user.is_mill?
-  td= resource.public_viewed ? l(resource.public_viewed, format: :long) : 'No'
-td= translate_cart_state(resource.state)
+  /* td= resource.subcart? ? link_to('Edit', cart_path(resource.parent)) : 'n/a' */
+- unless current_user.is_buyer?
+  td.buyer-details
+    p
+      - if resource.buyer.present?
+        = resource.buyer.name
+      - else
+        | No buyer attached yet
+    - if resource.buyer_email.present?
+      p 
+        span> Sent to #{resource.buyer_email}
+        - if resource.public_viewed?
+          span title="Visited #{l(resource.public_viewed, format: :long)}"
+            i.fa.fa-sm.fa-eye
+        - else
+          span title="Not yet visited"
+            i.fa.fa-sm.fa-eye-slash
+
+      /* p */
+      /*   - if resource.public_viewed? */
+      /*     /1* span title="Buyer viewed #{l(resource.public_viewed, format: :long)}" *1/ */
+      /*     /1*   span> Viewed *1/ */
+      /*     /1*   i.fa.fa-sm.fa-eye *1/ */
+      /*     span Viewed #{l(resource.public_viewed, format: :long)} */
+      /*   - else */
+      /*     span Not Viewed */

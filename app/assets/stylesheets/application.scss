@@ -1093,3 +1093,33 @@ label {
 .cart {
   margin-bottom: 40px;
 }
+
+td.buyer-details {
+  p {
+    margin-bottom: 0;
+  }
+
+  .fa {
+    font-size: 13.5px;
+  }
+  .fa-eye {
+    color: #f3b21d;
+    cursor: pointer;
+  }
+}
+
+.panel-default {
+  border: 1px solid #eee;
+}
+
+.panel-default {
+  > .panel-heading {
+    background-color: transparent;
+    border: none;
+    padding: 5px 15px;
+  }
+
+  .panel-body {
+    padding-top: 0;
+  }
+}
