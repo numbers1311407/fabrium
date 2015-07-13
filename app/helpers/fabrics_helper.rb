@@ -13,4 +13,16 @@ module FabricsHelper
     value = fabric.send(field)
     value.present? && !value.zero? ? number_with_precision(value, precision: 2) : nil
   end
+
+  def fabric_price_display(fabric, region, yards=false)
+    unit = region == :us ? '$' : '€'
+    fields = ["price_#{region}_min", "price_#{region}_max"]
+    values = fields.map do |field| 
+      val = fabric.send(field)
+      val *= 0.9144 if yards
+      number_to_currency(val, unit: unit)
+    end
+
+    values.first == values.last ? values.first : values.join(' to ')
+  end
 end

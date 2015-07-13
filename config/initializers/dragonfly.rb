@@ -11,6 +11,8 @@ Dragonfly.app.configure do
   url_format "/media/:job/:name"
 
   if Rails.env.production?
+    url_host 'http://search.fabrium.com'
+
     datastore :s3,
       bucket_name: 'fabrium',
       access_key_id: ENV['FABRIUM_ACCESS_KEY_ID'],

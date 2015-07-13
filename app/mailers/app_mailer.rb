@@ -1,4 +1,6 @@
 class AppMailer < ActionMailer::Base
+  helper FabricsHelper
+
   default from: "support@fabrium.com",
            bcc: "support@fabrium.com"
   

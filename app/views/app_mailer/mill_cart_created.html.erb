@@ -2,6 +2,55 @@
   <%= @mill.name %> has created a portfolio of fabrics for you to review 
   at <%= link_to "Fabrium.com", root_url %>.
 </p>
-<p>Click here <%= link_to @cart_url, @cart_url %> to review the portfolio.</p>
+
+<p>
+  Click here <%= link_to @cart_url, @cart_url %> to review the portfolio.
+</p>
+
+<style>
+  tr.fabric-variant td {
+    padding: 10px 10px 10px 0;
+    vertical-align: top;
+  }
+</style>
+
+<p>Here's what's included:</p>
+<table>
+  <tbody>
+    <%- @cart.cart_items.each do |item|; variant = item.fabric_variant; fabric = variant.fabric %>
+    <tr class="fabric-variant">
+      <td>
+        <%= image_tag(variant.thumb.url) %>
+      </td>
+      <td>
+        <strong>Mill</strong>: <%= fabric.mill.name %><br>
+        <strong>Fabrium #</strong>: <%= variant.fabrium_id %><br>
+        <strong>Fiber Content</strong>:
+          <%= fabric.materials.map {|mat| "#{mat.name} #{number_to_percentage(mat.value, precision: 0)}" }.join(";") %>
+        <br>
+        <strong>Weight</strong>: <%= fabric.weight %><br>
+        <strong>Width</strong>: <%= fabric.width %><br>
+        <strong>Country of Origin</strong>: <%= fabric.country  %><br>
+        <%- if fabric.price_us_max > 0 %>
+          <strong>Price per Yard</strong>:<%= fabric_price_display(fabric, :us, true) %><br>
+          <strong>Price per Meter</strong>: <%= fabric_price_display(fabric, :us) %><br>
+        <%- end %>
+        <%- if fabric.price_eu_max > 0 %>
+          <strong>Price per Meter</strong>: <%= fabric_price_display(fabric, :eu) %><br>
+        <%- end %>
+        <strong>In Stock</strong>: <%= variant.in_stock ? "Yes" : "No" %><br>
+        <strong>Category</strong>: <%= fabric.category ? fabric.category.name : 'Uncategorized' %><br>
+        <strong>Dye Method</strong>: <%= fabric.dye_method ? fabric.dye_method.name : 'Unspecified' %><br>
+        <strong>Keywords</strong>: <%= fabric.tags.join(', ') %><br>
+        <strong>Sample Lead Time</strong>:<%= fabric.sample_lead_time %> Weeks<br>
+        <strong>Bulk Lead Time</strong>: <%= fabric.bulk_lead_time %> Weeks<br>
+        <strong>Sample Minimum</strong>: <%= fabric.sample_minimum_quality %> Meters<br>
+        <strong>Bulk Minimum</strong>: <%= fabric.bulk_minimum_quality %> Meters
+      </td>
+    </tr>
+    <%- end %>
+  </tbody>
+</table>
+
 <p>Thanks!</p>
 <p>- The Fabrium Team</p>
