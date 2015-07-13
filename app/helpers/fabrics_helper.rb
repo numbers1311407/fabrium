@@ -25,4 +25,8 @@ module FabricsHelper
 
     values.first == values.last ? values.first : values.join(' to ')
   end
+
+  def fabric_weight_display(fabric)
+    "#{fabric.osy} Oz/y<sup>2</sup>; #{fabric.glm} GLM; #{fabric.gsm} GSM".html_safe
+  end
 end

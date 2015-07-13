@@ -28,8 +28,8 @@
         <strong>Fiber Content</strong>:
           <%= fabric.materials.map {|mat| "#{mat.name} #{number_to_percentage(mat.value, precision: 0)}" }.join(";") %>
         <br>
-        <strong>Weight</strong>: <%= fabric.weight %><br>
-        <strong>Width</strong>: <%= fabric.width %><br>
+        <strong>Weight</strong>: <%= fabric_weight_display(fabric) %><br>
+        <strong>Width</strong>: <%= fabric.width %> CM<br>
         <strong>Country of Origin</strong>: <%= fabric.country  %><br>
         <%- if fabric.price_us_max > 0 %>
           <strong>Price per Yard</strong>:<%= fabric_price_display(fabric, :us, true) %><br>
