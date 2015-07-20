@@ -8,7 +8,10 @@ class FabricVariantsController < ResourceController
   # In a typical search, only the *first* variant of each fabric should
   # be returned.  The exceptions to this are searching by color, exact
   # item number / fabrium id
-  add_collection_filter_scope :collection_filter_primary_variant
+  # NOTE removed to combat position bug where variants were saved without 
+  #      position 0 (and also, to eliminate confusion around the hidden
+  #      primary scope)
+  # add_collection_filter_scope :collection_filter_primary_variant
 
   # Do not search archived fabrics
   add_collection_filter_scope :collection_filter_archived
