@@ -41,6 +41,11 @@
               = link_to edit_user_registration_path do
                 i.fa.fa-user
                 span Manage Login
+              - if current_user.is_mill?
+                = link_to edit_user_registration_path do
+                  i.fa.fa-exchange
+                  span Change Mill
+                  
             li
               = link_to destroy_user_session_path, method: :delete do
                 i.fa.fa-sign-out

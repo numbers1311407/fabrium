@@ -1,4 +1,4 @@
-h2 Manage Login
+h2 = title(resource.is_mill? ? "Manage Login/Change Mill" : "Manage Login")
 
 = simple_form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
   - if f.object.errors.any? 
