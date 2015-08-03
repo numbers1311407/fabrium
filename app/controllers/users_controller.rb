@@ -110,6 +110,10 @@ class UsersController < ResourceController
     :new_as_admin
   end
 
+  def method_for_association_chain
+    :meta_users
+  end
+
   def create_resource(object)
     object.invited_by = current_user
     object.save

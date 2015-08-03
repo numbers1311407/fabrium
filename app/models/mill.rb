@@ -80,6 +80,8 @@ class Mill < ActiveRecord::Base
   has_many :user_mills, dependent: :destroy
   has_many :users, through: :user_mills
 
+  has_many :meta_users, class_name: 'User', as: :meta
+
   # fabrics the mill creates
   has_many :fabrics
   # fabric variants of those fabrics 
